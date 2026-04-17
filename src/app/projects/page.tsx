@@ -65,7 +65,7 @@ const PROJECTS: Project[] = [
     year: "2025",
     role: "Product Design · UX Research",
     desc: "Designing the command and control interface for autonomous drone fleets. A mission-critical platform demanding precision, clarity and real-time situational awareness.",
-    img: "/Flytbase.png",
+    img: "/flytbase.png",
     link: "/project-page",
   },
   {

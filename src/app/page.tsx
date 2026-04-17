@@ -23,7 +23,7 @@ const GALLERY_ITEMS = [
   { image: "/Nebula2.png", text: "Nebula", link: "/projects" },
   { image: "/Xtep2.png", text: "Xtep", link: "/projects" },
   { image: "/Exsavvy2.png", text: "Exsavvy", link: "/projects" },
-  { image: "/MCl2.png", text: "McLaren Racing", link: "/projects" },
+  { image: "/MCL2.png", text: "McLaren Racing", link: "/projects" },
   { image: "/flytbase2.png", text: "Flytbase", link: "/projects" },
   { image: "/VFX2.png", text: "Envision VFX", link: "/projects" },
   { image: "/Aksharaevents2.png", text: "Akshara Events", link: "/projects" }
