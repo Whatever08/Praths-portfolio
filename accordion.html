@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Capstonebox — Nos avantages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange:  #f0900a;
+  --black:   #111;
+  --muted:   #888;
+  --line:    #e5e5e5;
+  --white:   #fff;
+  --bg:      #fafaf8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.page-hero {
+  height: 92vh;
+  min-height: 600px;
+  background: #0e0e0e;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 64px 52px;
+  gap: 20px;
+}
+
+.page-hero h1 {
+  font-size: clamp(38px, 5.5vw, 72px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  max-width: 680px;
+}
+
+.page-hero p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 12px 24px;
+  background: var(--orange);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+/* ── SECTION INTRO ────────────────────────────────────────── */
+.cb-intro {
+  padding: 64px 52px 0;
+  background: var(--white);
+  border-top: 1px solid var(--line);
+}
+
+.cb-intro-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cb-intro-label::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: var(--orange);
+}
+
+.cb-intro h2 {
+  font-size: clamp(26px, 3.5vw, 42px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  color: var(--black);
+  max-width: 560px;
+  padding-bottom: 48px;
+}
+
+/* ── FEATURES SECTION ─────────────────────────────────────── */
+.cb-section {
+  display: flex;
+  width: 100%;
+  background: var(--white);
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+
+/* ── LEFT PANEL ───────────────────────────────────────────── */
+.cb-left {
+  width: 46%;
+  flex-shrink: 0;
+  border-right: 1px solid var(--line);
+  /* No extra padding — items fill the full scroll height */
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ACCORDION ITEM
+   Each item has a collapsed height and an expanded height.
+   The active item expands; all others stay collapsed.
+   Scroll-driven: IntersectionObserver fires on sentinel
+   elements to transition active state as user scrolls.
+───────────────────────────────────────────────────────────── */
+.cb-item {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.cb-item:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.cb-item:hover {
+  background: #fafaf8;
+}
+
+/* Orange left accent */
+.cb-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.35s ease;
+  z-index: 2;
+}
+
+.cb-item.active::before {
+  background: var(--orange);
+}
+
+/* Inner layout row */
+.cb-item-inner {
+  display: flex;
+  gap: 0;
+  align-items: flex-start;
+  padding: 40px 32px 40px 0;
+}
+
+/* ── COLLAPSED HEIGHT — just title row ── */
+.cb-item {
+  /* collapsed: ~96px tall (padding + title line) */
+}
+
+/* ── PROGRESS BAR ─────────────────────────────────────────── */
+.cb-item-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--line);
+  z-index: 3;
+  overflow: hidden;
+}
+
+.cb-item-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--orange);
+  transition: width linear;
+}
+
+.cb-item.active .cb-item-progress-fill {
+  width: 100%;
+}
+
+/* ── NUMBER ───────────────────────────────────────────────── */
+.cb-num-wrap {
+  width: 96px;
+  flex-shrink: 0;
+  padding-left: 24px;
+  position: relative;
+}
+
+.cb-num {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--line);
+  transition: color 0.45s ease, transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+  letter-spacing: -2px;
+  user-select: none;
+  display: block;
+  transform: scale(1);
+}
+
+.cb-item.active .cb-num {
+  color: var(--orange);
+  transform: scale(1.08);
+}
+
+/* ── CONTENT ──────────────────────────────────────────────── */
+.cb-content {
+  flex: 1;
+  padding-top: 2px;
+}
+
+.cb-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--black);
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  margin-bottom: 0;
+  transition: letter-spacing 0.35s ease, font-weight 0.2s ease;
+}
+
+.cb-item.active .cb-title {
+  letter-spacing: -0.6px;
+  font-weight: 600;
+}
+
+/* ── ACCORDION BODY — description + tags ─────────────────── */
+/* Uses grid-template-rows trick for smooth height animation */
+.cb-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin-top: 0;
+  transition:
+    grid-template-rows 0.52s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity            0.38s ease,
+    margin-top         0.38s ease;
+  will-change: grid-template-rows, opacity;
+}
+
+.cb-body-inner {
+  overflow: hidden;
+}
+
+.cb-item.active .cb-body {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 18px;
+}
+
+.cb-desc {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.cb-desc p {
+  line-height: 1.9;
+  font-size: 13.5px;
+}
+
+/* ── TAGS ─────────────────────────────────────────────────── */
+.cb-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+  padding-bottom: 2px;
+}
+
+.cb-tag {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid rgba(240,144,10,0.3);
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+/* ── RIGHT PANEL ──────────────────────────────────────────── */
+.cb-right {
+  flex: 1;
+  position: relative;
+}
+
+.cb-img-wrap {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #0e0e0e;
+}
+
+/* ── SLIDES ───────────────────────────────────────────────── */
+.cb-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  overflow: hidden;
+  clip-path: inset(50% 0 50% 0);
+  transition:
+    opacity    0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    clip-path  0.75s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.cb-slide.visible {
+  opacity: 1;
+  clip-path: inset(0% 0 0% 0);
+}
+
+.cb-slide.leaving {
+  opacity: 0;
+  clip-path: inset(0% 0 100% 0);
+  transition:
+    opacity    0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    clip-path  0.55s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.cb-slide img {
+  width: 100%;
+  height: 115%;
+  object-fit: cover;
+  display: block;
+  transform: translateY(0px) scale(1.06);
+  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.cb-slide.visible img {
+  transform: translateY(0px) scale(1);
+}
+
+.cb-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0,0,0,0.08) 0%,
+    transparent 50%,
+    rgba(0,0,0,0.28) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── SLIDE CAPTION ────────────────────────────────────────── */
+.cb-slide-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  padding: 48px 36px 36px;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+  transform: translateY(12px);
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1) 0.25s,
+              opacity   0.45s ease 0.25s;
+}
+
+.cb-slide.visible .cb-slide-caption {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.cb-slide-caption-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 6px;
+}
+
+.cb-slide-caption-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+/* ── COUNTER ──────────────────────────────────────────────── */
+.cb-slide-counter {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  z-index: 10;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.6);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cb-slide-counter-current {
+  color: #fff;
+  font-size: 13px;
+}
+
+/* ── NAV DOTS ─────────────────────────────────────────────── */
+.cb-slide-badge {
+  position: absolute;
+  bottom: 36px;
+  right: 28px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cb-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.28);
+  border: 1.5px solid rgba(255,255,255,0.45);
+  transition: background 0.3s, transform 0.3s, height 0.3s;
+  cursor: pointer;
+}
+
+.cb-badge-dot.active {
+  background: #fff;
+  border-radius: 3px;
+  height: 20px;
+}
+
+/* ── SCROLL PROGRESS LINE ─────────────────────────────────── */
+.cb-scroll-track {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: rgba(255,255,255,0.1);
+  z-index: 10;
+}
+
+.cb-scroll-fill {
+  width: 100%;
+  background: var(--orange);
+  height: 0%;
+  transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── FALLBACK ─────────────────────────────────────────────── */
+.cb-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  background: #f0efea;
+}
+.cb-fallback-icon { font-size: 44px; opacity: 0.25; }
+.cb-fallback-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #bbb;
+}
+
+/* ── PAGE AFTER ───────────────────────────────────────────── */
+.page-after {
+  background: var(--white);
+  border-top: 1px solid var(--line);
+  padding: 80px 52px;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+}
+
+.page-after-stat {
+  flex: 1;
+  border-left: 1px solid var(--line);
+  padding-left: 28px;
+}
+
+.page-after-stat .num {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  color: var(--black);
+  line-height: 1;
+}
+
+.page-after-stat .label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ───────────────────────────────────────────────────── -->
+<div class="page-hero">
+  <h1>La nouvelle<br>génération de box<br>est là</h1>
+  <p>Réservation en ligne instantanée · Sans paperasse · Tarifs dès 29,94 €/mois</p>
+  <a class="hero-cta">Réserver un box →</a>
+</div>
+
+<!-- ── INTRO HEADING ──────────────────────────────────────────── -->
+<div class="cb-intro">
+  <div class="cb-intro-label">Nos avantages</div>
+  <h2>Plus sûr, plus pratique et bien plus sympa</h2>
+</div>
+
+<!-- ── FEATURES SECTION ───────────────────────────────────────── -->
+<div class="cb-section" id="cbSection">
+
+  <!-- LEFT: accordion items -->
+  <div class="cb-left" id="cbLeft">
+
+    <div class="cb-item active" data-index="0" id="item-0">
+      <div class="cb-item-inner">
+        <div class="cb-num-wrap">
+          <div class="cb-num">1</div>
+        </div>
+        <div class="cb-content">
+          <div class="cb-title">Tarifs transparents</div>
+          <div class="cb-body">
+            <div class="cb-body-inner">
+              <div class="cb-desc">
+                <p>Aucun frais de dossier<br>
+                   Aucun frais de résiliation<br>
+                   Tarification compétitive<br>
+                   Assurance incluse</p>
+              </div>
+              <div class="cb-tags">
+                <span class="cb-tag">Sans frais cachés</span>
+                <span class="cb-tag">Assurance incluse</span>
+                <span class="cb-tag">Dès 29€/mois</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cb-item-progress">
+        <div class="cb-item-progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="cb-item" data-index="1" id="item-1">
+      <div class="cb-item-inner">
+        <div class="cb-num-wrap">
+          <div class="cb-num">2</div>
+        </div>
+        <div class="cb-content">
+          <div class="cb-title">Sécurité maximale</div>
+          <div class="cb-body">
+            <div class="cb-body-inner">
+              <div class="cb-desc">
+                <p>Gardien sur site<br>
+                   Vidéo surveillance 24/7<br>
+                   Accès individuel sécurisé<br>
+                   Alarme anti-intrusion</p>
+              </div>
+              <div class="cb-tags">
+                <span class="cb-tag">Surveillance 24/7</span>
+                <span class="cb-tag">Accès sécurisé</span>
+                <span class="cb-tag">Alarme</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cb-item-progress">
+        <div class="cb-item-progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="cb-item" data-index="2" id="item-2">
+      <div class="cb-item-inner">
+        <div class="cb-num-wrap">
+          <div class="cb-num">3</div>
+        </div>
+        <div class="cb-content">
+          <div class="cb-title">Flexibilité Totale</div>
+          <div class="cb-body">
+            <div class="cb-body-inner">
+              <div class="cb-desc">
+                <p>Réservation en ligne ou par téléphone<br>
+                   Sans engagement<br>
+                   Résiliation à tout moment<br>
+                   Matériels de manutention mis à disposition</p>
+              </div>
+              <div class="cb-tags">
+                <span class="cb-tag">Sans engagement</span>
+                <span class="cb-tag">Réservation instant.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cb-item-progress">
+        <div class="cb-item-progress-fill"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: sticky image panel -->
+  <div class="cb-right">
+    <div class="cb-img-wrap" id="imgWrap">
+
+      <div class="cb-slide-counter">
+        <span class="cb-slide-counter-current" id="counterCurrent">01</span>
+        <span>—</span>
+        <span>03</span>
+      </div>
+
+      <div class="cb-slide visible" id="slide-0">
+        <img
+          id="img-0"
+          src="https://cdn.sanity.io/images/7pds8n0p/production/1d1900bdfc637fac698e8ed741ea782fd15f9e15-3840x2160.png?rect=685,0,2471,2160&w=920&h=700&q=85&fit=crop&auto=format"
+          alt="Tarifs transparents"
+          onerror="showFallback(this,'💰','Tarifs transparents')"
+        />
+        <div class="cb-slide-caption">
+          <div class="cb-slide-caption-label">Avantage 01</div>
+          <div class="cb-slide-caption-title">Tarifs transparents</div>
+        </div>
+      </div>
+
+      <div class="cb-slide" id="slide-1">
+        <img
+          id="img-1"
+          src="https://cdn.sanity.io/images/7pds8n0p/production/7196a3a41825a549ac688f0baf4065490585e4fe-1370x1200.jpg?rect=0,79,1370,1042&w=920&h=700&q=85&fit=crop&auto=format"
+          alt="Sécurité maximale"
+          onerror="showFallback(this,'🔒','Sécurité maximale')"
+        />
+        <div class="cb-slide-caption">
+          <div class="cb-slide-caption-label">Avantage 02</div>
+          <div class="cb-slide-caption-title">Sécurité maximale</div>
+        </div>
+      </div>
+
+      <div class="cb-slide" id="slide-2">
+        <img
+          id="img-2"
+          src="https://cdn.sanity.io/images/7pds8n0p/production/f13183e73e2081c111469a84ded8da1eb67f6935-3855x2168.jpg?rect=504,0,2849,2168&w=920&h=700&q=85&fit=crop&auto=format"
+          alt="Flexibilité Totale"
+          onerror="showFallback(this,'📦','Flexibilité Totale')"
+        />
+        <div class="cb-slide-caption">
+          <div class="cb-slide-caption-label">Avantage 03</div>
+          <div class="cb-slide-caption-title">Flexibilité Totale</div>
+        </div>
+      </div>
+
+      <div class="cb-scroll-track">
+        <div class="cb-scroll-fill" id="scrollFill"></div>
+      </div>
+
+      <div class="cb-slide-badge" id="navDots">
+        <div class="cb-badge-dot active" data-index="0"></div>
+        <div class="cb-badge-dot" data-index="1"></div>
+        <div class="cb-badge-dot" data-index="2"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ── PAGE AFTER ─────────────────────────────────────────────── -->
+<div class="page-after">
+  <div class="page-after-stat">
+    <div class="num">97%</div>
+    <div class="label">d'avis positifs</div>
+  </div>
+  <div class="page-after-stat">
+    <div class="num">3</div>
+    <div class="label">centres en France</div>
+  </div>
+  <div class="page-after-stat">
+    <div class="num">29€</div>
+    <div class="label">dès /mois</div>
+  </div>
+  <div class="page-after-stat">
+    <div class="num">24/7</div>
+    <div class="label">vidéo surveillance</div>
+  </div>
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────────────
+   SCROLL-DRIVEN ACCORDION — capstonebox.com Section 2 mechanic
+
+   HOW IT WORKS:
+   • The cb-section has enough scroll height for all 3 items (3 × 100vh).
+   • The right image panel is position:sticky (stays in viewport).
+   • As the user scrolls, we compute which "zone" we're in:
+       zone 0 → 0–33% of section scroll → item 0 active
+       zone 1 → 33–66%                  → item 1 active
+       zone 2 → 66–100%                 → item 2 active
+   • The LEFT items are also sticky so the accordion is always visible.
+   • Active item expands (grid-template-rows: 1fr) via CSS.
+   • Progress bar fills over the duration of each zone.
+─────────────────────────────────────────────────────────────────── */
+
+const TOTAL = 3;
+
+// Make the left panel sticky too, matching right
+const cbLeft = document.getElementById('cbLeft');
+cbLeft.style.position = 'sticky';
+cbLeft.style.top = '0';
+cbLeft.style.height = '100vh';
+cbLeft.style.display = 'flex';
+cbLeft.style.flexDirection = 'column';
+cbLeft.style.justifyContent = 'center';
+cbLeft.style.overflowY = 'hidden';
+
+// Give the section enough scroll space: 3 × 100vh
+const section = document.getElementById('cbSection');
+section.style.height = `${TOTAL * 100}vh`;
+
+const items         = [...document.querySelectorAll('.cb-item')];
+const slides        = [...document.querySelectorAll('.cb-slide')];
+const imgs          = [...document.querySelectorAll('.cb-slide img')];
+const dots          = [...document.querySelectorAll('.cb-badge-dot')];
+const fillEl        = document.getElementById('scrollFill');
+const counter       = document.getElementById('counterCurrent');
+const progressFills = [...document.querySelectorAll('.cb-item-progress-fill')];
+const imgWrap       = document.getElementById('imgWrap');
+
+let current  = 0;
+let lastScrollY = -1;
+let rafId    = null;
+
+/* ── Progress bar helpers ─────────────────────────────────── */
+function setProgressBar(idx, pct) {
+  // pct: 0–1
+  const fill = progressFills[idx];
+  fill.style.transition = 'none';
+  fill.style.width = `${pct * 100}%`;
+}
+
+function clearAllProgressBars() {
+  progressFills.forEach(f => {
+    f.style.transition = 'none';
+    f.style.width = '0%';
+  });
+}
+
+/* ── Activate index ───────────────────────────────────────── */
+function activate(idx) {
+  if (idx === current) return;
+  const prev = current;
+  current = idx;
+
+  items.forEach((el, i) => el.classList.toggle('active', i === idx));
+
+  slides.forEach((el, i) => {
+    if (i === idx) {
+      el.classList.remove('leaving');
+      el.classList.add('visible');
+    } else if (i === prev) {
+      el.classList.add('leaving');
+      el.classList.remove('visible');
+      setTimeout(() => el.classList.remove('leaving'), 600);
+    } else {
+      el.classList.remove('visible', 'leaving');
+    }
+  });
+
+  dots.forEach((el, i) => el.classList.toggle('active', i === idx));
+  counter.textContent = String(idx + 1).padStart(2, '0');
+  fillEl.style.height = `${((idx + 1) / TOTAL) * 100}%`;
+}
+
+/* ── Parallax on right image ─────────────────────────────── */
+function applyParallax(rawProgress) {
+  // rawProgress: 0–1 through whole section
+  const pct = (rawProgress - 0.5) * 14; // -7 to +7%
+  imgs.forEach((img, i) => {
+    if (i === current) {
+      img.style.transform = `translateY(${pct}%) scale(1)`;
+    } else {
+      img.style.transform = `translateY(${pct}%) scale(1.06)`;
+    }
+  });
+}
+
+/* ── Main scroll handler ─────────────────────────────────── */
+function onScrollFrame() {
+  if (window.scrollY !== lastScrollY) {
+    lastScrollY = window.scrollY;
+
+    const rect = section.getBoundingClientRect();
+
+    // Only act while section is in view
+    if (rect.bottom > 0 && rect.top < window.innerHeight) {
+
+      // How far we've scrolled INTO the section (0 = section top at viewport top)
+      const scrolled = -rect.top;
+      // Total scrollable distance = section height − viewport height
+      const scrollable = section.offsetHeight - window.innerHeight;
+      // Clamped 0–1 progress through the section
+      const rawProgress = Math.max(0, Math.min(1, scrolled / scrollable));
+
+      // Which zone (item) are we in?
+      const zoneSize = 1 / TOTAL;
+      const zoneIdx  = Math.min(TOTAL - 1, Math.floor(rawProgress / zoneSize));
+      // Progress within this zone (0–1)
+      const zonePct  = (rawProgress - zoneIdx * zoneSize) / zoneSize;
+
+      // Activate item if changed
+      if (zoneIdx !== current) {
+        activate(zoneIdx);
+      }
+
+      // Fill the active item's progress bar to zone progress
+      clearAllProgressBars();
+      setProgressBar(zoneIdx, Math.max(0, Math.min(1, zonePct)));
+
+      applyParallax(rawProgress);
+    }
+  }
+  rafId = requestAnimationFrame(onScrollFrame);
+}
+
+rafId = requestAnimationFrame(onScrollFrame);
+
+/* ── Click left item → scroll to its zone ─────────────────── */
+items.forEach(el => {
+  el.addEventListener('click', () => {
+    const idx = parseInt(el.dataset.index);
+    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+    const scrollable  = section.offsetHeight - window.innerHeight;
+    // Middle of the target zone
+    const targetPct   = (idx + 0.5) / TOTAL;
+    const targetY     = sectionTop + targetPct * scrollable;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  });
+});
+
+/* ── Click nav dots → scroll to their zone ─────────────────── */
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const idx = parseInt(dot.dataset.index);
+    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+    const scrollable  = section.offsetHeight - window.innerHeight;
+    const targetPct   = (idx + 0.5) / TOTAL;
+    const targetY     = sectionTop + targetPct * scrollable;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  });
+});
+
+/* ── Fallback ──────────────────────────────────────────────── */
+function showFallback(img, icon, label) {
+  const slide = img.closest('.cb-slide');
+  slide.innerHTML = `<div class="cb-fallback"><div class="cb-fallback-icon">${icon}</div><div class="cb-fallback-label">${label}</div></div>`;
+}
+</script>
+</body>
+</html>

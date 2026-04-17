@@ -12,7 +12,6 @@ import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
-import { DesignProcessReworked } from "@/components/ui/DesignProcessReworked";
 import { useState } from "react";
 
 
@@ -245,42 +244,6 @@ export default function ProjectPage() {
                                         </div>
                                     </section>
                                 </div>
-
-                                {/* Capstonebox-style Scroll Features Section */}
-                                <DesignProcessReworked
-                                    heading="Design Process"
-                                    subtitle="A structured approach to crafting exceptional digital experiences"
-                                    items={[
-                                        {
-                                            number: "1",
-                                            title: "Discovery & Research",
-                                            description: "Deep dive into user needs, competitive landscape, and business goals to establish a solid foundation.",
-                                            bullets: ["User Interviews", "Competitive Audit", "Stakeholder Workshops", "Heuristic Analysis"],
-                                            image: "https://images.unsplash.com/photo-1553484771-047a44eee27a?q=80&w=1200",
-                                        },
-                                        {
-                                            number: "2",
-                                            title: "Information Architecture",
-                                            description: "Structuring content and flows that feel intuitive and natural to the end user.",
-                                            bullets: ["Site Mapping", "User Flows", "Content Strategy", "Navigation Design"],
-                                            image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1200",
-                                        },
-                                        {
-                                            number: "3",
-                                            title: "Visual Design System",
-                                            description: "Building a cohesive design language with reusable components, typography scales, and color systems.",
-                                            bullets: ["Component Library", "Typography Scale", "Color Palette", "Iconography"],
-                                            image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1200",
-                                        },
-                                        {
-                                            number: "4",
-                                            title: "Prototyping & Testing",
-                                            description: "Rapid iteration with high-fidelity prototypes validated through real user feedback.",
-                                            bullets: ["Interactive Prototypes", "Usability Testing", "A/B Testing", "Iteration Cycles"],
-                                            image: "https://images.unsplash.com/photo-1581291518633-83b4eef1d2fd?q=80&w=1200",
-                                        },
-                                    ]}
-                                />
 
                                 <div className="white-canvas-container w-full overflow-visible relative z-20">
                                     <div className="white-canvas-content w-full bg-white transition-all duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center">
