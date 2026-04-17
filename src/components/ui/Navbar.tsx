@@ -92,45 +92,57 @@ export const Navbar = ({
       }
     });
 
-    // 2. THEME-SENSING INVERSION (Black on White)
-    const themeSections = gsap.utils.toArray<HTMLElement>("[data-theme]");
+    // 2. THEME-SENSING INVERSION — robust elementFromPoint approach
     let lastTheme = "dark";
 
     const updateTheme = (theme: string) => {
+      if (theme === lastTheme) return;
+      lastTheme = theme;
       const isLight = theme === "light";
       gsap.to(navRef.current, {
         color: isLight ? "#000000" : "#ffffff",
         duration: 0.4,
         ease: "power2.inOut"
       });
-      // Filter logo brightness
       gsap.to(".nav-logo-img", {
         filter: isLight ? "brightness(0)" : "brightness(1)",
         duration: 0.4
       });
     };
 
+    // Sample the element underneath the navbar (at center, 40px from top)
+    const sampleTheme = () => {
+      const checkY = 40;
+      const checkX = window.innerWidth / 2;
+      // Temporarily hide the navbar to sample behind it
+      if (navRef.current) navRef.current.style.pointerEvents = "none";
+      const el = document.elementFromPoint(checkX, checkY) as HTMLElement | null;
+      if (navRef.current) navRef.current.style.pointerEvents = "";
+
+      if (!el) return;
+
+      // Walk up from sampled element to find data-theme attribute
+      let cursor: HTMLElement | null = el;
+      let foundTheme = "dark";
+      while (cursor && cursor !== document.body) {
+        const theme = cursor.getAttribute("data-theme");
+        if (theme) { foundTheme = theme; break; }
+        cursor = cursor.parentElement;
+      }
+      updateTheme(foundTheme);
+    };
+
+    // Use ScrollTrigger onUpdate for efficiency
     ScrollTrigger.create({
       trigger: document.body,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: () => {
-        const headerCheckY = 40; // Mid-header height
-        let currentTheme = "dark";
-
-        themeSections.forEach((section) => {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= headerCheckY && rect.bottom >= headerCheckY) {
-            currentTheme = section.getAttribute("data-theme") || "dark";
-          }
-        });
-
-        if (currentTheme !== lastTheme) {
-          updateTheme(currentTheme);
-          lastTheme = currentTheme;
-        }
-      }
+      onUpdate: sampleTheme,
+      onRefresh: sampleTheme,
     });
+
+    // Initial sample
+    sampleTheme();
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());

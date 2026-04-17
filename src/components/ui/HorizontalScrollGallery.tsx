@@ -54,7 +54,7 @@ export const HorizontalScrollGallery: React.FC<HorizontalScrollGalleryProps> = (
                     trigger: containerRef.current,
                     pin: true,
                     scrub: 1,
-                    start: "center center",
+                    start: "top top",
                     end: `+=${horizontalScrollLength}`,
                     invalidateOnRefresh: true,
                     anticipatePin: 1
