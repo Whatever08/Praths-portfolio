@@ -1,65 +1,435 @@
-import Image from "next/image";
+"use client";
+
+import { CircularGallery } from "@/components/ui/CircularGallery";
+import { LiquidBackground } from "@/components/ui/LiquidBackground";
+import { TextRevealSection } from "@/components/ui/TextRevealSection";
+import StackSection from "@/components/ui/StackSection";
+import { CaseStudiesSection } from "@/components/ui/CaseStudiesSection";
+import ServicesSection from "@/components/ui/ServicesSection";
+import { ReactLenis } from "lenis/react";
+import { Icon } from "@iconify/react";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
+import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
+import { DynamicFooter } from "@/components/ui/DynamicFooter";
+import { useState } from "react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const GALLERY_ITEMS = [
+  { image: "/Nebula2.png", text: "Nebula", link: "/projects" },
+  { image: "/Xtep2.png", text: "Xtep", link: "/projects" },
+  { image: "/Exsavvy2.png", text: "Exsavvy", link: "/projects" },
+  { image: "/MCl2.png", text: "McLaren Racing", link: "/projects" },
+  { image: "/flytbase2.png", text: "Flytbase", link: "/projects" },
+  { image: "/VFX2.png", text: "Envision VFX", link: "/projects" },
+  { image: "/Aksharaevents2.png", text: "Akshara Events", link: "/projects" }
+];
 
 export default function Home() {
+  const mainRef = useRef<HTMLElement>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
+  const gallerySectionRef = useRef<HTMLElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const targetPos = useRef({ x: 0, y: 0 });
+  const cursorPos = useRef({ x: 0, y: 0 });
+  const dotPos = useRef({ x: 0, y: 0 });
+
+  const [showReveal, setShowReveal] = useState(true);
+  const [showRevealIn, setShowRevealIn] = useState(false);
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const animateCursor = () => {
+      cursorPos.current.x += (targetPos.current.x - cursorPos.current.x) * 0.12;
+      cursorPos.current.y += (targetPos.current.y - cursorPos.current.y) * 0.12;
+
+      dotPos.current.x += (targetPos.current.x - dotPos.current.x) * 0.3;
+      dotPos.current.y += (targetPos.current.y - dotPos.current.y) * 0.3;
+
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate(${cursorPos.current.x - 24}px, ${cursorPos.current.y - 24}px)`;
+      }
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate(${dotPos.current.x - 4}px, ${dotPos.current.y - 4}px)`;
+      }
+
+      animationFrameId = requestAnimationFrame(animateCursor);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      targetPos.current = { x: e.clientX, y: e.clientY };
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    animateCursor();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  useGSAP(() => {
+    // Hero Text Parallax Fade Out as you scroll
+    gsap.to(heroContentRef.current, {
+      y: -100,
+      opacity: 0,
+      scale: 0.9,
+      scrollTrigger: {
+        trigger: mainRef.current,
+        start: "top top",
+        end: "300px top", // Fades out completely after 300px of fast scrolling
+        scrub: 0.5, // Faster, tighter scrub
+      },
+    });
+
+    // Gallery Slide Up Fade In
+    gsap.fromTo(
+      gallerySectionRef.current,
+      { opacity: 0, y: 150 },
+      {
+        opacity: 1,
+        y: 0,
+        scrollTrigger: {
+          trigger: gallerySectionRef.current,
+          start: "top bottom",
+          end: "top center",
+          scrub: 0.5, // Crisp, quick lock-in
+        },
+      }
+    );
+
+    // Marquee loop
+    if (marqueeRef.current) {
+      gsap.to(marqueeRef.current, {
+        xPercent: -50,
+        repeat: -1,
+        duration: 25,
+        ease: "linear",
+      });
+    }
+
+    // Wrapped 3D Cylinder Scroll Effect
+    const curvedSections = gsap.utils.toArray('.curved-section') as HTMLElement[];
+    curvedSections.forEach((section: HTMLElement) => {
+      // Perspective needs to be set on parent or element for 3D transforms
+      gsap.set(section, { transformPerspective: 1200, transformOrigin: 'center center' });
+
+      // As section leaves towards top: Handle the curve-away
+      gsap.to(section, {
+        rotateX: -15,
+        z: -100,
+        opacity: 0,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top-=10%', // Start fading when top edge is 10% past top
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+
+      // As section enters from bottom: Only handle curve-in (No opacity fade in)
+      gsap.from(section, {
+        rotateX: 15,
+        z: -100,
+        opacity: 1, // Keep visible
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top bottom',
+          end: 'top center',
+          scrub: true,
+        }
+      });
+    });
+
+    // ── NAVIGATION SMART REVEAL & LOGO SWALLOWING ──
+    const smartNavTl = gsap.timeline({ paused: true });
+
+    // Left items move right into logo
+    smartNavTl.to(".nav-left-items", {
+      x: 60,
+      opacity: 0,
+      scale: 0.8,
+      filter: "blur(10px)",
+      duration: 0.5,
+      ease: "power3.inOut"
+    }, 0);
+
+    // Right items move left into logo
+    smartNavTl.to(".nav-right-items", {
+      x: -60,
+      opacity: 0,
+      scale: 0.8,
+      filter: "blur(10px)",
+      duration: 0.5,
+      ease: "power3.inOut"
+    }, 0);
+
+    // Global ScrollTrigger for Directional Reveal
+    ScrollTrigger.create({
+      start: "top top",
+      end: "max",
+      onUpdate: (self) => {
+        // ALWAYS show links when at the very top (first 100px)
+        if (self.scroll() < 100) {
+          smartNavTl.reverse();
+          gsap.to("nav", {
+            backgroundColor: "transparent",
+            backdropFilter: "blur(0px)",
+            borderBottom: "1px solid rgba(255,255,255,0)",
+            duration: 0.4
+          });
+          return;
+        }
+
+        // SCROLL DOWN: Swallow links
+        if (self.direction === 1) {
+          smartNavTl.play();
+          gsap.to("nav", {
+            backgroundColor: "transparent",
+            backdropFilter: "blur(15px)",
+            borderBottom: "1px solid rgba(255,255,255,0.05)",
+            duration: 0.4
+          });
+        }
+        // SCROLL UP: Reveal links
+        else {
+          smartNavTl.reverse();
+          gsap.to("nav", {
+            backgroundColor: "transparent",
+            backdropFilter: "blur(15px)",
+            borderBottom: "1px solid rgba(255,255,255,0.05)",
+            duration: 0.4
+          });
+        }
+      }
+    });
+  }, { scope: mainRef });
+
+  // Removed hero hover handlers as cursor is now global
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <ReactLenis root>
+      <main ref={mainRef} className="min-h-screen relative overflow-clip bg-transparent cursor-none">
+        {showReveal && (
+          <SvgSteppedReveal
+            variant="uncover"
+            direction="right"
+            onComplete={() => setShowReveal(false)}
+          />
+        )}
+        {showRevealIn && (
+          <SvgSteppedReveal
+            variant="cover"
+            direction="left"
+          />
+        )}
+
+        {/* Background with wrapper */}
+        <LiquidBackground>
+          {/* Custom Cursor — desktop only */}
+          <div
+            ref={cursorRef}
+            className="hidden md:block fixed top-0 left-0 w-12 h-12 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
+            style={{ willChange: "transform" }}
+          />
+          <div
+            ref={dotRef}
+            className="hidden md:block fixed top-0 left-0 w-2 h-2 bg-[#ff3b30] rounded-full pointer-events-none z-[10000]"
+            style={{ willChange: "transform" }}
+          />
+
+          {/* Navigation */}
+          <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-6 bg-transparent pointer-events-auto">
+            {/* Left: Logo on Mobile / Spacer on Desktop */}
+            <div className="w-1/2 md:w-1/4 flex justify-start md:block">
+              <Link href="/" className="md:hidden relative h-7 flex items-center opacity-100 drop-shadow-md cursor-pointer">
+                <img
+                  src="/logo.png"
+                  alt="TP Logo"
+                  className="h-full w-auto object-contain opacity-100 brightness-100 drop-shadow-lg"
+                />
+              </Link>
+            </div>
+
+            {/* Center: Links & Logo (Desktop) */}
+            <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-white pointer-events-auto w-2/4">
+              <div className="flex-1 flex justify-end items-center nav-left-items">
+                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Work</button>
+                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</button>
+                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">Services</button>
+              </div>
+
+              {/* Logo */}
+              <Link href="/" className="nav-logo relative h-8 mx-4 lg:mx-8 flex items-center opacity-100 cursor-pointer z-10">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="TP Logo"
+                  className="h-full w-auto object-contain opacity-100 brightness-100"
+                />
+              </Link>
+
+              <div className="flex-1 flex justify-start items-center nav-right-items">
+                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</button>
+                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Stack</button>
+                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Contact</button>
+              </div>
+            </div>
+
+            {/* Right: Menu Icon for Mobile */}
+            <div className="w-1/2 md:w-1/4 flex justify-end">
+              <button className="md:hidden text-white drop-shadow-md">
+                <Icon icon="solar:hamburger-menu-linear" className="text-2xl" />
+              </button>
+            </div>
+          </nav>
+
+          {/* ── HERO SECTION ── */}
+          <section
+            id="hero-section"
+            className="sticky top-0 h-screen min-h-[45rem] flex flex-col items-center justify-center overflow-hidden bg-transparent cursor-none z-0"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <div ref={heroContentRef} className="relative z-10 w-full h-full pointer-events-none">
+
+              {/* ── SUBTITLE (top center on mobile / top-right on desktop) ── */}
+              {/* Edit: top-[30%] = mobile vertical position | md:top-40 = desktop position (+8% down) */}
+              <div className="absolute top-[30%] md:top-40 lg:top-48 left-0 right-0 flex justify-center md:justify-end px-6 md:px-12 z-20 pointer-events-auto scale-[1.10] origin-top md:origin-top-right">
+                <div className="text-center md:text-right lg:pr-10">
+                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide">Designer. Vibe Coder.</p>
+                  <p className="text-base md:text-2xl text-white/80 italic font-serif mt-1">Creative Thinker</p>
+                </div>
+              </div>
+
+              {/* ── MARQUEE NAME (centered, full width) ── */}
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] overflow-hidden z-10 cursor-pointer pointer-events-auto"
+              >
+                <div ref={marqueeRef} className="flex whitespace-nowrap w-fit" style={{ willChange: "transform" }}>
+                  <div className="flex shrink-0 items-center">
+                    <h1 className="text-[22vw] md:text-[17vw] font-black tracking-tighter text-white leading-none pr-[10vw] md:pr-[14vw]">
+                      Prathamesh Tipnis
+                    </h1>
+                  </div>
+                  <div className="flex shrink-0 items-center">
+                    <h1 className="text-[22vw] md:text-[17vw] font-black tracking-tighter text-white leading-none pr-[10vw] md:pr-[14vw]">
+                      Prathamesh Tipnis
+                    </h1>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── DESCRIPTION TEXT ── */}
+              {/* Edit: top-[62%] = mobile position | md:bottom-[calc(10rem+0vh)] = desktop position */}
+              <div className="absolute top-[62%] md:top-auto md:bottom-[calc(10rem+0vh)] lg:bottom-[calc(11rem+0vh)] left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 w-full max-w-[90%] md:max-w-md lg:max-w-xl text-center md:text-left z-20 pointer-events-auto px-6 md:px-0">
+                <h2 className="text-sm md:text-xl lg:text-3xl font-medium text-white tracking-tight leading-snug scale-[1.13] md:origin-left origin-center w-full">
+                  cookin&apos; up fresh interactions while still on the hunt for that creative spark.
+                </h2>
+              </div>
+
+              {/* ── CTA BUTTONS ── */}
+              {/* Edit: top-[77%] = mobile position | md:bottom-[calc(3rem+2vh)] = desktop position */}
+              <div className="absolute top-[77%] md:top-auto md:bottom-[calc(3rem+2vh)] left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 flex items-center gap-3 z-20 pointer-events-auto scale-[1.08] md:origin-left origin-center">
+                <button className="px-5 py-3 md:px-8 md:py-4 rounded-full border border-white/60 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300 cursor-pointer whitespace-nowrap">
+                  Let&apos;s Work Together
+                </button>
+                <button className="w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-full border border-white/60 text-white hover:bg-white hover:text-black transition-all duration-300 cursor-pointer">
+                  <Icon icon="solar:arrow-right-up-linear" className="text-xl" />
+                </button>
+              </div>
+
+              {/* ── SOCIAL ICONS — MOBILE ONLY (hidden on desktop) ── */}
+              {/* Edit: bottom-[calc(1.5rem+10vh)] = distance from bottom | gap-10 = spacing between icons */}
+              <div className="md:hidden absolute bottom-[calc(1.5rem+10vh)] left-0 right-0 flex justify-center items-center gap-10 z-20 pointer-events-auto scale-[1.08] origin-center">
+                <a href="#" title="LinkedIn" className="text-white/80 hover:text-white transition-colors">
+                  <Icon icon="line-md:linkedin" className="text-2xl" />
+                </a>
+                <a href="#" title="Instagram" className="text-white/80 hover:text-white transition-colors">
+                  <Icon icon="line-md:instagram" className="text-2xl" />
+                </a>
+                <a href="#" title="Behance" className="text-white/80 hover:text-white transition-colors">
+                  <Icon icon="fa6-brands:behance" className="text-2xl" />
+                </a>
+                <a href="mailto:tprathamesh8@gmail.com" title="Email" className="text-white/80 hover:text-white transition-colors">
+                  <Icon icon="line-md:email-opened" className="text-2xl" />
+                </a>
+              </div>
+
+              {/* ── SOCIAL TEXT LINKS — DESKTOP ONLY (hidden on mobile) ── */}
+              {/* Edit: md:bottom-[calc(3rem+2vh)] = desktop position */}
+              <div className="hidden md:flex absolute md:bottom-[calc(3rem+2vh)] right-12 items-center gap-8 z-20 pointer-events-auto scale-[1.08] origin-right">
+                <a href="#" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">LinkedIn ↗</a>
+                <a href="#" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">Instagram ↗</a>
+                <a href="#" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">Behance ↗</a>
+                <a href="mailto:tprathamesh8@gmail.com" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">tprathamesh8@gmail.com ↗</a>
+              </div>
+
+            </div>
+          </section>
+
+          {/* Circular Gallery Section */}
+          <section ref={gallerySectionRef} className="relative py-20 bg-transparent overflow-hidden z-20 pointer-events-auto flex flex-col items-center">
+            <div className="max-w-[85rem] mx-auto px-6 mb-4 flex flex-col items-center justify-center text-center drop-shadow-lg">
+              <h2 className="text-[30px] font-semibold tracking-tight text-white">Recent Works</h2>
+            </div>
+
+            <div className="w-full relative px-6 md:px-0 flex justify-center">
+              <div className="relative h-[600px] w-full max-w-[100vw] rounded-lg">
+                <CircularGallery
+                  items={GALLERY_ITEMS}
+                  onItemClick={() => {
+                    setShowRevealIn(true);
+                    setTimeout(() => {
+                      window.location.href = "/project-page";
+                    }, 1000);
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Bottom Button */}
+            <div className="mt-6 flex justify-center items-center">
+              <button
+                onClick={() => {
+                  setShowRevealIn(true);
+                  setTimeout(() => {
+                    window.location.href = "/projects";
+                  }, 1000);
+                }}
+                className="px-10 py-4 rounded-full border border-white/60 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm cursor-pointer"
+              >
+                View All Projects
+              </button>
+            </div>
+          </section>
+
+          {/* Text Reveal About Section */}
+          <TextRevealSection />
+
+          {/* Services Section */}
+          <ServicesSection />
+
+          {/* Case Studies Section */}
+          <CaseStudiesSection />
+
+          {/* Stack Section */}
+          <StackSection />
+
+          {/* Footer */}
+          <DynamicFooter />
+
+        </LiquidBackground>
       </main>
-    </div>
+    </ReactLenis >
   );
 }

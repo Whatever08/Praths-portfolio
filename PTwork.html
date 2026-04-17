@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Work — Jonas Reymondin</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,700;0,900;1,300;1,900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+
+<!-- GSAP CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+/* ═══════════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080807;
+  --fg:#e9e5db;
+  --fg-dim:rgba(233,229,219,.45);
+  --fg-mid:rgba(233,229,219,.7);
+  --accent:#c8b472;
+  --accent2:#5a7d6e;
+  --surface:rgba(233,229,219,.04);
+  --border:rgba(233,229,219,.07);
+  --font-head:'DM Serif Display',serif;
+  --font-body:'Archivo',sans-serif;
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-in:cubic-bezier(.64,0,.78,0);
+}
+
+html{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+body{overflow-x:hidden}
+
+/* ═══════════════════════════════════════════════
+   SMOOTH SCROLL WRAPPER
+═══════════════════════════════════════════════ */
+#smooth-wrapper{overflow:hidden;position:fixed;inset:0;width:100%}
+#smooth-content{will-change:transform}
+
+/* ═══════════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════════ */
+#cur{
+  position:fixed;z-index:9999;
+  width:10px;height:10px;
+  border-radius:50%;
+  background:var(--accent);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:width .3s var(--ease-out),height .3s var(--ease-out),background .3s,opacity .3s;
+  mix-blend-mode:difference;
+  will-change:transform;
+}
+#cur-ring{
+  position:fixed;z-index:9998;
+  width:44px;height:44px;
+  border-radius:50%;
+  border:1px solid rgba(233,229,219,.25);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  will-change:transform;
+  transition:width .4s var(--ease-out),height .4s var(--ease-out),border-color .4s;
+}
+#cur-label{
+  position:fixed;z-index:9999;
+  font-size:9px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--bg);
+  opacity:0;pointer-events:none;
+  transform:translate(-50%,-50%);
+  white-space:nowrap;
+  font-family:var(--font-body);
+  font-weight:700;
+  transition:opacity .3s;
+}
+
+/* ═══════════════════════════════════════════════
+   PROGRESS TICKER
+═══════════════════════════════════════════════ */
+#ticker{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:1px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent));
+  transform-origin:left center;
+  transform:scaleX(0);
+  will-change:transform;
+}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;
+  mix-blend-mode:difference;
+}
+.nav-logo{
+  font-family:var(--font-body);
+  font-weight:900;font-size:12px;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--fg);
+}
+.nav-info{
+  display:flex;gap:36px;align-items:center;
+}
+.nav-tag{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--fg-dim);
+}
+#nav-idx{
+  font-size:10px;letter-spacing:.1em;
+  color:var(--accent);
+  font-weight:700;
+  min-width:40px;text-align:right;
+}
+
+/* ═══════════════════════════════════════════════
+   NOISE GRAIN
+═══════════════════════════════════════════════ */
+.noise{
+  position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+.hero{
+  position:relative;
+  height:100vh;min-height:700px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 40px 64px;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(200,180,114,.06),transparent),
+    radial-gradient(ellipse 50% 60% at 15% 85%, rgba(90,125,110,.04),transparent);
+}
+.hero-grid-lines{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+.hero-eyebrow{
+  position:relative;z-index:2;
+  font-size:10px;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--fg-dim);margin-bottom:18px;
+  display:flex;align-items:center;gap:14px;
+}
+.hero-eyebrow::before{
+  content:'';display:block;width:30px;height:1px;
+  background:var(--accent);
+}
+.hero-title{
+  position:relative;z-index:2;
+  font-family:var(--font-head);
+  font-size:clamp(80px,11vw,180px);
+  line-height:.88;
+  letter-spacing:-.02em;
+  margin-bottom:52px;
+  overflow:hidden;
+}
+.hero-title em{font-style:italic;color:var(--accent)}
+
+/* char split lines */
+.line-wrap{overflow:hidden;display:block}
+.line-inner{display:block;transform:translateY(110%);will-change:transform}
+
+.hero-foot{
+  position:relative;z-index:2;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.hero-count{
+  font-size:11px;letter-spacing:.12em;color:var(--fg-dim);
+}
+.hero-count b{color:var(--fg);font-weight:400}
+.hero-scroll{
+  writing-mode:vertical-rl;
+  font-size:9px;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--fg-dim);
+  display:flex;align-items:center;gap:12px;
+}
+.hero-scroll::before{
+  content:'';width:1px;height:50px;
+  background:linear-gradient(to bottom,transparent,var(--accent));
+  display:block;
+  animation:scrollpulse 2.2s ease-in-out infinite;
+}
+@keyframes scrollpulse{
+  0%,100%{transform:scaleY(0);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+}
+
+/* ═══════════════════════════════════════════════
+   INDEX STRIP (horizontal scroll)
+═══════════════════════════════════════════════ */
+.index-strip{
+  position:relative;
+  height:80px;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+  display:flex;align-items:center;
+}
+.index-track{
+  display:flex;align-items:center;gap:0;
+  white-space:nowrap;
+  will-change:transform;
+}
+.index-item{
+  display:inline-flex;align-items:center;gap:18px;
+  padding:0 40px;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--fg-dim);
+  border-right:1px solid var(--border);
+  height:80px;
+  cursor:pointer;
+  transition:color .3s,background .3s;
+}
+.index-item:hover,.index-item.active{color:var(--fg);background:var(--surface)}
+.index-item .i-num{font-size:9px;color:var(--accent);font-weight:700}
+
+/* ═══════════════════════════════════════════════
+   PROJECTS
+═══════════════════════════════════════════════ */
+.projects{position:relative}
+
+.project{
+  position:relative;
+  height:100vh;min-height:700px;
+  display:flex;align-items:center;
+  overflow:hidden;
+}
+
+/* Parallax image — taller than viewport so it can travel */
+.proj-img-shell{
+  position:absolute;inset:-18% 0;
+  z-index:0;overflow:hidden;
+}
+.proj-img-shell img{
+  width:100%;height:100%;object-fit:cover;
+  will-change:transform;
+  display:block;
+}
+
+/* Gradient veil */
+.proj-veil{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(
+    110deg,
+    rgba(8,8,7,.96) 0%,
+    rgba(8,8,7,.65) 52%,
+    rgba(8,8,7,.15) 100%
+  );
+}
+/* Subtle right edge fade for depth */
+.proj-veil::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,8,7,.7) 0%,transparent 40%);
+}
+
+/* Content */
+.proj-body{
+  position:relative;z-index:2;
+  padding:0 80px;
+  max-width:700px;
+  width:100%;
+}
+
+/* Clip-path reveal container */
+.proj-index-label{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:16px;
+  clip-path:inset(0 100% 0 0);
+  will-change:clip-path;
+}
+
+.proj-rule{
+  width:0;height:1px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  margin-bottom:24px;
+  will-change:width;
+}
+
+.proj-title{
+  font-family:var(--font-head);
+  font-size:clamp(48px,6.5vw,100px);
+  line-height:.92;
+  margin-bottom:30px;
+  overflow:hidden;
+}
+
+/* italic accent on alternate projects */
+.project:nth-child(even) .proj-title{font-style:italic}
+
+.proj-meta-row{
+  display:flex;gap:40px;flex-wrap:wrap;
+  margin-bottom:22px;
+  opacity:0;transform:translateY(16px);
+  will-change:opacity,transform;
+}
+.proj-meta-col{display:flex;flex-direction:column;gap:5px}
+.proj-meta-label{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--fg-dim)}
+.proj-meta-val{font-size:11px;color:var(--accent2);letter-spacing:.08em}
+
+.proj-desc{
+  font-size:13px;font-weight:300;line-height:1.85;
+  color:var(--fg-mid);max-width:430px;
+  opacity:0;transform:translateY(14px);
+  will-change:opacity,transform;
+}
+
+/* Right side: large index number */
+.proj-big-num{
+  position:absolute;right:60px;bottom:60px;z-index:2;
+  font-family:var(--font-head);font-style:italic;
+  font-size:clamp(100px,14vw,220px);
+  line-height:1;
+  color:rgba(233,229,219,.04);
+  user-select:none;pointer-events:none;
+  letter-spacing:-.04em;
+  will-change:transform;
+}
+
+/* Bottom border separator */
+.project + .project{border-top:1px solid var(--border)}
+
+/* ═══════════════════════════════════════════════
+   TRANSITION CURTAIN (Async-style crossfade layer)
+═══════════════════════════════════════════════ */
+#curtain{
+  position:fixed;inset:0;z-index:500;
+  pointer-events:none;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+}
+.curtain-strip{
+  background:var(--bg);
+  transform:scaleY(0);
+  transform-origin:top;
+  will-change:transform;
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{
+  border-top:1px solid var(--border);
+  padding:60px 80px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--fg-dim);
+}
+footer a{color:var(--accent);text-decoration:none;cursor:none}
+
+/* ═══════════════════════════════════════════════
+   SECTION REVEAL LINES (decorative)
+═══════════════════════════════════════════════ */
+.section-tag{
+  position:absolute;right:80px;top:50%;z-index:2;
+  transform:translateY(-50%) rotate(90deg);
+  transform-origin:center;
+  font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--fg-dim);
+  white-space:nowrap;
+}
+
+/* ═══════════════════════════════════════════════
+   MEDIA QUERIES
+═══════════════════════════════════════════════ */
+@media(max-width:768px){
+  .hero-title{font-size:clamp(52px,14vw,90px)}
+  .proj-body{padding:0 32px}
+  .proj-big-num{display:none}
+  .section-tag{display:none}
+  footer{flex-direction:column;gap:16px;padding:40px 32px}
+  nav{padding:0 24px}
+  .hero{padding:0 24px 48px}
+  .index-item{padding:0 24px}
+}
+
+/* prefers-reduced-motion */
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- Noise grain -->
+<div class="noise" aria-hidden="true"></div>
+
+<!-- Cursor -->
+<div id="cur" aria-hidden="true"></div>
+<div id="cur-ring" aria-hidden="true"></div>
+<div id="cur-label" aria-hidden="true">View</div>
+
+<!-- Progress -->
+<div id="ticker" aria-hidden="true"></div>
+
+<!-- Async crossfade curtain strips -->
+<div id="curtain" aria-hidden="true">
+  <div class="curtain-strip"></div>
+  <div class="curtain-strip"></div>
+  <div class="curtain-strip"></div>
+  <div class="curtain-strip"></div>
+  <div class="curtain-strip"></div>
+</div>
+
+<!-- ── NAV ── -->
+<nav aria-label="Primary navigation">
+  <span class="nav-logo">Jonas Reymondin</span>
+  <div class="nav-info">
+    <span class="nav-tag">Selected Work</span>
+    <span id="nav-idx">01 / 13</span>
+  </div>
+</nav>
+
+<!-- ── SMOOTH WRAPPER ── -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid-lines" aria-hidden="true"></div>
+
+  <div>
+    <p class="hero-eyebrow">Folio Iteration — 2025</p>
+    <h1 class="hero-title" aria-label="Selected Work">
+      <span class="line-wrap"><span class="line-inner">Selected</span></span>
+      <span class="line-wrap"><span class="line-inner"><em>Work</em></span></span>
+    </h1>
+  </div>
+
+  <div class="hero-foot">
+    <p class="hero-count">
+      <b>13</b> projects &nbsp;·&nbsp; Frontend Dev &nbsp;·&nbsp; Design &nbsp;·&nbsp; Creative
+    </p>
+    <span class="hero-scroll" aria-label="Scroll down">Scroll</span>
+  </div>
+</section>
+
+<!-- ═══ INDEX STRIP ═══ -->
+<div class="index-strip" role="navigation" aria-label="Project index">
+  <div class="index-track" id="indexTrack"></div>
+</div>
+
+<!-- ═══ PROJECTS ═══ -->
+<div class="projects" id="projectsWrap"></div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <span>© 2025 Jonas Reymondin</span>
+  <a href="https://jonasreymondin.com" aria-label="Visit portfolio">jonasreymondin.com ↗</a>
+</footer>
+
+</div><!-- /smooth-content -->
+</div><!-- /smooth-wrapper -->
+
+<script>
+/* ══════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════ */
+const PROJECTS = [
+  {t:"Acomet",y:"2025",r:"Frontend Dev",d:"A Swiss manufacturer of high-quality windows, bay windows, facades, metal structures and industrial modules.",img:"https://cdn.sanity.io/images/07u1z138/production/82a52fabdeedf6dc51db012941a13b5dfdc9077d-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"Cavasino",y:"2025",r:"Frontend Dev · CMS",d:"A Haute Horlogerie brand bringing together the masters of Swiss watchmaking to create an exceptional timepiece.",img:"https://cdn.sanity.io/images/07u1z138/production/effc25ce0877d295bb6a56e948a30458b0a28e59-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"Folio:05",y:"2025",r:"Design · Front-End",d:"Fifth iteration of my portfolio — focused on clarity, interaction and solid front-end craft.",img:"https://cdn.sanity.io/images/07u1z138/production/9aafd6078a70f2f7c42ab749c48c1bd1e90a092c-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"Factry",y:"2024",r:"Frontend Dev",d:"A school of creative sciences, offering training courses designed by experts for professionals in all fields.",img:"https://cdn.sanity.io/images/07u1z138/production/6115b63eaa532529c3a827c025eed6f5b6a2798c-1500x1125.jpg?w=1600&fm=webp&q=80"},
+  {t:"CINEMANIA",y:"2023",r:"Frontend Dev",d:"The most important film festival dedicated to Francophone cinema in North America, based in Montréal.",img:"https://cdn.sanity.io/images/07u1z138/production/5fc58f6e6bce217e94b25aa085ebbea0f5c951ac-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"OSM",y:"2024",r:"Frontend Dev",d:"One of the most prestigious orchestras in North America — the Orchestre symphonique de Montréal.",img:"https://cdn.sanity.io/images/07u1z138/production/c78f31f2197ad3a4e8d05d21329dcd78128ddd64-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"Ras l'bock",y:"2022",r:"Frontend Dev",d:"A microbrewery in Québec, created by three friends attached to their community who wanted to have fun.",img:"https://cdn.sanity.io/images/07u1z138/production/098d31a2f32f3a01725e7c19865fc5aeab4f8b5e-1920x1440.png?w=1600&fm=webp&q=80"},
+  {t:"COLLAB",y:"2021",r:"Design · Frontend",d:"A coworking space in Vevey, Switzerland — the ideal place to create, innovate and develop your projects.",img:"https://cdn.sanity.io/images/07u1z138/production/068ade2ec1594bd204b4059afb8a461dc8e76834-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"FAE",y:"2022",r:"Frontend Dev",d:"A Québec trade union representing nearly 60,000 teachers, taking action in the interests of educators.",img:"https://cdn.sanity.io/images/07u1z138/production/58423c30b3b2872905af8355d93ab2434ffffc70-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"Waterloo EDC",y:"2023",r:"Frontend Dev",d:"Free concierge services for businesses looking to locate, relocate or expand to Waterloo, Canada.",img:"https://cdn.sanity.io/images/07u1z138/production/33d53c255fc4cf2fab9390d1a1601072e4bd8aed-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"Barbancourt",y:"2022",r:"Frontend Dev",d:"For more than 160 years, the house of Barbancourt has been producing rums that reflect the image of Haiti.",img:"https://cdn.sanity.io/images/07u1z138/production/7f6b988c85499241f9e5cfd1ae6f3766730867f1-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"Diapason",y:"2024",r:"Frontend Dev",d:"A bibliographic tool for students, designed to facilitate the search of information and citation of sources.",img:"https://cdn.sanity.io/images/07u1z138/production/3e704dbc604fcff2bee7180cfa3da07aec491d72-1920x1440.jpg?w=1600&fm=webp&q=80"},
+  {t:"Folio:04",y:"2021",r:"Design · Frontend",d:"Fourth iteration of my portfolio highlighting my strengths and showcasing my earlier work.",img:"https://cdn.sanity.io/images/07u1z138/production/08d2bc6bb571830b8b050de1aa8c5c65cabbc0e8-1920x1440.jpg?w=1600&fm=webp&q=80"},
+];
+
+/* ══════════════════════════════════════════════
+   BUILD DOM
+══════════════════════════════════════════════ */
+const track = document.getElementById('indexTrack');
+const wrap  = document.getElementById('projectsWrap');
+
+PROJECTS.forEach((p, i) => {
+  /* Index strip item */
+  const li = document.createElement('div');
+  li.className = 'index-item' + (i===0?' active':'');
+  li.dataset.i = i;
+  li.setAttribute('role','button');
+  li.setAttribute('tabindex','0');
+  li.setAttribute('aria-label',`Scroll to project: ${p.t}`);
+  li.innerHTML = `<span class="i-num">${String(i+1).padStart(2,'0')}</span>${p.t}`;
+  track.appendChild(li);
+
+  /* Project section */
+  const sec = document.createElement('section');
+  sec.className = 'project';
+  sec.dataset.i = i;
+  sec.setAttribute('aria-label', p.t);
+  sec.innerHTML = `
+    <div class="proj-img-shell">
+      <img src="${p.img}" alt="${p.t}" loading="${i<2?'eager':'lazy'}" draggable="false"/>
+    </div>
+    <div class="proj-veil" aria-hidden="true"></div>
+    <span class="section-tag" aria-hidden="true">JR / ${String(i+1).padStart(2,'0')}</span>
+
+    <div class="proj-body">
+      <div class="proj-index-label">${String(i+1).padStart(2,'0')} &mdash; ${PROJECTS.length}</div>
+      <div class="proj-rule"></div>
+      <h2 class="proj-title">
+        <span class="line-wrap"><span class="line-inner">${p.t}</span></span>
+      </h2>
+      <div class="proj-meta-row">
+        <div class="proj-meta-col">
+          <span class="proj-meta-label">Year</span>
+          <span class="proj-meta-val">${p.y}</span>
+        </div>
+        <div class="proj-meta-col">
+          <span class="proj-meta-label">Role</span>
+          <span class="proj-meta-val">${p.r}</span>
+        </div>
+      </div>
+      <p class="proj-desc">${p.d}</p>
+    </div>
+    <div class="proj-big-num" aria-hidden="true">${String(i+1).padStart(2,'0')}</div>
+  `;
+  wrap.appendChild(sec);
+});
+
+/* ══════════════════════════════════════════════
+   SMOOTH SCROLL (lightweight native)
+══════════════════════════════════════════════ */
+let scrollY = 0;
+let currentY = 0;
+let raf;
+const smoothWrap = document.getElementById('smooth-wrapper');
+const smoothContent = document.getElementById('smooth-content');
+
+function initSmoothScroll(){
+  // Set body height to content height
+  function resize(){
+    document.body.style.height = smoothContent.getBoundingClientRect().height + 'px';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, {passive:true});
+
+  function lerp(a,b,n){ return a + (b-a)*n; }
+
+  function tick(){
+    currentY = lerp(currentY, scrollY, 0.085);
+    currentY = Math.round(currentY * 100) / 100;
+    smoothContent.style.transform = `translateY(${-currentY}px)`;
+
+    // progress bar
+    const h = document.body.scrollHeight - window.innerHeight;
+    document.getElementById('ticker').style.transform = `scaleX(${scrollY/h})`;
+
+    ScrollTrigger.update();
+    raf = requestAnimationFrame(tick);
+  }
+  raf = requestAnimationFrame(tick);
+}
+
+/* ══════════════════════════════════════════════
+   GSAP CONFIG
+══════════════════════════════════════════════ */
+gsap.registerPlugin(ScrollTrigger);
+
+ScrollTrigger.config({ ignoreMobileResize:true });
+ScrollTrigger.defaults({ scroller: smoothContent });
+
+// Tell ScrollTrigger to use our smooth scroll position
+ScrollTrigger.scrollerProxy(smoothContent, {
+  scrollTop(val){
+    if(arguments.length){ currentY = val; scrollY = val; }
+    return currentY;
+  },
+  getBoundingClientRect(){
+    return {top:0, left:0, width:window.innerWidth, height:window.innerHeight};
+  },
+  pinType: smoothContent.style.transform ? 'transform' : 'fixed'
+});
+
+/* ══════════════════════════════════════════════
+   CURSOR — MAGNETIC
+══════════════════════════════════════════════ */
+const cur     = document.getElementById('cur');
+const curRing = document.getElementById('cur-ring');
+const curLbl  = document.getElementById('cur-label');
+let mx=0, my=0, rx=0, ry=0;
+
+window.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+
+gsap.ticker.add(() => {
+  cur.style.left = mx+'px';
+  cur.style.top  = my+'px';
+  curLbl.style.left = mx+'px';
+  curLbl.style.top  = my+'px';
+  rx += (mx-rx)*.1;
+  ry += (my-ry)*.1;
+  curRing.style.left = rx+'px';
+  curRing.style.top  = ry+'px';
+});
+
+function setCursorBig(label=''){
+  gsap.to(cur, {width:56,height:56,duration:.4,ease:'power3.out'});
+  gsap.to(curRing, {width:80,height:80,borderColor:'rgba(200,180,114,.5)',duration:.4,ease:'power3.out'});
+  if(label){ curLbl.textContent=label; gsap.to(curLbl,{opacity:1,duration:.2}); }
+}
+function setCursorSmall(){
+  gsap.to(cur, {width:10,height:10,duration:.3,ease:'power3.out'});
+  gsap.to(curRing, {width:44,height:44,borderColor:'rgba(233,229,219,.25)',duration:.3,ease:'power3.out'});
+  gsap.to(curLbl,{opacity:0,duration:.15});
+}
+
+document.querySelectorAll('.project,.index-item,a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>setCursorBig('View'));
+  el.addEventListener('mouseleave',setCursorSmall);
+});
+
+/* ══════════════════════════════════════════════
+   HERO ENTRANCE — line reveals
+══════════════════════════════════════════════ */
+const heroLines = document.querySelectorAll('.hero .line-inner');
+const heroEye   = document.querySelector('.hero-eyebrow');
+const heroCnt   = document.querySelector('.hero-count');
+const heroScr   = document.querySelector('.hero-scroll');
+
+gsap.timeline()
+  .to(heroLines, {
+    y:'0%', duration:1.3, stagger:.14,
+    ease:'power4.out', delay:.2
+  })
+  .from(heroEye, {y:20, opacity:0, duration:.9, ease:'power3.out'}, .1)
+  .from(heroCnt, {y:16, opacity:0, duration:.9, ease:'power3.out'}, .6)
+  .from(heroScr, {opacity:0, duration:.7, ease:'power2.out'}, .9);
+
+/* ══════════════════════════════════════════════
+   HERO BG PARALLAX
+══════════════════════════════════════════════ */
+gsap.to('.hero-grid-lines', {
+  yPercent: 30,
+  ease:'none',
+  scrollTrigger:{
+    trigger:'.hero',
+    start:'top top',
+    end:'bottom top',
+    scrub:true
+  }
+});
+
+/* ══════════════════════════════════════════════
+   INDEX STRIP — auto-scroll marquee during hero
+══════════════════════════════════════════════ */
+gsap.to('#indexTrack', {
+  xPercent: -25,
+  ease:'none',
+  scrollTrigger:{
+    trigger:'.hero',
+    start:'top top',
+    end:'bottom top',
+    scrub:1.5
+  }
+});
+
+/* ══════════════════════════════════════════════
+   PROJECT SECTIONS
+══════════════════════════════════════════════ */
+const sections    = document.querySelectorAll('.project');
+const indexItems  = document.querySelectorAll('.index-item');
+const navIdx      = document.getElementById('nav-idx');
+
+sections.forEach((sec, i) => {
+  const img      = sec.querySelector('img');
+  const indexLbl = sec.querySelector('.proj-index-label');
+  const rule     = sec.querySelector('.proj-rule');
+  const lineIn   = sec.querySelector('.line-inner');
+  const meta     = sec.querySelector('.proj-meta-row');
+  const desc     = sec.querySelector('.proj-desc');
+  const bigNum   = sec.querySelector('.proj-big-num');
+
+  /* ── PARALLAX IMAGE (scrub) ── */
+  gsap.fromTo(img,
+    {yPercent:-12},
+    {
+      yPercent:12,
+      ease:'none',
+      scrollTrigger:{
+        trigger:sec,
+        start:'top bottom',
+        end:'bottom top',
+        scrub:true
+      }
+    }
+  );
+
+  /* ── BIG NUMBER parallax (opposite direction) ── */
+  if(bigNum){
+    gsap.fromTo(bigNum,
+      {y: -40},
+      {
+        y:60,
+        ease:'none',
+        scrollTrigger:{
+          trigger:sec,
+          start:'top bottom',
+          end:'bottom top',
+          scrub:1.5
+        }
+      }
+    );
+  }
+
+  /* ── CONTENT REVEAL (clip-path + line) ── */
+  const revealTL = gsap.timeline({
+    scrollTrigger:{
+      trigger:sec,
+      start:'top 68%',
+      end:'top 30%',
+      toggleActions:'play none none reverse'
+    }
+  });
+
+  revealTL
+    .to(indexLbl, {
+      clipPath:'inset(0 0% 0 0)',
+      duration:.7, ease:'power3.out'
+    })
+    .to(rule, {
+      width:52,
+      duration:.6, ease:'power3.out'
+    }, '-=.4')
+    .to(lineIn, {
+      y:'0%',
+      duration:1.0, ease:'power4.out'
+    }, '-=.45')
+    .to(meta, {
+      y:0, opacity:1,
+      duration:.7, ease:'power3.out'
+    }, '-=.6')
+    .to(desc, {
+      y:0, opacity:1,
+      duration:.7, ease:'power3.out'
+    }, '-=.5');
+
+  /* ── ACTIVE STATE ── */
+  ScrollTrigger.create({
+    trigger:sec,
+    start:'top center',
+    end:'bottom center',
+    onEnter:()=>setActive(i),
+    onEnterBack:()=>setActive(i)
+  });
+});
+
+function setActive(i){
+  indexItems.forEach((el,j) => el.classList.toggle('active', j===i));
+  navIdx.textContent = String(i+1).padStart(2,'0') + ' / ' + PROJECTS.length;
+  // Scroll index item into view
+  const item = indexItems[i];
+  if(item){
+    const track = document.getElementById('indexTrack');
+    const itemLeft = item.offsetLeft;
+    gsap.to(track, {
+      x: -itemLeft + window.innerWidth/2 - item.offsetWidth/2,
+      duration:.5, ease:'power3.out',
+      overwrite:true
+    });
+  }
+}
+
+/* ══════════════════════════════════════════════
+   INDEX STRIP — click to scroll (Codrops style async transition)
+   We clone the visible area, animate OUT old, IN new
+══════════════════════════════════════════════ */
+const strips = document.querySelectorAll('.curtain-strip');
+
+function curtainIn(cb){
+  gsap.timeline({onComplete:cb})
+    .to(strips,{
+      scaleY:1,
+      duration:.55,
+      stagger:{amount:.18, from:'start'},
+      ease:'power4.inOut',
+      transformOrigin:'top center'
+    });
+}
+function curtainOut(){
+  gsap.to(strips,{
+    scaleY:0,
+    duration:.55,
+    stagger:{amount:.18, from:'end'},
+    ease:'power4.inOut',
+    transformOrigin:'bottom center',
+    delay:.1
+  });
+}
+
+indexItems.forEach((item,i) => {
+  function activate(){
+    curtainIn(()=>{
+      sections[i].scrollIntoView({behavior:'instant'});
+      window.scrollTo(0, sections[i].offsetTop - 60);
+      curtainOut();
+    });
+  }
+  item.addEventListener('click', activate);
+  item.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') activate(); });
+});
+
+/* ══════════════════════════════════════════════
+   INIT SMOOTH SCROLL (after GSAP setup)
+══════════════════════════════════════════════ */
+initSmoothScroll();
+
+/* ══════════════════════════════════════════════
+   RESIZE
+══════════════════════════════════════════════ */
+window.addEventListener('resize', ()=>{
+  ScrollTrigger.refresh();
+});
+
+</script>
+</body>
+</html>
