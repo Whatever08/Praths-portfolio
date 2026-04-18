@@ -70,6 +70,7 @@ export const DesignProcessReworked = ({
       const panel = panels[i] as HTMLElement;
       if (panel) {
         panel.onclick = () => {
+          window.dispatchEvent(new CustomEvent("nav-jump"));
           gsap.to(window, {
             scrollTo: st.start + (i / items.length) * (st.end - st.start) + 10,
             duration: 1.2,

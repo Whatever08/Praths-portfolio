@@ -33,7 +33,7 @@ const PROJECTS: Project[] = [
     role: "Brand Identity · Web Design",
     desc: "A next-generation SaaS platform identity built around exploration and depth. Dark-mode-first design language with a cosmic motion system.",
     img: "/Nebula.png",
-    link: "/project-page",
+    link: "/projects/nebula",
   },
   {
     title: "Xtep",
@@ -41,7 +41,7 @@ const PROJECTS: Project[] = [
     role: "E-commerce · Web Design",
     desc: "A premium digital retail experience for a global sportswear brand. Performance-first UX with bold visual storytelling and seamless checkout.",
     img: "/Xtep.png",
-    link: "/project-page",
+    link: "/projects/xtep",
     isLight: true,
   },
   {
@@ -50,7 +50,7 @@ const PROJECTS: Project[] = [
     role: "Product Design",
     desc: "A brief description of this new project will go here. Coming soon.",
     img: "/Exsavvy.png",
-    link: "/project-page",
+    link: "/projects/exsavvy",
   },
   {
     title: "McLaren Racing",
@@ -58,7 +58,7 @@ const PROJECTS: Project[] = [
     role: "UI Design · Interaction Design",
     desc: "Crafting high-performance fan-facing digital experiences that mirror the precision and speed of the McLaren brand on and off the track.",
     img: "/MCl.png",
-    link: "/project-page",
+    link: "/projects/mclaren-racing",
   },
   {
     title: "Flytbase",
@@ -66,7 +66,7 @@ const PROJECTS: Project[] = [
     role: "Product Design · UX Research",
     desc: "Designing the command and control interface for autonomous drone fleets. A mission-critical platform demanding precision, clarity and real-time situational awareness.",
     img: "/flytbase.png",
-    link: "/project-page",
+    link: "/projects/flytbase",
   },
   {
     title: "Envision VFX",
@@ -74,7 +74,7 @@ const PROJECTS: Project[] = [
     role: "Brand Identity · Motion · Web",
     desc: "Identity and portfolio site for a boutique VFX studio. Cinematic dark aesthetic with real-time WebGL transitions that mirror the studio's visual output.",
     img: "/VFX.png",
-    link: "/project-page",
+    link: "/projects/envision-vfx",
     liveLink: "https://envisionvfx.in",
   },
   {
@@ -83,7 +83,7 @@ const PROJECTS: Project[] = [
     role: "Branding · Print · Web",
     desc: "Premium event management brand for high-end weddings and corporate gatherings. Elegant typographic identity with a bespoke booking and showcase website.",
     img: "/Aksharaevents.png",
-    link: "/project-page",
+    link: "/projects/akshara-events",
     liveLink: "https://aaksharaevents.com",
   },
 ];

@@ -20,13 +20,13 @@ import { useState } from "react";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const GALLERY_ITEMS = [
-  { image: "/Nebula2.png", text: "Nebula", link: "/projects" },
-  { image: "/Xtep2.png", text: "Xtep", link: "/projects" },
-  { image: "/Exsavvy2.png", text: "Exsavvy", link: "/projects" },
-  { image: "/MCL2.png", text: "McLaren Racing", link: "/projects" },
-  { image: "/flytbase2.png", text: "Flytbase", link: "/projects" },
-  { image: "/VFX2.png", text: "Envision VFX", link: "/projects" },
-  { image: "/Aksharaevents2.png", text: "Akshara Events", link: "/projects" }
+  { image: "/Nebula2.png", text: "Nebula", link: "/projects/nebula" },
+  { image: "/Xtep2.png", text: "Xtep", link: "/projects/xtep" },
+  { image: "/Exsavvy2.png", text: "Exsavvy", link: "/projects/exsavvy" },
+  { image: "/MCL2.png", text: "McLaren Racing", link: "/projects/mclaren-racing" },
+  { image: "/flytbase2.png", text: "Flytbase", link: "/projects/flytbase" },
+  { image: "/VFX2.png", text: "Envision VFX", link: "/projects/envision-vfx" },
+  { image: "/Aksharaevents2.png", text: "Akshara Events", link: "/projects/akshara-events" }
 ];
 
 export default function Home() {
@@ -408,10 +408,10 @@ export default function Home() {
               <div className="relative h-[600px] w-full max-w-[100vw] rounded-lg">
                 <CircularGallery
                   items={GALLERY_ITEMS}
-                  onItemClick={() => {
+                  onItemClick={(item) => {
                     setShowRevealIn(true);
                     setTimeout(() => {
-                      window.location.href = "/project-page";
+                      window.location.href = item.link || "/projects";
                     }, 1000);
                   }}
                 />

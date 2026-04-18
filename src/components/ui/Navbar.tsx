@@ -27,6 +27,7 @@ export const Navbar = ({
   const rightItemsRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLAnchorElement>(null);
   const smartNavTl = useRef<gsap.core.Timeline | null>(null);
+  const isScrollingViaClick = useRef(false);
 
   useGSAP(() => {
     // 1. DIRECTIONAL REVEAL & LOGO SWALLOWING Timeline
@@ -57,6 +58,9 @@ export const Navbar = ({
       start: "top top",
       end: "max",
       onUpdate: (self) => {
+        // BYPASS if we are jumping via a click
+        if (isScrollingViaClick.current) return;
+
         // ALWAYS show links when at the very top (first 100px)
         if (self.scroll() < 100) {
           smartNavTl.current?.reverse();
@@ -91,6 +95,19 @@ export const Navbar = ({
         }
       }
     });
+
+    // Handle 'nav-jump' events from other components (like DesignProcess)
+    const handleNavJump = () => {
+      isScrollingViaClick.current = true;
+      smartNavTl.current?.reverse(); // Ensure links are visible during jump
+      
+      // Reset flag after jump duration (usually 1.2s + buffer)
+      setTimeout(() => {
+        isScrollingViaClick.current = false;
+      }, 1500);
+    };
+
+    window.addEventListener("nav-jump", handleNavJump);
 
     // 2. THEME-SENSING INVERSION — robust elementFromPoint approach
     let lastTheme = "dark";
@@ -145,6 +162,7 @@ export const Navbar = ({
     sampleTheme();
 
     return () => {
+      window.removeEventListener("nav-jump", handleNavJump);
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, { scope: navRef });
