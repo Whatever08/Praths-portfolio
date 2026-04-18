@@ -13,6 +13,7 @@ import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
 import { useState } from "react";
+import Link from "next/link";
 
 
 gsap.registerPlugin(ScrollTrigger);
