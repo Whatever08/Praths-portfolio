@@ -127,6 +127,7 @@ export const HorizontalScrollGallery: React.FC<HorizontalScrollGalleryProps> = (
                             )}
                         </div>
                     ))}
+                    </div>
                 </div>
             </div>
 
