@@ -13,6 +13,8 @@ type GalleryItem = {
     type: "image" | "video";
     src: string;
     alt?: string;
+    title?: string;
+    description?: string;
 };
 
 export type HorizontalScrollGalleryProps = {
@@ -83,12 +85,13 @@ export const HorizontalScrollGallery: React.FC<HorizontalScrollGalleryProps> = (
 
             {/* Horizontal Scroll Area */}
             <div ref={containerRef} className="h-screen flex items-center bg-white">
-                <div ref={wrapperRef} className="flex gap-8 px-8 md:px-[10vw] flex-nowrap h-[60vh] md:h-[75vh]">
+                <div ref={wrapperRef} className="flex gap-8 px-8 md:px-[10vw] flex-nowrap items-center min-h-[60vh]">
                     {items.map((item, index) => (
                         <div
                             key={index}
-                            className="relative h-full aspect-[4/3] flex-shrink-0 rounded-3xl overflow-hidden bg-black/5 border border-black/10"
+                            className="group flex flex-col gap-5 flex-shrink-0 w-[85vw] md:w-[45vw] lg:w-[35vw]"
                         >
+                            <div className="relative w-full aspect-[4/3] rounded-[2rem] overflow-hidden bg-black/5 border border-black/10">
                             {item.type === "image" ? (
                                 <img
                                     src={item.src}
@@ -104,6 +107,21 @@ export const HorizontalScrollGallery: React.FC<HorizontalScrollGalleryProps> = (
                                     playsInline
                                     className="w-full h-full object-cover"
                                 />
+                            )}
+                            </div>
+                            {(item.title || item.description) && (
+                                <div className="flex flex-col gap-1.5 px-2">
+                                    {item.title && (
+                                        <h4 className="text-xl md:text-2xl font-bold tracking-tight text-black">
+                                            {item.title}
+                                        </h4>
+                                    )}
+                                    {item.description && (
+                                        <p className="text-sm md:text-base text-black/60 font-medium leading-relaxed">
+                                            {item.description}
+                                        </p>
+                                    )}
+                                </div>
                             )}
                         </div>
                     ))}

@@ -254,11 +254,11 @@ export default function ProjectPage() {
                                                 heading={<>A structured approach<br />to exceptional craft.</>}
                                                 description="Each phase of this project was built on research, iteration, and collaboration — from the first sketch to the final pixel-perfect implementation."
                                                 items={[
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1200', alt: 'Design Process 1' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1200', alt: 'Design Process 2' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200', alt: 'Design Process 3' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1581291518633-83b4eef1d2fd?q=80&w=1200', alt: 'Design Process 4' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1200', alt: 'Design Process 5' },
+                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1200', alt: 'Design Process 1', title: 'Discovery & Research', description: 'Deep dive into user needs, competitive landscape, and business goals to establish a solid foundation.' },
+                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1200', alt: 'Design Process 2', title: 'Information Architecture', description: 'Structuring content and flows that feel intuitive and natural to the end user.' },
+                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200', alt: 'Design Process 3', title: 'Visual Design System', description: 'Building a cohesive design language with reusable components, typography scales, and color systems.' },
+                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1581291518633-83b4eef1d2fd?q=80&w=1200', alt: 'Design Process 4', title: 'Prototyping & Testing', description: 'Rapid iteration with high-fidelity prototypes validated through real user feedback.' },
+                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1200', alt: 'Design Process 5', title: 'Development & Handoff', description: 'Seamless collaboration with engineering teams to bring the finalized designs into production.' },
                                                 ]}
                                             />
                                         </div>
