@@ -318,16 +318,18 @@ export default function ProjectPage() {
                                                     </div>
 
                                                     {/* Top-aligned Text Overlay */}
-                                                    <div className="absolute top-16 left-8 md:top-24 md:left-16 z-10 text-white max-w-2xl px-4 md:px-0">
-                                                        <div className="text-[11px] md:text-sm uppercase tracking-[0.25em] font-medium text-white/70 mb-3">
-                                                            {item.caption}
+                                                    <div className="absolute top-16 md:top-24 left-0 w-full z-10 flex flex-col items-center text-center px-6 md:px-12 text-white">
+                                                        <div className="max-w-4xl">
+                                                            <div className="text-[11px] md:text-sm uppercase tracking-[0.25em] font-medium text-white/70 mb-3">
+                                                                {item.caption}
+                                                            </div>
+                                                            <div className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
+                                                                {item.label}
+                                                            </div>
+                                                            <p className="text-sm md:text-lg text-white/80 leading-relaxed font-medium">
+                                                                {item.body}
+                                                            </p>
                                                         </div>
-                                                        <div className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
-                                                            {item.label}
-                                                        </div>
-                                                        <p className="text-sm md:text-lg text-white/80 leading-relaxed font-medium">
-                                                            {item.body}
-                                                        </p>
                                                     </div>
                                                 </div>
                                             ))}
