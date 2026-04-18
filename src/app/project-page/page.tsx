@@ -335,49 +335,25 @@ export default function ProjectPage() {
                                             ))}
                                         </div>
 
-                                        {/* More Projects Section */}
-                                        <div data-theme="light" className="bg-white">
-                                            <section className="max-w-[1200px] mx-auto px-6 md:px-12 py-24 bg-white">
-                                                <h3 className="text-3xl md:text-[44px] font-bold tracking-tight mb-16 text-center text-black">
-                                                    More Projects
-                                                </h3>
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mb-20">
-                                                    <a href="#" className="group block w-full relative">
-                                                        <div className="w-full flex flex-col">
-                                                            <div className="aspect-[4/3] w-full overflow-hidden rounded-[2rem] bg-[#C1C9BB] border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-6">
-                                                                <img
-                                                                    src="/kresse_wesling_placeholder_v2_1772645962257.png"
-                                                                    alt="Essentia Project"
-                                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                                                                />
-                                                            </div>
-                                                            <div className="flex justify-between items-start px-2">
-                                                                <div>
-                                                                    <h4 className="text-xl font-bold mb-1 text-black">Essentia</h4>
-                                                                    <p className="text-sm text-black/60 font-medium">Ecommerce Site</p>
-                                                                </div>
-                                                                <span className="text-sm font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform text-black">
-                                                                    <Icon icon="lucide:arrow-up-right" className="w-4 h-4" /> View Project
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
+                                        {/* Next/Previous Projects Section */}
+                                        <div data-theme="light" className="w-full bg-white border-t border-black/10 flex flex-col sm:flex-row">
+                                            {/* Previous Project */}
+                                            <Link href="/project-page" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 border-b sm:border-b-0 sm:border-r border-black/10 flex flex-col items-start justify-center group hover:bg-black/5 transition-colors duration-500">
+                                                <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest mb-4 md:mb-6">Previous Project</span>
+                                                <div className="flex items-center gap-4 md:gap-6">
+                                                    <span className="text-2xl md:text-4xl lg:text-5xl text-black/40 group-hover:text-black group-hover:-translate-x-4 transition-all duration-500">&larr;</span>
+                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:-translate-x-2 transition-all duration-500 leading-none pb-1">Nebula</h3>
+                                                </div>
+                                            </Link>
 
-                                                    <div className="w-full h-full aspect-[4/3] md:aspect-auto rounded-[2rem] border border-black/10 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col items-center justify-center text-center p-8 md:p-12 mb-6 md:mb-14">
-                                                        <div className="w-14 h-14 bg-neutral-100 rounded-2xl flex items-center justify-center mb-6 border border-neutral-300/50 shadow-sm">
-                                                            <Icon icon="heroicons:users" className="text-2xl text-black/80" />
-                                                        </div>
-                                                        <p className="text-lg md:text-xl text-black/80 font-medium leading-relaxed max-w-[280px]">
-                                                            Got a cool idea? <span className="font-bold text-black">This spot is waiting for your success story.</span>
-                                                        </p>
-                                                    </div>
+                                            {/* Next Project */}
+                                            <Link href="/project-page" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 flex flex-col items-end justify-center group hover:bg-black/5 transition-colors duration-500">
+                                                <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest mb-4 md:mb-6">Next Project</span>
+                                                <div className="flex items-center gap-4 md:gap-6">
+                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:translate-x-2 transition-all duration-500 leading-none pb-1">Xtep</h3>
+                                                    <span className="text-2xl md:text-4xl lg:text-5xl text-black/40 group-hover:text-black group-hover:translate-x-4 transition-all duration-500">&rarr;</span>
                                                 </div>
-                                                <div className="w-full flex justify-center pb-12">
-                                                    <a href="/projects" className="text-sm md:text-base font-semibold flex items-center gap-2 hover:opacity-70 transition-opacity text-black">
-                                                        View all my projects <Icon icon="lucide:arrow-up-right" className="w-4 h-4" />
-                                                    </a>
-                                                </div>
-                                            </section>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
