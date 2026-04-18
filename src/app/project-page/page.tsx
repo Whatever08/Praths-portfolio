@@ -270,27 +270,32 @@ export default function ProjectPage() {
                                                 {
                                                     src: "https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=1600",
                                                     label: "Art Direction",
-                                                    caption: "01 / Visual Language"
+                                                    caption: "01 / Visual Language",
+                                                    body: "Establishing a strong visual foundation that resonates with the core brand identity. We focused on creating a design language that feels both modern and timeless, ensuring consistency across all touchpoints while maintaining a unique edge."
                                                 },
                                                 {
                                                     src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1600",
                                                     label: "Brand Identity",
-                                                    caption: "02 / Identity System"
+                                                    caption: "02 / Identity System",
+                                                    body: "Developing a comprehensive identity system that scales effortlessly. This involved refining the logo, selecting a robust typography stack, and defining a color palette that conveys trust and innovation perfectly tailored to the target audience."
                                                 },
                                                 {
                                                     src: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1600",
                                                     label: "UI Design",
-                                                    caption: "03 / Interface Design"
+                                                    caption: "03 / Interface Design",
+                                                    body: "Translating the visual language into a clean, intuitive user interface. Every component was crafted with accessibility and usability in mind, resulting in an interface that is not only beautiful but also highly functional for everyday users."
                                                 },
                                                 {
                                                     src: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1600",
                                                     label: "Motion & Interaction",
-                                                    caption: "04 / Micro-Interactions"
+                                                    caption: "04 / Micro-Interactions",
+                                                    body: "Bringing the interface to life with subtle motion and micro-interactions. These moments of delight guide the user's focus, provide clear feedback, and elevate the overall user experience from ordinary to truly exceptional."
                                                 },
                                                 {
                                                     src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1600",
                                                     label: "Final Delivery",
-                                                    caption: "05 / Production"
+                                                    caption: "05 / Production",
+                                                    body: "Ensuring a seamless transition from design to development. We provided comprehensive documentation, a fully componentized design system, and continued support during implementation to guarantee pixel-perfect execution."
                                                 },
                                             ].map((item, i) => (
                                                 <div
@@ -308,23 +313,21 @@ export default function ProjectPage() {
                                                             alt={item.label}
                                                             className="w-full h-full object-cover"
                                                         />
-                                                        {/* Subtle dark gradient for text legibility */}
-                                                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
+                                                        {/* Subtle dark gradient for text legibility (faded more at the top now) */}
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/60" />
                                                     </div>
 
-                                                    {/* Caption overlay */}
-                                                    <div className="absolute bottom-10 left-10 z-10 text-white">
-                                                        <div className="text-[11px] uppercase tracking-[0.25em] font-medium text-white/60 mb-2">
+                                                    {/* Top-aligned Text Overlay */}
+                                                    <div className="absolute top-16 left-8 md:top-24 md:left-16 z-10 text-white max-w-2xl px-4 md:px-0">
+                                                        <div className="text-[11px] md:text-sm uppercase tracking-[0.25em] font-medium text-white/70 mb-3">
                                                             {item.caption}
                                                         </div>
-                                                        <div className="text-2xl md:text-3xl font-bold tracking-tight">
+                                                        <div className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
                                                             {item.label}
                                                         </div>
-                                                    </div>
-
-                                                    {/* Index Number */}
-                                                    <div className="absolute bottom-10 right-10 z-10 text-white/20 text-[120px] font-black leading-none select-none">
-                                                        {String(i + 1).padStart(2, "0")}
+                                                        <p className="text-sm md:text-lg text-white/80 leading-relaxed font-medium">
+                                                            {item.body}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             ))}
