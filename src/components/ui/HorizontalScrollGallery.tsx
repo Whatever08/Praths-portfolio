@@ -44,8 +44,19 @@ export const HorizontalScrollGallery: React.FC<HorizontalScrollGalleryProps> = (
         if (!rootRef.current || !containerRef.current || !wrapperRef.current) return;
 
         const pinWrap = wrapperRef.current;
-        const pinWrapWidth = pinWrap.scrollWidth;
-        const horizontalScrollLength = pinWrapWidth - window.innerWidth;
+        
+        // Calculate the translation required to put the last card directly in the center of the viewport
+        const cards = Array.from(pinWrap.children) as HTMLElement[];
+        let horizontalScrollLength = 0;
+
+        if (cards.length > 0) {
+            const lastCard = cards[cards.length - 1];
+            // Distance from left edge of pinWrap to the center of the last card
+            const lastCardCenterOffset = lastCard.offsetLeft + (lastCard.offsetWidth / 2);
+            // Translate amount to align that center to the middle of the screen
+            horizontalScrollLength = lastCardCenterOffset - (window.innerWidth / 2);
+            if (horizontalScrollLength < 0) horizontalScrollLength = 0;
+        }
 
         // Ensure we only pin and scroll if the content is wider than the screen
         if (horizontalScrollLength > 0) {
@@ -87,7 +98,7 @@ export const HorizontalScrollGallery: React.FC<HorizontalScrollGalleryProps> = (
                 )}
 
                 <div className="w-full">
-                    <div ref={wrapperRef} className="flex gap-8 px-8 md:px-[10vw] flex-nowrap items-center">
+                    <div ref={wrapperRef} className="relative flex gap-8 px-8 md:px-[10vw] flex-nowrap items-center">
                     {items.map((item, index) => (
                         <div
                             key={index}
