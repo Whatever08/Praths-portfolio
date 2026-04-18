@@ -251,7 +251,7 @@ export default function ProjectPage() {
                                         {/* Carousel Slider — HorizontalScrollGallery */}
                                         <div data-theme="light" className="w-full bg-white">
                                             <HorizontalScrollGallery
-                                                heading={<>A structured approach<br />to exceptional craft.</>}
+                                                heading={<>A structured approach to exceptional craft.</>}
                                                 description="Each phase of this project was built on research, iteration, and collaboration — from the first sketch to the final pixel-perfect implementation."
                                                 items={[
                                                     { type: 'image', src: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1200', alt: 'Design Process 1', title: 'Discovery & Research', description: 'Deep dive into user needs, competitive landscape, and business goals to establish a solid foundation.' },

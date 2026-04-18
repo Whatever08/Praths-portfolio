@@ -3,6 +3,9 @@
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const row1 = ["HTML", "CSS", "Java", "GSAP", "Framer Motion"];
 const row2 = ["Figma", "Photoshop", "Illustrator", "Rive", "Spline"];
@@ -12,30 +15,46 @@ export default function StackSection() {
     const sectionRef = useRef<HTMLElement>(null);
 
     useGSAP(() => {
-        // Register ScrollTrigger inside useGSAP if not already registered on window
-        gsap.registerPlugin(require("gsap/ScrollTrigger").ScrollTrigger);
-        
         const marquees = gsap.utils.toArray(".stack-marquee-inner") as HTMLElement[];
 
         marquees.forEach((marquee, i) => {
             const direction = i % 2 === 0 ? -1 : 1;
-            const setWidth = 100 / 8; // 12.5% because we duplicate 8 times
+            const duplicationCount = 8;
+            const setWidth = 100 / duplicationCount;
 
-            // Initialize right-moving rows off-screen slightly to avoid blank gaps
-            if (direction === 1) {
-                gsap.set(marquee, { xPercent: -setWidth * 2 });
+            // Calculate duration
+            const baseDuration = (20 + (i * 4)) * 0.5;
+
+            const tl = gsap.timeline({ repeat: -1 });
+
+            if (direction === -1) {
+                // Moving Left
+                tl.fromTo(marquee,
+                    { xPercent: 0 },
+                    {
+                        xPercent: -setWidth,
+                        duration: baseDuration,
+                        ease: "none",
+                    }
+                );
+            } else {
+                // Moving Right
+                tl.fromTo(marquee,
+                    { xPercent: -setWidth * 2 },
+                    {
+                        xPercent: -setWidth,
+                        duration: baseDuration,
+                        ease: "none",
+                    }
+                );
             }
 
-            // Scrub distance based on scroll
-            gsap.to(marquee, {
-                xPercent: direction === -1 ? -setWidth * 2 : 0, 
-                ease: "none",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1, // Smooth dragging linked to scroll
-                }
+            // Hover: Slow down
+            marquee.addEventListener('mouseenter', () => {
+                gsap.to(tl, { timeScale: 0.7, duration: 0.4 });
+            });
+            marquee.addEventListener('mouseleave', () => {
+                gsap.to(tl, { timeScale: 1, duration: 0.4 });
             });
         });
     }, { scope: sectionRef });

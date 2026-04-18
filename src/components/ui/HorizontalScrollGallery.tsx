@@ -44,7 +44,7 @@ export const HorizontalScrollGallery: React.FC<HorizontalScrollGalleryProps> = (
         if (!rootRef.current || !containerRef.current || !wrapperRef.current) return;
 
         const pinWrap = wrapperRef.current;
-        const pinWrapWidth = pinWrap.offsetWidth;
+        const pinWrapWidth = pinWrap.scrollWidth;
         const horizontalScrollLength = pinWrapWidth - window.innerWidth;
 
         // Ensure we only pin and scroll if the content is wider than the screen
@@ -72,14 +72,14 @@ export const HorizontalScrollGallery: React.FC<HorizontalScrollGalleryProps> = (
                 
                 {/* Header Area */}
                 {(heading || description) && (
-                    <div className="max-w-[800px] w-full mx-auto px-6 md:px-12 mb-10 md:mb-16 text-center text-black shrink-0">
+                    <div className="w-full px-6 md:px-12 mb-10 md:mb-16 text-center text-black shrink-0">
                         {heading && (
-                            <h3 className="text-2xl md:text-[32px] font-bold tracking-tight mb-4 text-black leading-tight">
+                            <h3 className="w-full text-2xl md:text-[32px] font-bold tracking-tight mb-4 text-black leading-tight">
                                 {heading}
                             </h3>
                         )}
                         {description && (
-                            <p className="text-black/60 font-medium leading-[1.6] max-w-2xl mx-auto">
+                            <p className="w-full text-black/60 font-medium leading-[1.6]">
                                 {description}
                             </p>
                         )}
