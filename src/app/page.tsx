@@ -378,7 +378,7 @@ export default function Home() {
           </section>
 
           {/* Circular Gallery Section */}
-          <section id="recent-works" ref={gallerySectionRef} className="relative py-20 bg-transparent overflow-hidden z-20 pointer-events-auto flex flex-col items-center">
+          <section id="recent-works" ref={gallerySectionRef} className="relative min-h-screen py-24 bg-transparent overflow-hidden z-20 pointer-events-auto flex flex-col items-center justify-center">
             <div className="max-w-[85rem] mx-auto px-6 mb-4 flex flex-col items-center justify-center text-center drop-shadow-lg">
               <h2 className="text-[30px] font-semibold tracking-tight text-white">Recent Works</h2>
             </div>
