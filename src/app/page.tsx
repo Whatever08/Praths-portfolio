@@ -40,9 +40,18 @@ export default function Home() {
   const targetPos = useRef({ x: 0, y: 0 });
   const cursorPos = useRef({ x: 0, y: 0 });
   const dotPos = useRef({ x: 0, y: 0 });
+  const isNavigating = useRef(false); // Track if user is scrolling via header click
 
   const [showReveal, setShowReveal] = useState(true);
   const [showRevealIn, setShowRevealIn] = useState(false);
+
+  // Helper trigger to suppress GSAP scroll swallow during programmatic scroll
+  const handleNavClick = () => {
+    isNavigating.current = true;
+    setTimeout(() => {
+      isNavigating.current = false;
+    }, 1200); // Resume scroll detection after 1.2s smooth scroll completes
+  };
 
   useEffect(() => {
     let animationFrameId: number;
@@ -192,6 +201,18 @@ export default function Home() {
           return;
         }
 
+        // Suppress scrolling animation if user clicked an anchor link
+        if (isNavigating.current) {
+          smartNavTl.reverse();
+          gsap.to("nav", {
+            backgroundColor: "transparent",
+            backdropFilter: "blur(15px)",
+            borderBottom: "1px solid rgba(255,255,255,0.05)",
+            duration: 0.4
+          });
+          return;
+        }
+
         // SCROLL DOWN: Swallow links
         if (self.direction === 1) {
           smartNavTl.play();
@@ -265,9 +286,9 @@ export default function Home() {
             {/* Center: Links & Logo (Desktop) */}
             <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-white pointer-events-auto w-2/4">
               <div className="flex-1 flex justify-end items-center nav-left-items">
-                <a href="#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
-                <a href="#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
-                <a href="#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">Services</a>
+                <a onClick={handleNavClick} href="#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
+                <a onClick={handleNavClick} href="#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
+                <a onClick={handleNavClick} href="#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">Services</a>
               </div>
 
               {/* Logo */}
@@ -281,9 +302,9 @@ export default function Home() {
               </Link>
 
               <div className="flex-1 flex justify-start items-center nav-right-items">
-                <a href="#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
-                <a href="#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
-                <a href="#playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</a>
+                <a onClick={handleNavClick} href="#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
+                <a onClick={handleNavClick} href="#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
+                <a onClick={handleNavClick} href="#playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</a>
               </div>
             </div>
 
