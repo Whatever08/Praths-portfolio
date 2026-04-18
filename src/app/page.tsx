@@ -265,9 +265,9 @@ export default function Home() {
             {/* Center: Links & Logo (Desktop) */}
             <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-white pointer-events-auto w-2/4">
               <div className="flex-1 flex justify-end items-center nav-left-items">
-                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Work</button>
-                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</button>
-                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">Services</button>
+                <a href="#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
+                <a href="#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
+                <a href="#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">Services</a>
               </div>
 
               {/* Logo */}
@@ -281,9 +281,9 @@ export default function Home() {
               </Link>
 
               <div className="flex-1 flex justify-start items-center nav-right-items">
-                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</button>
-                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Stack</button>
-                <button className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Contact</button>
+                <a href="#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
+                <a href="#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
+                <a href="#playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</a>
               </div>
             </div>
 
@@ -378,7 +378,7 @@ export default function Home() {
           </section>
 
           {/* Circular Gallery Section */}
-          <section ref={gallerySectionRef} className="relative py-20 bg-transparent overflow-hidden z-20 pointer-events-auto flex flex-col items-center">
+          <section id="recent-works" ref={gallerySectionRef} className="relative py-20 bg-transparent overflow-hidden z-20 pointer-events-auto flex flex-col items-center">
             <div className="max-w-[85rem] mx-auto px-6 mb-4 flex flex-col items-center justify-center text-center drop-shadow-lg">
               <h2 className="text-[30px] font-semibold tracking-tight text-white">Recent Works</h2>
             </div>
@@ -414,19 +414,19 @@ export default function Home() {
           </section>
 
           {/* Text Reveal About Section */}
-          <TextRevealSection />
+          <div id="about"><TextRevealSection /></div>
 
           {/* Services Section */}
-          <ServicesSection />
+          <div id="services"><ServicesSection /></div>
 
           {/* Case Studies Section */}
-          <CaseStudiesSection />
+          <div id="case-studies"><CaseStudiesSection /></div>
 
-          {/* Stack Section */}
-          <StackSection />
+          {/* Playground / Stack Section */}
+          <div id="playground"><StackSection /></div>
 
-          {/* Footer */}
-          <DynamicFooter />
+          {/* Contact / Footer Section */}
+          <div id="contact"><DynamicFooter /></div>
 
         </LiquidBackground>
       </main>
