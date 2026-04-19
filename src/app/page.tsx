@@ -304,9 +304,9 @@ export default function Home() {
               <div className="flex-1 flex justify-start items-center nav-right-items">
                 <a onClick={handleNavClick} href="#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
                 <a onClick={handleNavClick} href="#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
-                <a onClick={handleNavClick} href="#playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</a>
+                  <Link href="/playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</Link>
+                </div>
               </div>
-            </div>
 
             {/* Right: Menu Icon for Mobile */}
             <div className="w-1/2 md:w-1/4 flex justify-end">
