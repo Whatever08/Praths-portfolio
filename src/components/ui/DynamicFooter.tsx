@@ -65,17 +65,17 @@ export const DynamicFooter = () => {
 
                 {/* Mid-Footer spacer removed for credits relocation */}
 
-                {/* Bottom Bar — Credits Moved Here */}
-                <div className="mt-32 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-white/20 text-[9px] md:text-[10px] font-sans font-medium">
-                    <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-center md:text-left">
-                        <p>© 2024 Prathamesh Tipnis. All rights reserved.</p>
-                        <span className="hidden md:inline text-white/5">|</span>
-                        <div className="flex flex-wrap justify-center items-center gap-3 tracking-[0.15em] uppercase">
-                            <p>Forged in <span className="text-white/40">Antigravity</span></p>
-                            <span className="text-white/10">•</span>
-                            <p>Crafted by Prathamesh Tipnis <span className="text-[#ff3b30] animate-pulse">♡</span></p>
-                            <span className="text-white/10">•</span>
-                            <p>Powered by <span className="text-white/40">Vercel</span></p>
+                {/* Bottom Bar — Enhanced Readability & Bold Text */}
+                <div className="mt-32 pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 text-white/50 text-[13px] md:text-[15px] font-sans font-bold">
+                    <div className="flex flex-col md:flex-row items-center gap-3 md:gap-8 text-center md:text-left">
+                        <p className="opacity-80">© 2024 Prathamesh Tipnis. All rights reserved.</p>
+                        <span className="hidden md:inline text-white/10">|</span>
+                        <div className="flex flex-wrap justify-center items-center gap-4 tracking-[0.1em] uppercase">
+                            <p>Forged in <span className="text-white">Antigravity</span></p>
+                            <span className="text-white/20">•</span>
+                            <p>Crafted by Prathamesh Tipnis <span className="inline-block scale-110">❤️</span></p>
+                            <span className="text-white/20">•</span>
+                            <p>Powered by <span className="text-white">Vercel</span></p>
                         </div>
                     </div>
                     
