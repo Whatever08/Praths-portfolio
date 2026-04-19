@@ -63,26 +63,30 @@ export const DynamicFooter = () => {
                     </a>
                 </div>
 
-                {/* Single Line Centered Credit - Text Only */}
-                <div className="mb-24 flex flex-col md:flex-row items-center justify-center gap-4 text-white text-[11px] md:text-[13px] font-bold tracking-[0.2em] uppercase select-none">
-                    <p>Forged in <span className="text-white">Antigravity</span></p>
-                    <span className="hidden md:inline text-white/20">•</span>
-                    <p>Crafted by Prathamesh Tipnis <span className="text-[#ff3b30] animate-pulse">♡</span></p>
-                    <span className="hidden md:inline text-white/20">•</span>
-                    <p>Powered by <span className="text-white">Vercel</span></p>
-                </div>
+                {/* Mid-Footer spacer removed for credits relocation */}
 
-                {/* Bottom Bar */}
-                <div className="mt-32 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-white/20 text-[10px] font-sans font-medium">
-                    <p>© 2024 Prathamesh Tipnis. All rights reserved.</p>
-                    <div className="flex gap-8">
+                {/* Bottom Bar — Credits Moved Here */}
+                <div className="mt-32 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-white/20 text-[9px] md:text-[10px] font-sans font-medium">
+                    <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-center md:text-left">
+                        <p>© 2024 Prathamesh Tipnis. All rights reserved.</p>
+                        <span className="hidden md:inline text-white/5">|</span>
+                        <div className="flex flex-wrap justify-center items-center gap-3 tracking-[0.15em] uppercase">
+                            <p>Forged in <span className="text-white/40">Antigravity</span></p>
+                            <span className="text-white/10">•</span>
+                            <p>Crafted by Prathamesh Tipnis <span className="text-[#ff3b30] animate-pulse">♡</span></p>
+                            <span className="text-white/10">•</span>
+                            <p>Powered by <span className="text-white/40">Vercel</span></p>
+                        </div>
+                    </div>
+                    
+                    <div className="flex gap-8 items-center">
                         <button className="hover:text-white/50 transition-colors">Privacy</button>
                         <button className="hover:text-white/50 transition-colors">Terms</button>
                         <button
                             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                            className="text-white flex items-center gap-2 hover:opacity-70 transition-opacity cursor-pointer"
+                            className="text-white flex items-center gap-2 hover:opacity-70 transition-opacity cursor-pointer group"
                         >
-                            Back to top <Icon icon="solar:alt-arrow-up-linear" className="text-xs" />
+                            Back to top <Icon icon="solar:alt-arrow-up-linear" className="text-xs group-hover:-translate-y-1 transition-transform" />
                         </button>
                     </div>
                 </div>
