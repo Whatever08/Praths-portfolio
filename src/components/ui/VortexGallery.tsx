@@ -99,6 +99,7 @@ const centerFragmentShader = `
 varying vec2 vUv;
 uniform sampler2D uAtlas;
 uniform vec4 uTextureCoords;
+uniform float uZoom;
 
 void main() {
     float xStart = uTextureCoords.x;
@@ -106,9 +107,11 @@ void main() {
     float yStart = uTextureCoords.z;
     float yEnd = uTextureCoords.w;
     
+    vec2 zoomedUv = clamp((vUv - 0.5) / uZoom + 0.5, 0.0, 1.0);
+    
     vec2 atlasUV = vec2(
-        mix(xStart, xEnd, vUv.x),
-        mix(yStart, yEnd, vUv.y)
+        mix(xStart, xEnd, zoomedUv.x),
+        mix(yStart, yEnd, zoomedUv.y)
     );
     
     vec4 color = texture2D(uAtlas, atlasUV);
@@ -159,7 +162,8 @@ export const VortexGallery: React.FC = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     const clock = new THREE.Clock();
-    const mouse = new THREE.Vector2();
+    const mouse = new THREE.Vector2(-9999, -9999);
+    const raycaster = new THREE.Raycaster();
     const scrollY = {
       speedTarget: 0,
       speedCurrent: 0,
@@ -194,20 +198,26 @@ export const VortexGallery: React.FC = () => {
         "/frames/512/p4.jpg", "/frames/512/p5.jpg", "/frames/512/p6.jpg",
         "/frames/512/p7.jpg", "/frames/512/p8.jpg", "/frames/512/p9.jpg",
         "/frames/512/p10.jpg", "/frames/512/p11.jpg", "/frames/512/p12.jpg",
-        "/frames/512/p13.jpg", "/frames/512/14.jpg", "/frames/512/15.jpg",
-        "/frames/512/16.jpg", "/frames/512/17.jpg", "/frames/512/18.jpg",
-        "/frames/512/19.jpg", "/frames/512/20.jpg"
+        "/frames/512/p13.jpg", "/frames/512/p14.jpg", "/frames/512/p15.jpg",
+        "/frames/512/p16.jpg", "/frames/512/p17.jpg", "/frames/512/p18.jpg",
+        "/frames/512/p19.jpg", "/frames/512/p20.jpg"
       ];
 
-      const images = await Promise.all(
+      const images = (await Promise.all(
         imagePaths.map((path) => {
-          return new Promise<HTMLImageElement>((resolve) => {
+          return new Promise<HTMLImageElement | null>((resolve) => {
             const img = new Image();
             img.onload = () => resolve(img);
+            img.onerror = () => resolve(null);
             img.src = path;
           });
         })
-      );
+      )).filter((img): img is HTMLImageElement => img !== null);
+
+      if (images.length === 0) {
+        console.warn("VortexGallery: No images loaded.");
+        return;
+      }
 
       const atlasWidth = Math.max(...images.map((img) => img.width));
       let totalHeight = images.reduce((acc, img) => acc + img.height, 0);
@@ -221,7 +231,7 @@ export const VortexGallery: React.FC = () => {
       imageInfos = images.map((img) => {
         const aspectRatio = img.width / img.height;
         ctx.drawImage(img, 0, currentY);
-        
+
         // In UV space, Y=0 is the bottom and Y=1 is the top.
         // currentY is from the top in Canvas space.
         const yTop = 1.0 - currentY / totalHeight;
@@ -248,7 +258,7 @@ export const VortexGallery: React.FC = () => {
 
     const createInstancedMesh = () => {
       // SUBDIVIDED GEOMETRY for liquid ripples
-      const geometry = new THREE.BoxGeometry(1.5, 1.5, 0.075, 32, 32, 1); 
+      const geometry = new THREE.BoxGeometry(1.5, 1.5, 0.075, 32, 32, 1);
       instancedMaterial = new THREE.ShaderMaterial({
         vertexShader: `
 #define PI 3.14159265359
@@ -372,7 +382,7 @@ void main() {
     };
 
     const createCenteredMesh = () => {
-      const geometry = new THREE.PlaneGeometry(1.7, 2.3, 32, 32); 
+      const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
       centerMaterial = new THREE.ShaderMaterial({
         vertexShader: `
 varying vec2 vUv;
@@ -398,6 +408,7 @@ void main() {
           uAtlas: { value: atlasTexture },
           uTime: { value: 0 },
           uSpeed: { value: 0 },
+          uZoom: { value: 1.0 },
           uTextureCoords: {
             value: new THREE.Vector4(
               imageInfos[textureIndex].uvs.xStart,
@@ -410,6 +421,21 @@ void main() {
         side: THREE.DoubleSide,
       });
       const mesh = new THREE.Mesh(geometry, centerMaterial);
+      
+      // Set initial scale to match the first texture's aspect ratio
+      if (imageInfos[textureIndex]) {
+        const info = imageInfos[textureIndex];
+        const maxW = 2.5;
+        const maxH = 2.9;
+        let targetW = maxH * info.aspectRatio;
+        let targetH = maxH;
+        if (targetW > maxW) {
+          targetW = maxW;
+          targetH = maxW / info.aspectRatio;
+        }
+        mesh.scale.set(targetW, targetH, 1);
+      }
+      
       mesh.name = "center";
       scene.add(mesh);
     };
@@ -427,14 +453,14 @@ void main() {
         const phi = Math.acos(2 * Math.random() - 1);
 
         positions[i] = r * Math.sin(phi) * Math.cos(theta);
-        positions[i+1] = r * Math.sin(phi) * Math.sin(theta);
-        positions[i+2] = r * Math.cos(phi);
+        positions[i + 1] = r * Math.sin(phi) * Math.sin(theta);
+        positions[i + 2] = r * Math.cos(phi);
 
         // Random star colors (stark white to cool blue)
         const luminance = 0.5 + Math.random() * 0.5;
         colors[i] = luminance; // R
-        colors[i+1] = luminance; // G
-        colors[i+2] = luminance + Math.random() * 0.2; // B
+        colors[i + 1] = luminance; // G
+        colors[i + 2] = luminance + Math.random() * 0.2; // B
       }
 
       starGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -456,9 +482,13 @@ void main() {
     // --- DRAG INTERACTION ---
     const drag = {
       isDragging: false,
+      isImageDrag: false,
       lastX: 0,
+      lastY: 0,
       targetYRotation: 0,
       currentYRotation: 0,
+      baseZoom: 1.0,
+      currentZoom: 1.0,
     };
 
     // --- EVENTS ---
@@ -486,9 +516,22 @@ void main() {
       scrollY.target += (normalized.pixelY * sizes.height) / window.innerHeight;
     };
 
+    const checkImageHover = (mouseX: number, mouseY: number) => {
+      raycaster.setFromCamera({ x: mouseX, y: mouseY } as THREE.Vector2, camera);
+      const center = scene.getObjectByName("center");
+      if (center) {
+        return raycaster.intersectObject(center).length > 0;
+      }
+      return false;
+    };
+
     const onMouseDown = (event: MouseEvent) => {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      drag.isImageDrag = checkImageHover(mouse.x, mouse.y);
       drag.isDragging = true;
       drag.lastX = event.clientX;
+      drag.lastY = event.clientY;
     };
 
     const onMouseMove = (event: MouseEvent) => {
@@ -497,28 +540,59 @@ void main() {
 
       if (drag.isDragging) {
         const deltaX = event.clientX - drag.lastX;
-        drag.targetYRotation += deltaX * 0.005;
+        const deltaY = event.clientY - drag.lastY;
+        
+        if (drag.isImageDrag) {
+          drag.baseZoom -= deltaY * 0.01;
+          drag.baseZoom = THREE.MathUtils.clamp(drag.baseZoom, 1.0, 4.0);
+        } else {
+          drag.targetYRotation += deltaX * 0.005;
+        }
+        
         drag.lastX = event.clientX;
+        drag.lastY = event.clientY;
       }
     };
 
     const onMouseUp = () => {
       drag.isDragging = false;
+      drag.isImageDrag = false;
     };
 
     const onTouchStart = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+      drag.isImageDrag = checkImageHover(mouse.x, mouse.y);
       drag.isDragging = true;
-      drag.lastX = event.touches[0].clientX;
+      drag.lastX = touch.clientX;
+      drag.lastY = touch.clientY;
     };
 
     const onTouchMove = (event: TouchEvent) => {
-      const deltaX = event.touches[0].clientX - drag.lastX;
-      drag.targetYRotation += deltaX * 0.005;
-      drag.lastX = event.touches[0].clientX;
+      const touch = event.touches[0];
+      mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+
+      if (drag.isDragging) {
+        const deltaX = touch.clientX - drag.lastX;
+        const deltaY = touch.clientY - drag.lastY;
+        
+        if (drag.isImageDrag) {
+          drag.baseZoom -= deltaY * 0.01;
+          drag.baseZoom = THREE.MathUtils.clamp(drag.baseZoom, 1.0, 4.0);
+        } else {
+          drag.targetYRotation += deltaX * 0.005;
+        }
+
+        drag.lastX = touch.clientX;
+        drag.lastY = touch.clientY;
+      }
     };
 
     const onTouchEnd = () => {
       drag.isDragging = false;
+      drag.isImageDrag = false;
     };
 
 
@@ -535,8 +609,10 @@ void main() {
 
     // --- INIT ---
     loadTextureAtlas().then(() => {
-      createInstancedMesh();
-      createCenteredMesh();
+      if (imageInfos.length > 0) {
+        createInstancedMesh();
+        createCenteredMesh();
+      }
       createStarfield();
     });
 
@@ -557,17 +633,60 @@ void main() {
         scrollY.target += 0.015 * scrollY.direction;
         scrollY.speedTarget += 0.015 * scrollY.direction;
 
-        textureIndex = Math.abs(
-          Math.floor(scrollY.speedTarget % (imageInfos.length - 1))
+        let currentTextureIndex = Math.abs(
+          Math.floor(scrollY.speedTarget) % imageInfos.length
         );
 
+        // Reset zoom if scrolling to a new image
+        if (textureIndex !== currentTextureIndex) {
+          drag.baseZoom = 1.0;
+          textureIndex = currentTextureIndex;
+        }
+
         if (imageInfos[textureIndex]) {
+          const info = imageInfos[textureIndex];
           centerMaterial.uniforms.uTextureCoords.value.set(
-            imageInfos[textureIndex].uvs.xStart,
-            imageInfos[textureIndex].uvs.xEnd,
-            imageInfos[textureIndex].uvs.yStart,
-            imageInfos[textureIndex].uvs.yEnd
+            info.uvs.xStart,
+            info.uvs.xEnd,
+            info.uvs.yStart,
+            info.uvs.yEnd
           );
+
+          const centerMesh = scene.getObjectByName("center") as THREE.Mesh;
+          let isHovered = false;
+
+          if (centerMesh) {
+            // Check hover status
+            raycaster.setFromCamera(mouse, camera);
+            isHovered = raycaster.intersectObject(centerMesh).length > 0;
+
+            document.body.style.cursor = isHovered 
+              ? (drag.isDragging ? 'ns-resize' : 'zoom-in') 
+              : (drag.isDragging ? 'ew-resize' : 'default');
+
+            const maxW = 2.5;
+            const maxH = 2.9;
+            let targetW = maxH * info.aspectRatio;
+            let targetH = maxH;
+            
+            if (targetW > maxW) {
+              targetW = maxW;
+              targetH = maxW / info.aspectRatio;
+            }
+
+            // Pop out slightly when hovered
+            const hoverScale = (isHovered && !drag.isImageDrag) ? 1.03 : 1.0;
+            targetW *= hoverScale;
+            targetH *= hoverScale;
+
+            centerMesh.scale.x = gsap.utils.interpolate(centerMesh.scale.x, targetW, 0.08);
+            centerMesh.scale.y = gsap.utils.interpolate(centerMesh.scale.y, targetH, 0.08);
+          }
+
+          // Smoothly animate the texture zoom
+          const targetZoomVal = drag.baseZoom + (isHovered && !drag.isImageDrag ? 0.05 : 0.0);
+          drag.currentZoom = gsap.utils.interpolate(drag.currentZoom, targetZoomVal, 0.1);
+          centerMaterial.uniforms.uZoom.value = drag.currentZoom;
         }
 
         scrollY.current = gsap.utils.interpolate(scrollY.current, scrollY.target, 0.1);
@@ -583,7 +702,7 @@ void main() {
         const vortex = scene.getObjectByName("vortex") as THREE.InstancedMesh;
         const center = scene.getObjectByName("center") as THREE.Mesh;
         const starfield = scene.getObjectByName("starfield") as THREE.Points;
-        
+
         if (vortex) vortex.rotation.y = drag.currentYRotation;
         if (center) center.rotation.y = drag.currentYRotation;
         // Parallax rotation for background stars
@@ -618,10 +737,10 @@ void main() {
   return (
     <div ref={containerRef} className="fixed inset-0 w-full h-full bg-[#030303] overflow-hidden">
       <canvas ref={canvasRef} className="block w-full h-full" />
-      
+
       {/* Visual Grain/Noise Overlay for premium feel */}
       <div className="pointer-events-none fixed inset-0 z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.035] mix-blend-overlay" />
-      
+
       {/* Vignette */}
       <div className="pointer-events-none fixed inset-0 z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
     </div>
