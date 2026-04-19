@@ -63,33 +63,13 @@ export const DynamicFooter = () => {
                     </a>
                 </div>
 
-                {/* Single Line Centered Credit */}
-                <div className="mb-24 flex flex-col md:flex-row items-center justify-center gap-4 text-white text-xs md:text-sm font-bold tracking-tight uppercase select-none">
-                    <div className="flex items-center gap-2">
-                        <span className="text-white/40 font-medium">Forged in</span>
-                        <div className="flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md border border-white/10">
-                            <img src="/logo.png" alt="Antigravity" className="h-3 md:h-4 w-auto brightness-100" />
-                            <span className="tracking-tighter">Antigravity</span>
-                        </div>
-                    </div>
-
+                {/* Single Line Centered Credit - Text Only */}
+                <div className="mb-24 flex flex-col md:flex-row items-center justify-center gap-4 text-white text-[11px] md:text-[13px] font-bold tracking-[0.2em] uppercase select-none">
+                    <p>Forged in <span className="text-white">Antigravity</span></p>
                     <span className="hidden md:inline text-white/20">•</span>
-
-                    <div className="flex items-center gap-2">
-                        <span className="text-white/40 font-medium">Crafted by</span>
-                        <span className="text-white">Prathamesh Tipnis <span className="text-[#ff3b30] animate-pulse">♡</span></span>
-                        <span className="text-lg">🚀</span>
-                    </div>
-
+                    <p>Crafted by Prathamesh Tipnis <span className="text-[#ff3b30] animate-pulse">♡</span></p>
                     <span className="hidden md:inline text-white/20">•</span>
-
-                    <div className="flex items-center gap-2">
-                        <span className="text-white/40 font-medium">Powered by</span>
-                        <div className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-md border border-white/10">
-                            <Icon icon="simple-icons:vercel" className="text-white text-xs md:text-sm" />
-                            <span className="tracking-tighter">Vercel</span>
-                        </div>
-                    </div>
+                    <p>Powered by <span className="text-white">Vercel</span></p>
                 </div>
 
                 {/* Bottom Bar */}
