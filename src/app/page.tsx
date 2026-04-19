@@ -284,11 +284,12 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Center: Links & Logo (Desktop) — RESTORED ALIGNMENT */}
+            {/* Center: Links & Logo (Desktop) — FULLY RESTORED */}
             <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-white pointer-events-auto w-2/4">
               <div className="flex-1 flex justify-end items-center nav-left-items">
                 <a onClick={handleNavClick} href="/#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
                 <a onClick={handleNavClick} href="/#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
+                <a onClick={handleNavClick} href="/#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">Services</a>
               </div>
 
               {/* Logo */}
@@ -302,6 +303,7 @@ export default function Home() {
 
               <div className="flex-1 flex justify-start items-center nav-right-items">
                 <a onClick={handleNavClick} href="/#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
+                <a onClick={handleNavClick} href="/#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
                 <Link href="/playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</Link>
               </div>
             </div>
