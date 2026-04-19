@@ -65,7 +65,17 @@ export const DynamicFooter = () => {
 
                 {/* Bottom Bar */}
                 <div className="mt-32 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-white/20 text-[10px] font-sans font-medium">
-                    <p>© 2024 Prathamesh Tipnis. All rights reserved.</p>
+                    <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                        <p>© 2024 Prathamesh Tipnis.</p>
+                        <span className="hidden md:inline text-white/10">•</span>
+                        <p className="flex items-center gap-1.5 translate-y-[-1px]">
+                            Forged in <span className="text-white/60 font-medium">Antigravity</span> 
+                            <span className="text-white/10 mx-1">•</span>
+                            Managed by <span className="text-white/60 font-medium">Prathamesh Tipnis</span>
+                            <span className="text-white/10 mx-1">•</span>
+                            Optimized on <span className="text-white/60 font-medium">Vercel</span>
+                        </p>
+                    </div>
                     <div className="flex gap-8">
                         <button className="hover:text-white/50 transition-colors">Privacy</button>
                         <button className="hover:text-white/50 transition-colors">Terms</button>
