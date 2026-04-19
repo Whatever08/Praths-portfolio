@@ -15,6 +15,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
+import { Navbar } from "@/components/ui/Navbar";
 import { useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -161,80 +162,6 @@ export default function Home() {
       });
     });
 
-    // ── NAVIGATION SMART REVEAL & LOGO SWALLOWING ──
-    const smartNavTl = gsap.timeline({ paused: true });
-
-    // Left items move right into logo
-    smartNavTl.to(".nav-left-items", {
-      x: 60,
-      opacity: 0,
-      scale: 0.8,
-      filter: "blur(10px)",
-      duration: 0.5,
-      ease: "power3.inOut"
-    }, 0);
-
-    // Right items move left into logo
-    smartNavTl.to(".nav-right-items", {
-      x: -60,
-      opacity: 0,
-      scale: 0.8,
-      filter: "blur(10px)",
-      duration: 0.5,
-      ease: "power3.inOut"
-    }, 0);
-
-    // Global ScrollTrigger for Directional Reveal
-    ScrollTrigger.create({
-      start: "top top",
-      end: "max",
-      onUpdate: (self) => {
-        // ALWAYS show links when at the very top (first 100px)
-        if (self.scroll() < 100) {
-          smartNavTl.reverse();
-          gsap.to("nav", {
-            backgroundColor: "transparent",
-            backdropFilter: "blur(0px)",
-            borderBottom: "1px solid rgba(255,255,255,0)",
-            duration: 0.4
-          });
-          return;
-        }
-
-        // Suppress scrolling animation if user clicked an anchor link
-        if (isNavigating.current) {
-          smartNavTl.reverse();
-          gsap.to("nav", {
-            backgroundColor: "transparent",
-            backdropFilter: "blur(15px)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            duration: 0.4
-          });
-          return;
-        }
-
-        // SCROLL DOWN: Swallow links
-        if (self.direction === 1) {
-          smartNavTl.play();
-          gsap.to("nav", {
-            backgroundColor: "transparent",
-            backdropFilter: "blur(15px)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            duration: 0.4
-          });
-        }
-        // SCROLL UP: Reveal links
-        else {
-          smartNavTl.reverse();
-          gsap.to("nav", {
-            backgroundColor: "transparent",
-            backdropFilter: "blur(15px)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            duration: 0.4
-          });
-        }
-      }
-    });
   }, { scope: mainRef });
 
   // Removed hero hover handlers as cursor is now global
@@ -271,50 +198,20 @@ export default function Home() {
           />
 
           {/* Navigation */}
-          <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-6 bg-transparent pointer-events-auto">
-            {/* Left: Logo on Mobile / Spacer on Desktop */}
-            <div className="w-1/2 md:w-1/4 flex justify-start md:block">
-              <Link href="/" className="md:hidden relative h-7 flex items-center opacity-100 drop-shadow-md cursor-pointer">
-                <img
-                  src="/logo.png"
-                  alt="TP Logo"
-                  className="h-full w-auto object-contain opacity-100 brightness-100 drop-shadow-lg"
-                />
-              </Link>
-            </div>
-
-            {/* Center: Links & Logo (Desktop) */}
-            <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-white pointer-events-auto w-2/4">
-              <div className="flex-1 flex justify-end items-center nav-left-items">
-                <a onClick={handleNavClick} href="#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
-                <a onClick={handleNavClick} href="#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
-                <a onClick={handleNavClick} href="#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">Services</a>
+          <Navbar 
+            leftContent={
+              <div className="flex items-center nav-left-items">
+                <a onClick={handleNavClick} href="/#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
+                <a onClick={handleNavClick} href="/#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
               </div>
-
-              {/* Logo */}
-              <Link href="/" className="nav-logo relative h-8 mx-4 lg:mx-8 flex items-center opacity-100 cursor-pointer z-10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/logo.png"
-                  alt="TP Logo"
-                  className="h-full w-auto object-contain opacity-100 brightness-100"
-                />
-              </Link>
-
-              <div className="flex-1 flex justify-start items-center nav-right-items">
-                <a onClick={handleNavClick} href="#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
-                <a onClick={handleNavClick} href="#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
-                  <Link href="/playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</Link>
-                </div>
+            }
+            rightContent={
+              <div className="flex items-center nav-right-items">
+                <a onClick={handleNavClick} href="/#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
+                <Link href="/playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</Link>
               </div>
-
-            {/* Right: Menu Icon for Mobile */}
-            <div className="w-1/2 md:w-1/4 flex justify-end">
-              <button className="md:hidden text-white drop-shadow-md">
-                <Icon icon="solar:hamburger-menu-linear" className="text-2xl" />
-              </button>
-            </div>
-          </nav>
+            }
+          />
 
           {/* ── HERO SECTION ── */}
           <section

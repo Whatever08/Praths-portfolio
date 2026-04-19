@@ -29,6 +29,8 @@ export const Navbar = ({
   const smartNavTl = useRef<gsap.core.Timeline | null>(null);
   const isScrollingViaClick = useRef(false);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useGSAP(() => {
     // 1. DIRECTIONAL REVEAL & LOGO SWALLOWING Timeline
     smartNavTl.current = gsap.timeline({ paused: true });
@@ -58,10 +60,9 @@ export const Navbar = ({
       start: "top top",
       end: "max",
       onUpdate: (self) => {
-        // BYPASS if we are jumping via a click
         if (isScrollingViaClick.current) return;
 
-        // ALWAYS show links when at the very top (first 100px)
+        // ALWAYS show links when at the very top
         if (self.scroll() < 100) {
           smartNavTl.current?.reverse();
           gsap.to(navRef.current, {
@@ -96,49 +97,21 @@ export const Navbar = ({
       }
     });
 
-    // Handle 'nav-jump' events from other components (like DesignProcess)
     const handleNavJump = () => {
       isScrollingViaClick.current = true;
-      smartNavTl.current?.reverse(); // Ensure links are visible during jump
-      
-      // Reset flag after jump duration (usually 1.2s + buffer)
-      setTimeout(() => {
-        isScrollingViaClick.current = false;
-      }, 1500);
+      smartNavTl.current?.reverse();
+      setTimeout(() => { isScrollingViaClick.current = false; }, 1500);
     };
 
     window.addEventListener("nav-jump", handleNavJump);
 
-    // 2. THEME-SENSING INVERSION — robust elementFromPoint approach
-    let lastTheme = "dark";
-
-    const updateTheme = (theme: string) => {
-      if (theme === lastTheme) return;
-      lastTheme = theme;
-      const isLight = theme === "light";
-      gsap.to(navRef.current, {
-        color: isLight ? "#000000" : "#ffffff",
-        duration: 0.4,
-        ease: "power2.inOut"
-      });
-      gsap.to(".nav-logo-img", {
-        filter: isLight ? "brightness(0)" : "brightness(1)",
-        duration: 0.4
-      });
-    };
-
-    // Sample the element underneath the navbar (at center, 40px from top)
+    // Initial theme check
     const sampleTheme = () => {
       const checkY = 40;
       const checkX = window.innerWidth / 2;
-      // Temporarily hide the navbar to sample behind it
-      if (navRef.current) navRef.current.style.pointerEvents = "none";
       const el = document.elementFromPoint(checkX, checkY) as HTMLElement | null;
-      if (navRef.current) navRef.current.style.pointerEvents = "";
-
       if (!el) return;
 
-      // Walk up from sampled element to find data-theme attribute
       let cursor: HTMLElement | null = el;
       let foundTheme = "dark";
       while (cursor && cursor !== document.body) {
@@ -146,19 +119,25 @@ export const Navbar = ({
         if (theme) { foundTheme = theme; break; }
         cursor = cursor.parentElement;
       }
-      updateTheme(foundTheme);
+      
+      const isLight = foundTheme === "light";
+      gsap.to(navRef.current, {
+        color: isLight ? "#000000" : "#ffffff",
+        duration: 0.4
+      });
+      gsap.to(".nav-logo-img", {
+        filter: isLight ? "brightness(0)" : "brightness(1)",
+        duration: 0.4
+      });
     };
 
-    // Use ScrollTrigger onUpdate for efficiency
     ScrollTrigger.create({
       trigger: document.body,
       start: "top top",
       end: "bottom bottom",
       onUpdate: sampleTheme,
-      onRefresh: sampleTheme,
     });
 
-    // Initial sample
     sampleTheme();
 
     return () => {
@@ -168,40 +147,75 @@ export const Navbar = ({
   }, { scope: navRef });
 
   return (
-    <nav 
-      ref={navRef}
-      className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 md:px-12 py-6 md:py-8 bg-transparent transition-all duration-300"
-    >
-      {/* Left Slot */}
-      <div ref={leftItemsRef} className="w-1/2 md:w-1/4 flex justify-start items-center">
-        {leftContent}
-      </div>
+    <>
+      <nav 
+        ref={navRef}
+        className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 md:px-12 py-6 md:py-8 bg-transparent"
+      >
+        {/* Left Slot */}
+        <div ref={leftItemsRef} className="w-1/3 md:w-1/4 flex justify-start items-center">
+          {leftContent}
+        </div>
 
-      {/* Center: Logo (The Anchor for swallowing) */}
-      <div className="flex items-center justify-center gap-4 lg:gap-8 w-1/3 md:w-2/4">
-        {/* Hide mobile logo from leftItems in the prop, we use this central one */}
-        <Link 
-          href={logoLink} 
-          ref={logoRef}
-          className="nav-logo relative h-8 mx-4 lg:mx-8 flex items-center opacity-100 cursor-pointer z-10"
+        {/* Center: Logo */}
+        <div className="flex items-center justify-center w-1/3 md:w-2/4">
+          <Link href={logoLink} className="nav-logo relative h-7 md:h-8 flex items-center cursor-pointer z-10">
+            <img
+              src={logoSrc}
+              alt="Logo"
+              className="nav-logo-img h-full w-auto object-contain transition-all duration-300"
+            />
+          </Link>
+        </div>
+
+        {/* Right Slot */}
+        <div ref={rightItemsRef} className="w-1/3 md:w-1/4 flex justify-end items-center">
+          <div className="hidden md:flex">{rightContent}</div>
+          {showMobileMenu && (
+            <button 
+              onClick={() => setIsMenuOpen(true)}
+              className="md:hidden ml-4 p-2 hover:opacity-60 transition-opacity"
+            >
+              <Icon icon="solar:hamburger-menu-linear" className="text-2xl" />
+            </button>
+          )}
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {showMobileMenu && (
+        <div 
+          className={`fixed inset-0 z-[200] bg-black transition-all duration-500 ease-in-out ${
+            isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+          }`}
         >
-          <img
-            src={logoSrc}
-            alt="Logo"
-            className="nav-logo-img h-full w-auto object-contain transition-all duration-300"
-          />
-        </Link>
-      </div>
-
-      {/* Right Slot */}
-      <div ref={rightItemsRef} className="w-1/2 md:w-1/4 flex justify-end items-center">
-        {rightContent}
-        {showMobileMenu && (
-          <button className="md:hidden ml-4">
-            <Icon icon="solar:hamburger-menu-linear" className="text-2xl" />
-          </button>
-        )}
-      </div>
-    </nav>
+          <div className="absolute top-8 right-8">
+            <button 
+              onClick={() => setIsMenuOpen(false)}
+              className="text-white p-2 hover:rotate-90 transition-transform duration-300"
+            >
+              <Icon icon="solar:close-circle-linear" className="text-4xl" />
+            </button>
+          </div>
+          
+          <div className="flex flex-col items-center justify-center h-full gap-8">
+            <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-4">Nav</div>
+            
+            {/* Standard Mobile Links */}
+            <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-3xl font-bold tracking-tighter text-white hover:text-white/60 transition-colors uppercase">Home</Link>
+            
+            <a href="/#recent-works" onClick={() => setIsMenuOpen(false)} className="text-3xl font-bold tracking-tighter text-white hover:text-white/60 transition-colors uppercase">Works</a>
+            
+            <Link href="/playground" onClick={() => setIsMenuOpen(false)} className="text-3xl font-bold tracking-tighter text-white hover:text-white/60 transition-colors uppercase">Playground</Link>
+            
+            <div className="mt-12 flex gap-6">
+               <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">In</a>
+               <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">Ig</a>
+               <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">Be</a>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
