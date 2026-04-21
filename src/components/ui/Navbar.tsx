@@ -109,7 +109,14 @@ export const Navbar = ({
     const sampleTheme = () => {
       const checkY = 40;
       const checkX = window.innerWidth / 2;
-      const el = document.elementFromPoint(checkX, checkY) as HTMLElement | null;
+      
+      // Use elementsFromPoint to see through the fixed navbar
+      const elements = document.elementsFromPoint(checkX, checkY);
+      const el = elements.find(node => 
+        node !== navRef.current && 
+        !navRef.current?.contains(node)
+      ) as HTMLElement | null;
+
       if (!el) return;
 
       let cursor: HTMLElement | null = el;
