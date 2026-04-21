@@ -266,7 +266,7 @@ export default function ProjectPage() {
 
                                         {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
                                         {/* No gaps — each image section stacks flush against the next */}
-                                        <div data-theme="light" className="w-full">
+                                        <div data-theme="dark" className="w-full">
                                             {[
                                                 {
                                                     src: "https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=1600",

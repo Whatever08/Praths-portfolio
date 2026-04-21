@@ -243,7 +243,7 @@ export default function FlytbasePage() {
                                         </div>
 
                                         {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="light" className="w-full">
+                                        <div data-theme="dark" className="w-full">
                                             {[
                                                 {
                                                     src: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1600",

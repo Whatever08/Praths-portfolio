@@ -251,7 +251,7 @@ export default function McLarenPage() {
                                         </div>
 
                                         {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="light" className="w-full">
+                                        <div data-theme="dark" className="w-full">
                                             {[
                                                 {
                                                     src: "https://images.unsplash.com/photo-1541899481282-d53bffe3c15d?q=80&w=1600",

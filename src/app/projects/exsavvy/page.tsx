@@ -251,7 +251,7 @@ export default function ExsavvyPage() {
                                         </div>
 
                                         {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="light" className="w-full">
+                                        <div data-theme="dark" className="w-full">
                                             {[
                                                 {
                                                     src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600",

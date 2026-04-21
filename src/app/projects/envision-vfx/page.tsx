@@ -243,7 +243,7 @@ export default function EnvisionVFXPage() {
                                         </div>
 
                                         {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="light" className="w-full">
+                                        <div data-theme="dark" className="w-full">
                                             {[
                                                 {
                                                     src: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1600",

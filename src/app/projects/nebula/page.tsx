@@ -251,7 +251,7 @@ export default function NebulaPage() {
                                         </div>
 
                                         {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="light" className="w-full">
+                                        <div data-theme="dark" className="w-full">
                                             {[
                                                 {
                                                     src: "https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=1600",
