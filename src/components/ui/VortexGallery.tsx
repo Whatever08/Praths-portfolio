@@ -6,6 +6,10 @@ import gsap from "gsap";
 import normalizeWheel from "normalize-wheel";
 import GUI from "lil-gui";
 
+interface VortexGalleryProps {
+  theme?: "dark" | "light";
+}
+
 // --- Shaders ---
 const vertexShader = `
 #define PI 3.14159265359
@@ -132,7 +136,7 @@ interface ImageInfo {
   };
 }
 
-export const VortexGallery: React.FC = () => {
+export const VortexGallery: React.FC<VortexGalleryProps> = ({ theme = "dark" }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -257,8 +261,7 @@ export const VortexGallery: React.FC = () => {
     };
 
     const createInstancedMesh = () => {
-      // SUBDIVIDED GEOMETRY for liquid ripples
-      const geometry = new THREE.BoxGeometry(1.5, 1.5, 0.075, 32, 32, 1);
+      const geometry = new THREE.BoxGeometry(1.5, 1.5, 0.075, 1, 1, 1);
       instancedMaterial = new THREE.ShaderMaterial({
         vertexShader: `
 #define PI 3.14159265359
@@ -290,11 +293,6 @@ vec4 getQuaternionFromAxisAngle(vec3 axis, float angle) {
 void main() {
     vec3 scaledPosition = position;
     scaledPosition.y /= aAspectRatio;
-
-    // --- LIQUID EFFECT (Balanced) ---
-    float speedFactor = abs(uSpeedY) * 0.4 + 0.1;
-    float ripple = (sin(scaledPosition.x * 2.0 + uTime * 0.8) + cos(scaledPosition.y * 2.0 + uTime * 0.8)) * 0.006 * speedFactor;
-    scaledPosition.z += ripple;
 
     float zPos = aHeight + uScrollY;
     float zRange = uZrange; 
@@ -382,22 +380,13 @@ void main() {
     };
 
     const createCenteredMesh = () => {
-      const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
+      const geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
       centerMaterial = new THREE.ShaderMaterial({
         vertexShader: `
 varying vec2 vUv;
-uniform float uTime;
-uniform float uSpeed;
 
 void main() {    
-    vec3 pos = position;
-
-    // --- LIQUID EFFECT (Balanced) ---
-    float speedFactor = uSpeed * 0.4 + 0.1;
-    float ripple = (sin(pos.x * 2.5 + uTime * 1.0) + cos(pos.y * 2.5 + uTime * 1.0)) * 0.006 * speedFactor;
-    pos.z += ripple;
-
-    vec4 modelPosition = modelMatrix * vec4(pos, 1.0);  
+    vec4 modelPosition = modelMatrix * vec4(position, 1.0);  
     vec4 viewPosition = viewMatrix * modelPosition;
     gl_Position = projectionMatrix * viewPosition;  
     vUv = uv;    
@@ -406,8 +395,6 @@ void main() {
         fragmentShader: centerFragmentShader,
         uniforms: {
           uAtlas: { value: atlasTexture },
-          uTime: { value: 0 },
-          uSpeed: { value: 0 },
           uZoom: { value: 1.0 },
           uTextureCoords: {
             value: new THREE.Vector4(
@@ -440,44 +427,7 @@ void main() {
       scene.add(mesh);
     };
 
-    const createStarfield = () => {
-      const starGeometry = new THREE.BufferGeometry();
-      const starCount = 6000;
-      const positions = new Float32Array(starCount * 3);
-      const colors = new Float32Array(starCount * 3);
 
-      for (let i = 0; i < starCount * 3; i += 3) {
-        // Distribute stars in a large sphere
-        const r = 100 + Math.random() * 50;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-
-        positions[i] = r * Math.sin(phi) * Math.cos(theta);
-        positions[i + 1] = r * Math.sin(phi) * Math.sin(theta);
-        positions[i + 2] = r * Math.cos(phi);
-
-        // Random star colors (stark white to cool blue)
-        const luminance = 0.5 + Math.random() * 0.5;
-        colors[i] = luminance; // R
-        colors[i + 1] = luminance; // G
-        colors[i + 2] = luminance + Math.random() * 0.2; // B
-      }
-
-      starGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-      starGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-
-      const starMaterial = new THREE.PointsMaterial({
-        size: 0.15,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.7,
-        sizeAttenuation: true,
-      });
-
-      const stars = new THREE.Points(starGeometry, starMaterial);
-      stars.name = "starfield";
-      scene.add(stars);
-    };
 
     // --- DRAG INTERACTION ---
     const drag = {
@@ -613,7 +563,6 @@ void main() {
         createInstancedMesh();
         createCenteredMesh();
       }
-      createStarfield();
     });
 
     // --- DEBUG ---
@@ -627,7 +576,6 @@ void main() {
 
       if (instancedMaterial && centerMaterial) {
         instancedMaterial.uniforms.uTime.value = time;
-        centerMaterial.uniforms.uTime.value = time;
 
         const sizes = getSizes();
         scrollY.target += 0.015 * scrollY.direction;
@@ -695,18 +643,14 @@ void main() {
         instancedMaterial.uniforms.uScrollY.value = scrollY.current;
         instancedMaterial.uniforms.uSpeedY.value = scrollY.speedCurrent;
         instancedMaterial.uniforms.uDirection.value = scrollY.direction;
-        centerMaterial.uniforms.uSpeed.value = Math.abs(scrollY.speedCurrent);
 
         // Apply Drag Rotation
         drag.currentYRotation = gsap.utils.interpolate(drag.currentYRotation, drag.targetYRotation, 0.05);
         const vortex = scene.getObjectByName("vortex") as THREE.InstancedMesh;
         const center = scene.getObjectByName("center") as THREE.Mesh;
-        const starfield = scene.getObjectByName("starfield") as THREE.Points;
 
         if (vortex) vortex.rotation.y = drag.currentYRotation;
         if (center) center.rotation.y = drag.currentYRotation;
-        // Parallax rotation for background stars
-        if (starfield) starfield.rotation.y = drag.currentYRotation * 0.4;
       }
 
       renderer.render(scene, camera);
@@ -735,14 +679,13 @@ void main() {
   }, []);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 w-full h-full bg-[#030303] overflow-hidden">
+    <div ref={containerRef} className={`fixed inset-0 w-full h-full overflow-hidden transition-colors duration-500 ${theme === "light" ? "bg-[#f0efe9]" : "bg-[#030303]"}`}>
       <canvas ref={canvasRef} className="block w-full h-full" />
 
-      {/* Visual Grain/Noise Overlay for premium feel */}
-      <div className="pointer-events-none fixed inset-0 z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.035] mix-blend-overlay" />
+
 
       {/* Vignette */}
-      <div className="pointer-events-none fixed inset-0 z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
+      <div className={`pointer-events-none fixed inset-0 z-40 ${theme === "light" ? "bg-[radial-gradient(circle_at_center,transparent_0%,rgba(240,239,233,0.5)_100%)]" : "bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]"}`} />
     </div>
   );
 };

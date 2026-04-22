@@ -40,13 +40,12 @@ interface CircularGalleryProps
    */
   borderRadius?: number;
   /**
-   * Multiplier for scroll interaction speed.
    * @default 2
    */
   scrollSpeed?: number;
   /**
    * Easing factor for the scroll animation (lower is smoother).
-   * @default 0.05
+   * @default 0.025
    */
   scrollEase?: number;
   /**
@@ -460,7 +459,7 @@ class Media {
     this.title.mesh.program.uniforms.uAlpha.value = lerp(
       this.title.mesh.program.uniforms.uAlpha.value,
       targetAlpha,
-      0.08
+      0.04
     );
 
     // Mobile specific: Hide the entire card if it's not the central one
@@ -470,7 +469,7 @@ class Media {
       this.program.uniforms.uAlpha.value = lerp(
         this.program.uniforms.uAlpha.value,
         visibility,
-        0.1
+        0.05
       );
       // Flat animation for mobile: No bend, just straight horizontal movement
       this.plane.position.y = 0;
@@ -482,7 +481,7 @@ class Media {
     this.program.uniforms.uHover.value = lerp(
       this.program.uniforms.uHover.value,
       (isMobile ? (Math.abs(x) < this.width / 4 ? 1 : 0) : (this.isHovered ? 1 : 0)),
-      0.1
+      0.05
     );
   }
 
@@ -586,7 +585,7 @@ class App {
     this.container = container;
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
-    this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
+    this.onCheckDebounce = debounce(this.onCheck.bind(this), 500);
 
     (this as any).onItemClick = onItemClick;
 
@@ -677,7 +676,7 @@ class App {
   onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return;
     const x = "touches" in e ? e.touches[0].clientX : e.clientX;
-    const distance = (this.start - x) * (this.scrollSpeed * 0.04);
+    const distance = (this.start - x) * (this.scrollSpeed * 0.08);
     this.scroll.target = (this.scroll as any).position + distance;
   }
 
@@ -706,7 +705,7 @@ class App {
 
   onWheel(e: WheelEvent) {
     const delta = e.deltaY;
-    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.5;
+    this.scroll.target += delta * 0.025 * this.scrollSpeed;
     this.onCheckDebounce();
   }
 
@@ -811,7 +810,7 @@ const CircularGallery = ({
   bend = 3,
   borderRadius = 0.05,
   scrollSpeed = 2,
-  scrollEase = 0.05,
+  scrollEase = 0.025,
   className,
   fontClassName,
   onItemClick,
