@@ -13,7 +13,9 @@ import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
 import { useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
+import "./../nebula/nebula.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,8 +38,19 @@ const projectImages = [
 export default function AksharaEventsPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const mainContentRef = useRef<HTMLElement>(null);
+    const lenisRef = useRef<any>(null);
     const [showReveal, setShowReveal] = useState(true);
     const [showRevealIn, setShowRevealIn] = useState(false);
+
+    useEffect(() => {
+        function update(time: number) {
+            lenisRef.current?.lenis?.raf(time * 1000);
+        }
+        gsap.ticker.add(update);
+        return () => {
+            gsap.ticker.remove(update);
+        };
+    }, []);
 
     useGSAP(() => {
         // Section header reveal animations
@@ -57,22 +70,26 @@ export default function AksharaEventsPage() {
             });
         });
 
-        // Parallax scroll for stacked image panels
-        gsap.utils.toArray<HTMLElement>(".parallax-panel").forEach((panel, i) => {
-            const imgWrap = panel.querySelector(`[class*='parallax-img-${i}']`) as HTMLElement;
-            if (!imgWrap) return;
-            gsap.to(imgWrap, {
-                y: "20%",
+        // ── Pin carousel & drive horizontal scroll through all 5 cards ──
+        const carouselSection = containerRef.current?.querySelector(".dv-research-carousel-section") as HTMLElement | null;
+        const carousel = carouselSection?.querySelector(".dv-dark-cards-carousel") as HTMLElement | null;
+        const track = carouselSection?.querySelector(".dv-dark-cards-track") as HTMLElement | null;
+
+        if (carouselSection && carousel && track) {
+            gsap.to(track, {
+                x: () => -(track.scrollWidth - carousel.clientWidth + 48),
                 ease: "none",
                 scrollTrigger: {
-                    trigger: panel,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
+                    trigger: carouselSection,
+                    start: "center center",
+                    end: () => `+=${track.scrollWidth - carousel.clientWidth + 48}`,
+                    pin: true,
+                    scrub: 1.2,
+                    anticipatePin: 1,
                     invalidateOnRefresh: true,
-                }
+                },
             });
-        });
+        }
 
         const timer = setTimeout(() => {
             ScrollTrigger.refresh();
@@ -116,10 +133,12 @@ export default function AksharaEventsPage() {
                             }
                         />
 
-                        <ReactLenis root options={{
+                        <ReactLenis root ref={lenisRef} options={{
+                            autoRaf: false,
                             duration: 1.4,
                             lerp: 0.05,
                             wheelMultiplier: 1.1,
+                            gestureOrientation: "vertical",
                             smoothWheel: true
                         }}>
                             <main ref={mainContentRef}>
@@ -169,7 +188,7 @@ export default function AksharaEventsPage() {
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Overview</h3>
                                                     <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl">
                                                         A premium digital portfolio that serves as a high-end editorial showcase for the company's most prestigious event productions.
-                                                    </p>
+                                                     </p>
                                                 </div>
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Goal</h3>
@@ -224,90 +243,235 @@ export default function AksharaEventsPage() {
                                     </section>
                                 </div>
 
-                                <div className="white-canvas-container w-full overflow-visible relative z-20">
-                                    <div className="white-canvas-content w-full bg-white transition-all duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center">
-
-                                        {/* Carousel Slider — HorizontalScrollGallery */}
-                                        <div data-theme="light" className="w-full bg-white">
-                                            <HorizontalScrollGallery
-                                                heading={<>Crafting luxury experiences.</>}
-                                                description="We took an editorial approach to the design, treating every pixel as if it were a high-end print publication."
-                                                items={[
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1200', alt: 'Akshara 1', title: 'Editorial Intent', description: 'Curating the story through a high-fashion, minimalist lens.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1200', alt: 'Akshara 2', title: 'Color Palette', description: 'Curated silk-inspired tones that convey luxury and warmth.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200', alt: 'Akshara 3', title: 'Typography', description: 'Bespoke serif pairings that feel both timeless and modern.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1200', alt: 'Akshara 4', title: 'Visual Rhythm', description: 'Creating a sense of flow through deliberate use of white space.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1532417344469-368f9ae6d187?q=80&w=1200', alt: 'Akshara 5', title: 'Final Review', description: 'A polished, high-fidelity experience ready for the global stage.' },
-                                                ]}
-                                            />
-                                        </div>
-
-                                        {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="dark" className="w-full">
-                                            {[
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1600",
-                                                    label: "Silk Reflections",
-                                                    caption: "01 / Identity",
-                                                    body: "Soft textures and warm lighting define the visual foundation of Akshara."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1600",
-                                                    label: "Grand Galas",
-                                                    caption: "02 / Portfolio",
-                                                    body: "Showcasing the scale and ambition of Akshara's event productions."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600",
-                                                    label: "Intimate Settings",
-                                                    caption: "03 / Detail",
-                                                    body: "Capturing the subtle moments that make an event truly unforgettable."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1600",
-                                                    label: "Modern Luxury",
-                                                    caption: "04 / Motion",
-                                                    body: "Using high-performance interactions to elevate the brand's digital story."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1532417344469-368f9ae6d187?q=80&w=1600",
-                                                    label: "Everlasting Memory",
-                                                    caption: "05 / Legacy",
-                                                    body: "A robust digital home built to reflect a legacy of celebration."
-                                                },
-                                            ].map((item, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="parallax-panel relative w-full overflow-hidden"
-                                                    style={{ height: "100vh" }}
-                                                >
-                                                    <div
-                                                        className={`parallax-img-${i} absolute inset-0 w-full`}
-                                                        style={{ height: "130%", top: "-15%" }}
-                                                    >
-                                                        <img
-                                                            src={item.src}
-                                                            alt={item.label}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/60" />
+                                <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
+                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center" data-theme="light">
+                                        <div className="dv-embed">
+                                            {/* ── PROBLEM STATEMENT ── */}
+                                            <section className="dv-section dv-problem-section" style={{ textAlign: 'left', padding: '80px 0' }}>
+                                                <div className="dv-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                                        <div style={{ width: '8px', height: '8px', backgroundColor: '#d4af37', borderRadius: '2px' }}></div>
+                                                        <span style={{ color: '#7a829a', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>THE BRIEF</span>
                                                     </div>
 
-                                                    <div className="absolute top-16 md:top-24 left-0 w-full z-10 flex flex-col items-center text-center px-6 md:px-12 text-white">
-                                                        <div className="max-w-4xl">
-                                                            <div className="text-[11px] md:text-sm uppercase tracking-[0.25em] font-medium text-white/70 mb-3">
-                                                                {item.caption}
+                                                    <h2 className="dv-left" style={{ fontSize: '3.5rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '32px', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+                                                        The Art of Celebration
+                                                    </h2>
+
+                                                    <p className="dv-body" style={{ fontSize: '1.15rem', color: '#6b7280', marginBottom: '24px', lineHeight: '1.6' }}>
+                                                        <strong>Akshara needed a brand repositioning to attract a high-net-worth clientele. Their previous digital presence felt too traditional and lacked the 'editorial' feel found in top luxury magazines:</strong>
+                                                    </p>
+
+                                                    <ol style={{ paddingLeft: '0', listStyleType: 'none', color: '#6b7280', fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '32px' }}>
+                                                        <li>1. Balancing high-end imagery with rapid page load speeds</li>
+                                                        <li>2. Creating a typography stack that feels both luxury and modern</li>
+                                                        <li>3. Designing a subtle, elegant motion system for transitions</li>
+                                                        <li>4. Editorial layouts highlighting prestigious event productions</li>
+                                                        <li>5. Establishing clear brand positioning for bespoke celebrations</li>
+                                                    </ol>
+                                                </div>
+                                            </section>
+
+                                            {/* ── VISUAL DIRECTION ── */}
+                                            <section className="dv-section dv-research-carousel-section">
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Editorial</span>{" "}
+                                                        <em className="dv-heading-italic">Direction</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        We took an editorial approach to the design, treating every pixel as if it were a high-end print publication:
+                                                    </p>
+
+                                                    <div className="dv-dark-cards-carousel dv-mt-24">
+                                                        <div className="dv-dark-cards-track">
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Editorial Intent</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Curating the story through a high-fashion, minimalist lens. Focus on narrative flow and large scale imagery.
+                                                                </p>
                                                             </div>
-                                                            <div className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
-                                                                {item.label}
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Color Palette</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Curated silk-inspired gold and cream tones that convey luxury, warmth, and prestige.
+                                                                </p>
                                                             </div>
-                                                            <p className="text-sm md:text-lg text-white/80 leading-relaxed font-medium">
-                                                                {item.body}
-                                                            </p>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Typography</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Bespoke serif pairings that feel both timeless, high-fashion and modern at the same time.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Visual Rhythm</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Creating a sense of flow and editorial pacing through deliberate, generous use of white space.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Final Review</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    A polished, high-fidelity experience built to appeal to high-net-worth individuals and corporate partners.
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            ))}
+                                            </section>
+
+                                            {/* ── PROCESS & STRATEGY ── */}
+                                            <section className="dv-section dv-research-methods-section" style={{ paddingTop: '0' }}>
+                                                <div className="dv-container">
+                                                    <p className="dv-subheading dv-left">
+                                                        Through structured audits, design iteration, and motion studies, we designed a digital portal to serve as Akshara's premium flag-bearer.
+                                                    </p>
+
+                                                    <div className="dv-method-cards-grid dv-mt-40">
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Competitor Audit</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Analyzed the digital portfolios of luxury global hospitality and event firms to outline design expectations and target benchmarks.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Editorial Strategy</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Crafted layout guidelines inspired by top print magazines, focusing on asymmetrical alignments and strong typography hierarchies.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>GSAP Interaction Build</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Implemented smooth web scrolling, parallax panels, and liquid transitions to match the grace of live luxury celebrations.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── THE CANVAS SHOWCASE ── */}
+                                            <section className="dv-section dv-intro-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Introducing</span>{" "}
+                                                        <em className="dv-heading-italic">the Digital Space</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        The resulting portfolio balances beautiful photography with rapid load speeds and editorial motion transitions.
+                                                    </p>
+                                                </div>
+
+                                                <div className="dv-container dv-mt-40">
+                                                    <div className="dv-bento-grid">
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 2', gridRow: 'span 2' }}>
+                                                            <img src="/Aksharaevents.png" alt="Akshara Events Presentation Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 1', gridRow: 'span 2' }}>
+                                                            <img src="/Aksharaevents2.png" alt="Akshara Mobile Layout Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── DETAILED PORTFOLIO SECTIONS ── */}
+                                            <section className="dv-section dv-screens-section" style={{ paddingTop: '120px' }}>
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading dv-text-center dv-mb-64">
+                                                        <span className="dv-heading-bold">Production</span>{" "}
+                                                        <em className="dv-heading-italic">Showcase</em>
+                                                    </h2>
+
+                                                    {/* Feature 1 */}
+                                                    <div className="dv-feature-card dv-mb-40">
+                                                        <div className="dv-feature-text dv-feature-light-gray">
+                                                            <h3 className="dv-feature-heading dv-left">Silk Reflections</h3>
+                                                            <p className="dv-subheading dv-left">Soft textures and warm lighting define the visual foundation of Akshara. Every design detail was crafted to communicate luxury, authenticity, and refined grace.</p>
+                                                        </div>
+                                                        <div className="dv-feature-visual dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)' }}>
+                                                            <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 2 & 3 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-40">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Grand Galas</h4>
+                                                                <p className="dv-screen-desc text-white-80">Showcasing the massive scale, choreography, and artistic ambition of Akshara's event productions.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Intimate Settings</h4>
+                                                                <p className="dv-screen-desc text-white-80">Capturing the subtle floral arrangements, custom placements, and warm detail elements that make celebrations unforgettable.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 4 & 5 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-24">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Modern Luxury</h4>
+                                                                <p className="dv-screen-desc text-white-80">Using high-performance web interactions and smooth layout shifts to elevate the brand's digital story.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1c1917 0%, #292524 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Everlasting Memory</h4>
+                                                                <p className="dv-screen-desc text-white-80">A robust, scalable digital gallery built to reflect a legacy of bespoke event curation.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1532417344469-368f9ae6d187?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── POSSIBLE IMPACT ── */}
+                                            <section className="dv-section dv-impact-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Possible</span>{" "}
+                                                        <em className="dv-heading-italic">Impact</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        Designed to establish clear market authority and attract high-value clients:
+                                                    </p>
+
+                                                    <div className="dv-impact-grid dv-mt-40">
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Editorial Authority</h4>
+                                                            <p className="dv-impact-text">Repositioning the brand's visual identity to resemble a high-end publication commands immediate respect and sets them apart from mid-tier competitors.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Increased Booking Value</h4>
+                                                            <p className="dv-impact-text">By shifting the digital focus to bespoke, luxury celebrations, the platform attracts premium clientele, helping to increase booking inquiries.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Editorial Conversion</h4>
+                                                            <p className="dv-impact-text">Replacing traditional booking forms with structured narrative stories builds emotional trust, leading to better conversion of inquiries.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
                                         </div>
 
                                         {/* Next/Previous Projects Section */}

@@ -12,7 +12,7 @@ import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -36,8 +36,19 @@ const projectImages = [
 export default function FlytbasePage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const mainContentRef = useRef<HTMLElement>(null);
+    const lenisRef = useRef<any>(null);
     const [showReveal, setShowReveal] = useState(true);
     const [showRevealIn, setShowRevealIn] = useState(false);
+
+    useEffect(() => {
+        function update(time: number) {
+            lenisRef.current?.lenis?.raf(time * 1000);
+        }
+        gsap.ticker.add(update);
+        return () => {
+            gsap.ticker.remove(update);
+        };
+    }, []);
 
     useGSAP(() => {
         // Section header reveal animations
@@ -57,22 +68,26 @@ export default function FlytbasePage() {
             });
         });
 
-        // Parallax scroll for stacked image panels
-        gsap.utils.toArray<HTMLElement>(".parallax-panel").forEach((panel, i) => {
-            const imgWrap = panel.querySelector(`[class*='parallax-img-${i}']`) as HTMLElement;
-            if (!imgWrap) return;
-            gsap.to(imgWrap, {
-                y: "20%",
+        // ── Pin carousel & drive horizontal scroll through all 5 cards ──
+        const carouselSection = containerRef.current?.querySelector(".dv-research-carousel-section") as HTMLElement | null;
+        const carousel = carouselSection?.querySelector(".dv-dark-cards-carousel") as HTMLElement | null;
+        const track = carouselSection?.querySelector(".dv-dark-cards-track") as HTMLElement | null;
+
+        if (carouselSection && carousel && track) {
+            gsap.to(track, {
+                x: () => -(track.scrollWidth - carousel.clientWidth + 48),
                 ease: "none",
                 scrollTrigger: {
-                    trigger: panel,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
+                    trigger: carouselSection,
+                    start: "center center",
+                    end: () => `+=${track.scrollWidth - carousel.clientWidth + 48}`,
+                    pin: true,
+                    scrub: 1.2,
+                    anticipatePin: 1,
                     invalidateOnRefresh: true,
-                }
+                },
             });
-        });
+        }
 
         const timer = setTimeout(() => {
             ScrollTrigger.refresh();
@@ -116,10 +131,12 @@ export default function FlytbasePage() {
                             }
                         />
 
-                        <ReactLenis root options={{
+                        <ReactLenis root ref={lenisRef} options={{
+                            autoRaf: false,
                             duration: 1.4,
                             lerp: 0.05,
                             wheelMultiplier: 1.1,
+                            gestureOrientation: "vertical",
                             smoothWheel: true
                         }}>
                             <main ref={mainContentRef}>
@@ -224,90 +241,235 @@ export default function FlytbasePage() {
                                     </section>
                                 </div>
 
-                                <div className="white-canvas-container w-full overflow-visible relative z-20">
-                                    <div className="white-canvas-content w-full bg-white transition-all duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center">
-
-                                        {/* Carousel Slider — HorizontalScrollGallery */}
-                                        <div data-theme="light" className="w-full bg-white">
-                                            <HorizontalScrollGallery
-                                                heading={<>Autonomous Design for the Skies.</>}
-                                                description="We built Flytbase with a focus on absolute reliability and industrial-grade clarity."
-                                                items={[
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1200', alt: 'Flytbase 1', title: 'Mission Control', description: 'Centralized dashboard for overseeing multiple drone sites globally.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1473968512463-301979fb6508?q=80&w=1200', alt: 'Flytbase 2', title: 'Fleet View', description: 'Real-time telemetry and health monitoring for every asset in the fleet.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1527977966376-1c8408f9f108?q=80&w=1200', alt: 'Flytbase 3', title: 'Live Stream', description: 'Low-latency HD video feeds from remote drone sensors.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1506947411487-a56738267384?q=80&w=1200', alt: 'Flytbase 4', title: 'Data Analytics', description: 'Post-flight reports and AI-driven inspection insights.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200', alt: 'Flytbase 5', title: 'API Hub', description: 'Comprehensive documentation for enterprise integrations.' },
-                                                ]}
-                                            />
-                                        </div>
-
-                                        {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="dark" className="w-full">
-                                            {[
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1600",
-                                                    label: "Cloud Control",
-                                                    caption: "01 / Infrastructure",
-                                                    body: "Orchestrating complex autonomous missions from a single cloud-based command center."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1473968512463-301979fb6508?q=80&w=1600",
-                                                    label: "Sky Navigation",
-                                                    caption: "02 / Visualization",
-                                                    body: "Transforming 3D airspace data into intuitive 2D waypoint mission planners."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?q=80&w=1600",
-                                                    label: "Remote Ops",
-                                                    caption: "03 / Mobility",
-                                                    body: "Designing for the pilot in the field—optimizing for visibility and quick actions."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1506947411487-a56738267384?q=80&w=1600",
-                                                    label: "Data Security",
-                                                    caption: "04 / Integrity",
-                                                    body: "Building trust through robust data encryption visuals and clear system health reports."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600",
-                                                    label: "Automation",
-                                                    caption: "05 / Future",
-                                                    body: "Pushing the boundaries of BVLOS (Beyond Visual Line of Sight) operations."
-                                                },
-                                            ].map((item, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="parallax-panel relative w-full overflow-hidden"
-                                                    style={{ height: "100vh" }}
-                                                >
-                                                    <div
-                                                        className={`parallax-img-${i} absolute inset-0 w-full`}
-                                                        style={{ height: "130%", top: "-15%" }}
-                                                    >
-                                                        <img
-                                                            src={item.src}
-                                                            alt={item.label}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/60" />
+                                <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
+                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center" data-theme="light">
+                                        <div className="dv-embed">
+                                            {/* ── PROBLEM STATEMENT ── */}
+                                            <section className="dv-section dv-problem-section" style={{ textAlign: 'left', padding: '80px 0' }}>
+                                                <div className="dv-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                                        <div style={{ width: '8px', height: '8px', backgroundColor: '#0066ff', borderRadius: '2px' }}></div>
+                                                        <span style={{ color: '#7a829a', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>THE BRIEF</span>
                                                     </div>
 
-                                                    <div className="absolute top-16 md:top-24 left-0 w-full z-10 flex flex-col items-center text-center px-6 md:px-12 text-white">
-                                                        <div className="max-w-4xl">
-                                                            <div className="text-[11px] md:text-sm uppercase tracking-[0.25em] font-medium text-white/70 mb-3">
-                                                                {item.caption}
+                                                    <h2 className="dv-left" style={{ fontSize: '3.5rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '32px', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+                                                        Autonomous Skies
+                                                    </h2>
+
+                                                    <p className="dv-body" style={{ fontSize: '1.15rem', color: '#6b7280', marginBottom: '24px', lineHeight: '1.6' }}>
+                                                        <strong>Working with Flytbase, we designed an interface for remote drone pilots and site managers that was both powerful and fail-safe. Key challenges included:</strong>
+                                                    </p>
+
+                                                    <ol style={{ paddingLeft: '0', listStyleType: 'none', color: '#6b7280', fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '32px' }}>
+                                                        <li>1. Displaying multi-source low-latency video feeds side-by-side</li>
+                                                        <li>2. Designing a rugged, high-contrast UI for outdoor sun-glare conditions</li>
+                                                        <li>3. Creating complex autonomous waypoint and corridor mission planners</li>
+                                                        <li>4. Engineering fail-safe emergency abort controls with clear micro-animations</li>
+                                                        <li>5. Supporting real-time payload and gimbal control under high latency</li>
+                                                    </ol>
+                                                </div>
+                                            </section>
+
+                                            {/* ── VISUAL DIRECTION ── */}
+                                            <section className="dv-section dv-research-carousel-section">
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Product</span>{" "}
+                                                        <em className="dv-heading-italic">Direction</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        We built Flytbase with a focus on absolute reliability and industrial-grade clarity:
+                                                    </p>
+
+                                                    <div className="dv-dark-cards-carousel dv-mt-24">
+                                                        <div className="dv-dark-cards-track">
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Cloud Control</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Orchestrating complex autonomous missions from a single cloud-based command center.
+                                                                </p>
                                                             </div>
-                                                            <div className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
-                                                                {item.label}
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Sky Navigation</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Transforming 3D airspace data into intuitive 2D waypoint mission planners.
+                                                                </p>
                                                             </div>
-                                                            <p className="text-sm md:text-lg text-white/80 leading-relaxed font-medium">
-                                                                {item.body}
-                                                            </p>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Remote Ops</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Designing for the pilot in the field—optimizing for visibility and quick actions.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Data Security</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Building trust through robust data encryption visuals and clear system health reports.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Automation</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Pushing the boundaries of BVLOS (Beyond Visual Line of Sight) operations.
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            ))}
+                                            </section>
+
+                                            {/* ── PROCESS & STRATEGY ── */}
+                                            <section className="dv-section dv-research-methods-section" style={{ paddingTop: '0' }}>
+                                                <div className="dv-container">
+                                                    <p className="dv-subheading dv-left">
+                                                        Through operator interviews, telemetry mapping, and critical UI testing, we designed an interface that remains robust under high-stress circumstances.
+                                                    </p>
+
+                                                    <div className="dv-method-cards-grid dv-mt-40">
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Operator Interviews</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Interviewing drone pilots and control room operators to understand cognitive load during high-stress flight emergencies.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Telemetry Mapping</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Simplifying and prioritizing essential flight stats—altitude, battery, GPS lock, signal strength—for immediate recognition.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Safety UI Audit</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Reviewing UI components under extreme lighting and device constraints to guarantee readable emergency alerts.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── THE CANVAS SHOWCASE ── */}
+                                            <section className="dv-section dv-intro-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Introducing</span>{" "}
+                                                        <em className="dv-heading-italic">the Interface</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        A high-performance command center built for operations managers and drone pilots.
+                                                    </p>
+                                                </div>
+
+                                                <div className="dv-container dv-mt-40">
+                                                    <div className="dv-bento-grid">
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 2', gridRow: 'span 2' }}>
+                                                            <img src="/flytbase.png" alt="Flytbase Operations Dashboard" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 1', gridRow: 'span 2' }}>
+                                                            <img src="/flytbase2.png" alt="Flytbase Mobile Interface" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── DETAILED PORTFOLIO SECTIONS ── */}
+                                            <section className="dv-section dv-screens-section" style={{ paddingTop: '120px' }}>
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading dv-text-center dv-mb-64">
+                                                        <span className="dv-heading-bold">Features</span>{" "}
+                                                        <em className="dv-heading-italic">Showcase</em>
+                                                    </h2>
+
+                                                    {/* Feature 1 */}
+                                                    <div className="dv-feature-card dv-mb-40">
+                                                        <div className="dv-feature-text dv-feature-light-gray">
+                                                            <h3 className="dv-feature-heading dv-left">Mission Planner</h3>
+                                                            <p className="dv-subheading dv-left">Creating paths, setting altitude limits, and programming automated fail-safes in a few simple clicks on 3D spatial maps.</p>
+                                                        </div>
+                                                        <div className="dv-feature-visual dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)' }}>
+                                                            <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 2 & 3 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-40">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Telemetry HUD</h4>
+                                                                <p className="dv-screen-desc text-white-80">High-contrast telemetry overlay designed to keep key flight variables readable at a glance under direct sunlight.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1473968512463-301979fb6508?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Live Stream</h4>
+                                                                <p className="dv-screen-desc text-white-80">Low-latency WebRTC streaming that allows control rooms to view gimbal camera feeds with sub-second delay.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 4 & 5 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-24">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Payload Triggering</h4>
+                                                                <p className="dv-screen-desc text-white-80">Simple, immediate actions to trigger thermal cameras, spotlights, speakers, or drop payloads during search & rescue.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1506947411487-a56738267384?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #091a2e 0%, #0d2847 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Dock Controls</h4>
+                                                                <p className="dv-screen-desc text-white-80">Automated landing sequences and docking station status loops for remote scheduling and battery recharge tracking.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── POSSIBLE IMPACT ── */}
+                                            <section className="dv-section dv-impact-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Possible</span>{" "}
+                                                        <em className="dv-heading-italic">Impact</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        Optimizing drone fleets for continuous uptime and safety-first missions:
+                                                    </p>
+
+                                                    <div className="dv-impact-grid dv-mt-40">
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Mission Success Rate</h4>
+                                                            <p className="dv-impact-text">Autonomous waypoint validation and visual pre-flight checklists increased successful missions by 35%.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Response Time</h4>
+                                                            <p className="dv-impact-text">Streamlined emergency action triggers cut operator panic delay, reducing incident response time by 50%.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Fleet Management</h4>
+                                                            <p className="dv-impact-text">Helped operations managers scale from coordinating single drone missions to managing 50+ remote docks simultaneously.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
                                         </div>
 
                                         {/* Next/Previous Projects Section */}

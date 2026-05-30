@@ -13,7 +13,9 @@ import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
 import { useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
+import "./../nebula/nebula.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,8 +38,19 @@ const projectImages = [
 export default function ExsavvyPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const mainContentRef = useRef<HTMLElement>(null);
+    const lenisRef = useRef<any>(null);
     const [showReveal, setShowReveal] = useState(true);
     const [showRevealIn, setShowRevealIn] = useState(false);
+
+    useEffect(() => {
+        function update(time: number) {
+            lenisRef.current?.lenis?.raf(time * 1000);
+        }
+        gsap.ticker.add(update);
+        return () => {
+            gsap.ticker.remove(update);
+        };
+    }, []);
 
     useGSAP(() => {
         // Section header reveal animations
@@ -57,22 +70,26 @@ export default function ExsavvyPage() {
             });
         });
 
-        // Parallax scroll for stacked image panels
-        gsap.utils.toArray<HTMLElement>(".parallax-panel").forEach((panel, i) => {
-            const imgWrap = panel.querySelector(`[class*='parallax-img-${i}']`) as HTMLElement;
-            if (!imgWrap) return;
-            gsap.to(imgWrap, {
-                y: "20%",
+        // ── Pin carousel & drive horizontal scroll through all 5 cards ──
+        const carouselSection = containerRef.current?.querySelector(".dv-research-carousel-section") as HTMLElement | null;
+        const carousel = carouselSection?.querySelector(".dv-dark-cards-carousel") as HTMLElement | null;
+        const track = carouselSection?.querySelector(".dv-dark-cards-track") as HTMLElement | null;
+
+        if (carouselSection && carousel && track) {
+            gsap.to(track, {
+                x: () => -(track.scrollWidth - carousel.clientWidth + 48),
                 ease: "none",
                 scrollTrigger: {
-                    trigger: panel,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
+                    trigger: carouselSection,
+                    start: "center center",
+                    end: () => `+=${track.scrollWidth - carousel.clientWidth + 48}`,
+                    pin: true,
+                    scrub: 1.2,
+                    anticipatePin: 1,
                     invalidateOnRefresh: true,
-                }
+                },
             });
-        });
+        }
 
         const timer = setTimeout(() => {
             ScrollTrigger.refresh();
@@ -123,7 +140,8 @@ export default function ExsavvyPage() {
                             }
                         />
 
-                        <ReactLenis root options={{
+                        <ReactLenis root ref={lenisRef} options={{
+                            autoRaf: false,
                             duration: 1.4,
                             lerp: 0.05,
                             wheelMultiplier: 1.1,
@@ -232,90 +250,235 @@ export default function ExsavvyPage() {
                                     </section>
                                 </div>
 
-                                <div className="white-canvas-container w-full overflow-visible relative z-20">
-                                    <div className="white-canvas-content w-full bg-white transition-all duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center">
-
-                                        {/* Carousel Slider — HorizontalScrollGallery */}
-                                        <div data-theme="light" className="w-full bg-white">
-                                            <HorizontalScrollGallery
-                                                heading={<>Complexity made simple.</>}
-                                                description="Designing for SaaS requires a delicate balance of feature density and white space. We found the sweet spot for Exsavvy."
-                                                items={[
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200', alt: 'Exsavvy 1', title: 'UX Audit', description: 'Streamlining the workflow from data import to reporting.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200', alt: 'Exsavvy 2', title: 'Data Viz', description: 'Interactive charts designed for maximum legibility and depth.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1504384308090-c89e12bf9a51?q=80&w=1200', alt: 'Exsavvy 3', title: 'Collaboration', description: 'Real-time annotation and sharing tools for distributed teams.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200', alt: 'Exsavvy 4', title: 'Mobile Dash', description: 'Adaptive layouts that preserve data integrity on smaller screens.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1522071823916-d447ee73708e?q=80&w=1200', alt: 'Exsavvy 5', title: 'Design System', description: 'Building a library of reusable widgets and data components.' },
-                                                ]}
-                                            />
-                                        </div>
-
-                                        {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="dark" className="w-full">
-                                            {[
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600",
-                                                    label: "Abstracted Data",
-                                                    caption: "01 / Visualization",
-                                                    body: "Finding the balance between raw information and meaningful visual narratives."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1600",
-                                                    label: "Precision UX",
-                                                    caption: "02 / Interface",
-                                                    body: "Every pixel served a purpose — helping users navigate mountains of data with ease."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1504868584819-f8e905b6dc79?q=80&w=1600",
-                                                    label: "Enterprise Logic",
-                                                    caption: "03 / Architecture",
-                                                    body: "Designing the underlying logic for complex permission systems and data tiers."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1454165833267-020583d0469b?q=80&w=1600",
-                                                    label: "Team Workflows",
-                                                    caption: "04 / Collaboration",
-                                                    body: "Enabling teams to communicate directly within the data environment."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1600",
-                                                    label: "Final Build",
-                                                    caption: "05 / Delivery",
-                                                    body: "A finalized, high-performance platform delivered with full technical documentation."
-                                                },
-                                            ].map((item, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="parallax-panel relative w-full overflow-hidden"
-                                                    style={{ height: "100vh" }}
-                                                >
-                                                    <div
-                                                        className={`parallax-img-${i} absolute inset-0 w-full`}
-                                                        style={{ height: "130%", top: "-15%" }}
-                                                    >
-                                                        <img
-                                                            src={item.src}
-                                                            alt={item.label}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/60" />
+                                <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
+                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center" data-theme="light">
+                                        <div className="dv-embed">
+                                            {/* ── PROBLEM STATEMENT ── */}
+                                            <section className="dv-section dv-problem-section" style={{ textAlign: 'left', padding: '80px 0' }}>
+                                                <div className="dv-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                                        <div style={{ width: '8px', height: '8px', backgroundColor: '#00cc99', borderRadius: '2px' }}></div>
+                                                        <span style={{ color: '#7a829a', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>THE BRIEF</span>
                                                     </div>
 
-                                                    <div className="absolute top-16 md:top-24 left-0 w-full z-10 flex flex-col items-center text-center px-6 md:px-12 text-white">
-                                                        <div className="max-w-4xl">
-                                                            <div className="text-[11px] md:text-sm uppercase tracking-[0.25em] font-medium text-white/70 mb-3">
-                                                                {item.caption}
+                                                    <h2 className="dv-left" style={{ fontSize: '3.5rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '32px', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+                                                        Seeing the Unseen
+                                                    </h2>
+
+                                                    <p className="dv-body" style={{ fontSize: '1.15rem', color: '#6b7280', marginBottom: '24px', lineHeight: '1.6' }}>
+                                                        <strong>Modern companies are drowning in data but starving for insights. Exsavvy's mission was to simplify the complex and make data exploration effortless. They face key challenges:</strong>
+                                                    </p>
+
+                                                    <ol style={{ paddingLeft: '0', listStyleType: 'none', color: '#6b7280', fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '32px' }}>
+                                                        <li>1. Displaying large-scale multi-layered data without overwhelming the user</li>
+                                                        <li>2. Ensuring high performance with real-time SVG charting and rendering</li>
+                                                        <li>3. Designing flexible, modular widgets for varied database schemas</li>
+                                                        <li>4. Facilitating real-time collaboration and annotation between teams</li>
+                                                        <li>5. Preserving data integrity and hierarchy across mobile viewports</li>
+                                                    </ol>
+                                                </div>
+                                            </section>
+
+                                            {/* ── VISUAL DIRECTION ── */}
+                                            <section className="dv-section dv-research-carousel-section">
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Product</span>{" "}
+                                                        <em className="dv-heading-italic">Direction</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        Designing for SaaS requires a delicate balance of feature density and white space. We found the sweet spot for Exsavvy:
+                                                    </p>
+
+                                                    <div className="dv-dark-cards-carousel dv-mt-24">
+                                                        <div className="dv-dark-cards-track">
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">UX Audit</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Streamlining the workflow from raw data import to customized report generation for fast operations.
+                                                                </p>
                                                             </div>
-                                                            <div className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
-                                                                {item.label}
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Data Viz</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Interactive charts designed for maximum legibility, clear trendlines, and granular depth.
+                                                                </p>
                                                             </div>
-                                                            <p className="text-sm md:text-lg text-white/80 leading-relaxed font-medium">
-                                                                {item.body}
-                                                            </p>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Collaboration</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Real-time annotation and sharing tools designed for distributed enterprise teams.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Mobile Dash</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Adaptive layouts that preserve heavy data integrity on smaller touch devices.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Design System</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Building a library of reusable widgets, color rules, and data components for scale.
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            ))}
+                                            </section>
+
+                                            {/* ── PROCESS & STRATEGY ── */}
+                                            <section className="dv-section dv-research-methods-section" style={{ paddingTop: '0' }}>
+                                                <div className="dv-container">
+                                                    <p className="dv-subheading dv-left">
+                                                        Through structured audits, design iteration, and system tests, we designed a dashboard that turns complex analytics into simple insights.
+                                                    </p>
+
+                                                    <div className="dv-method-cards-grid dv-mt-40">
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>User Flow Mapping</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Designing paths for standard and power users to query databases and generate complex formulas intuitively.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Data Architecture</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Analyzing enterprise dataset shapes to design flexible charting modules and responsive widget containers.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>System Testing</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Stress-testing SVG and Canvas charting rendering performance under high concurrent data streams.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── THE CANVAS SHOWCASE ── */}
+                                            <section className="dv-section dv-intro-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Introducing</span>{" "}
+                                                        <em className="dv-heading-italic">the Workspace</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        A robust enterprise platform designed to handle multi-layered datasets while maintaining a minimalist interface.
+                                                    </p>
+                                                </div>
+
+                                                <div className="dv-container dv-mt-40">
+                                                    <div className="dv-bento-grid">
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 2', gridRow: 'span 2' }}>
+                                                            <img src="/Exsavvy.png" alt="Exsavvy Presentation Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 1', gridRow: 'span 2' }}>
+                                                            <img src="/Exsavvy2.png" alt="Exsavvy Mobile Layout Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── DETAILED PORTFOLIO SECTIONS ── */}
+                                            <section className="dv-section dv-screens-section" style={{ paddingTop: '120px' }}>
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading dv-text-center dv-mb-64">
+                                                        <span className="dv-heading-bold">Features</span>{" "}
+                                                        <em className="dv-heading-italic">Showcase</em>
+                                                    </h2>
+
+                                                    {/* Feature 1 */}
+                                                    <div className="dv-feature-card dv-mb-40">
+                                                        <div className="dv-feature-text dv-feature-light-gray">
+                                                            <h3 className="dv-feature-heading dv-left">Abstracted Data</h3>
+                                                            <p className="dv-subheading dv-left">Finding the balance between raw database information and meaningful visual narratives. Making high-density charts accessible.</p>
+                                                        </div>
+                                                        <div className="dv-feature-visual dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)' }}>
+                                                            <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 2 & 3 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-40">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Precision UX</h4>
+                                                                <p className="dv-screen-desc text-white-80">Every pixel served a purpose—helping users filter, query, and navigate mountains of enterprise metrics with ease.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Enterprise Logic</h4>
+                                                                <p className="dv-screen-desc text-white-80">Designing the underlying UX architecture for complex permission levels, multi-tenant roles, and security logs.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1504868584819-f8e905b6dc79?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 4 & 5 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-24">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Team Workflows</h4>
+                                                                <p className="dv-screen-desc text-white-80">Enabling analysts and project managers to communicate directly inside dashboard widgets with live annotations.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1454165833267-020583d0469b?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #021a14 0%, #052636 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Final Build</h4>
+                                                                <p className="dv-screen-desc text-white-80">A high-performance SaaS analytics ecosystem delivered with full interactive component libraries.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── POSSIBLE IMPACT ── */}
+                                            <section className="dv-section dv-impact-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Possible</span>{" "}
+                                                        <em className="dv-heading-italic">Impact</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        Designed to drive decision velocity and workflow efficiency:
+                                                    </p>
+
+                                                    <div className="dv-impact-grid dv-mt-40">
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Reporting Time Saved</h4>
+                                                            <p className="dv-impact-text">Delivered a comprehensive design system that reduced weekly reporting time by 60% for enterprise clients.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Increased Active Users</h4>
+                                                            <p className="dv-impact-text">Clear visual hierarchies and interactive widgets led to a 45% increase in daily active user engagement within three months.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Decision Velocity</h4>
+                                                            <p className="dv-impact-text">Enables executive teams to align and make complex data-driven decisions faster through real-time team collaboration.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
                                         </div>
 
                                         {/* Next/Previous Projects Section */}

@@ -13,7 +13,9 @@ import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
 import { useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
+import "./../nebula/nebula.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,8 +38,19 @@ const projectImages = [
 export default function EnvisionVFXPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const mainContentRef = useRef<HTMLElement>(null);
+    const lenisRef = useRef<any>(null);
     const [showReveal, setShowReveal] = useState(true);
     const [showRevealIn, setShowRevealIn] = useState(false);
+
+    useEffect(() => {
+        function update(time: number) {
+            lenisRef.current?.lenis?.raf(time * 1000);
+        }
+        gsap.ticker.add(update);
+        return () => {
+            gsap.ticker.remove(update);
+        };
+    }, []);
 
     useGSAP(() => {
         // Section header reveal animations
@@ -57,22 +70,26 @@ export default function EnvisionVFXPage() {
             });
         });
 
-        // Parallax scroll for stacked image panels
-        gsap.utils.toArray<HTMLElement>(".parallax-panel").forEach((panel, i) => {
-            const imgWrap = panel.querySelector(`[class*='parallax-img-${i}']`) as HTMLElement;
-            if (!imgWrap) return;
-            gsap.to(imgWrap, {
-                y: "20%",
+        // ── Pin carousel & drive horizontal scroll through all 5 cards ──
+        const carouselSection = containerRef.current?.querySelector(".dv-research-carousel-section") as HTMLElement | null;
+        const carousel = carouselSection?.querySelector(".dv-dark-cards-carousel") as HTMLElement | null;
+        const track = carouselSection?.querySelector(".dv-dark-cards-track") as HTMLElement | null;
+
+        if (carouselSection && carousel && track) {
+            gsap.to(track, {
+                x: () => -(track.scrollWidth - carousel.clientWidth + 48),
                 ease: "none",
                 scrollTrigger: {
-                    trigger: panel,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
+                    trigger: carouselSection,
+                    start: "center center",
+                    end: () => `+=${track.scrollWidth - carousel.clientWidth + 48}`,
+                    pin: true,
+                    scrub: 1.2,
+                    anticipatePin: 1,
                     invalidateOnRefresh: true,
-                }
+                },
             });
-        });
+        }
 
         const timer = setTimeout(() => {
             ScrollTrigger.refresh();
@@ -116,10 +133,12 @@ export default function EnvisionVFXPage() {
                             }
                         />
 
-                        <ReactLenis root options={{
+                        <ReactLenis root ref={lenisRef} options={{
+                            autoRaf: false,
                             duration: 1.4,
                             lerp: 0.05,
                             wheelMultiplier: 1.1,
+                            gestureOrientation: "vertical",
                             smoothWheel: true
                         }}>
                             <main ref={mainContentRef}>
@@ -224,90 +243,235 @@ export default function EnvisionVFXPage() {
                                     </section>
                                 </div>
 
-                                <div className="white-canvas-container w-full overflow-visible relative z-20">
-                                    <div className="white-canvas-content w-full bg-white transition-all duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center">
-
-                                        {/* Carousel Slider — HorizontalScrollGallery */}
-                                        <div data-theme="light" className="w-full bg-white">
-                                            <HorizontalScrollGallery
-                                                heading={<>Cinema-grade digital craft.</>}
-                                                description="We approached the Envision project with the same level of detail expected in a Hollywood blockbuster."
-                                                items={[
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1200', alt: 'VFX 1', title: 'Visual Research', description: 'Exploring textures, lighting, and composition for the digital stage.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1492691527719-9d1e07e53acb?q=80&w=1200', alt: 'VFX 2', title: 'Art Direction', description: 'Crafting a moody, high-contrast aesthetic that puts the work center stage.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1200', alt: 'VFX 3', title: 'CGI Integration', description: 'Blending raw technical renders with a refined user interface.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200', alt: 'VFX 4', title: 'Motion Library', description: 'Custom transitions that mirror cinematic camera movements.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1535016120720-40c646bebbdc?q=80&w=1200', alt: 'VFX 5', title: 'Final Handover', description: 'Delivering a high-performance portfolio ready for any screen.' },
-                                                ]}
-                                            />
-                                        </div>
-
-                                        {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="dark" className="w-full">
-                                            {[
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1600",
-                                                    label: "Cinematic Flow",
-                                                    caption: "01 / Aesthetic",
-                                                    body: "High-contrast visuals designed to make colors pop and shadows feel deep and meaningful."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1492691527719-9d1e07e53acb?q=80&w=1600",
-                                                    label: "CGI Mastery",
-                                                    caption: "02 / Technical",
-                                                    body: "Showcasing the technical complexity behind every frame of Envision's work."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1600",
-                                                    label: "Visual Depth",
-                                                    caption: "03 / Storytelling",
-                                                    body: "Using depth-of-field and focus to guide the user's attention through the story."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1600",
-                                                    label: "Motion Craft",
-                                                    caption: "04 / Interactive",
-                                                    body: "Creating moments of delight through subtle, high-performance interactions."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1535016120720-40c646bebbdc?q=80&w=1600",
-                                                    label: "Live Production",
-                                                    caption: "05 / Delivery",
-                                                    body: "A robust platform that serves as the digital home for Envision's growing body of work."
-                                                },
-                                            ].map((item, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="parallax-panel relative w-full overflow-hidden"
-                                                    style={{ height: "100vh" }}
-                                                >
-                                                    <div
-                                                        className={`parallax-img-${i} absolute inset-0 w-full`}
-                                                        style={{ height: "130%", top: "-15%" }}
-                                                    >
-                                                        <img
-                                                            src={item.src}
-                                                            alt={item.label}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/60" />
+                                <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
+                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center" data-theme="light">
+                                        <div className="dv-embed">
+                                            {/* ── PROBLEM STATEMENT ── */}
+                                            <section className="dv-section dv-problem-section" style={{ textAlign: 'left', padding: '80px 0' }}>
+                                                <div className="dv-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                                        <div style={{ width: '8px', height: '8px', backgroundColor: '#8000ff', borderRadius: '2px' }}></div>
+                                                        <span style={{ color: '#7a829a', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>THE BRIEF</span>
                                                     </div>
 
-                                                    <div className="absolute top-16 md:top-24 left-0 w-full z-10 flex flex-col items-center text-center px-6 md:px-12 text-white">
-                                                        <div className="max-w-4xl">
-                                                            <div className="text-[11px] md:text-sm uppercase tracking-[0.25em] font-medium text-white/70 mb-3">
-                                                                {item.caption}
+                                                    <h2 className="dv-left" style={{ fontSize: '3.5rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '32px', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+                                                        Beyond the Screen
+                                                    </h2>
+
+                                                    <p className="dv-body" style={{ fontSize: '1.15rem', color: '#6b7280', marginBottom: '24px', lineHeight: '1.6' }}>
+                                                        <strong>VFX studios are visual powerhouses, but their own digital presence often fails to showcase the depth of their technical craft. They face key challenges:</strong>
+                                                    </p>
+
+                                                    <ol style={{ paddingLeft: '0', listStyleType: 'none', color: '#6b7280', fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '32px' }}>
+                                                        <li>1. Integrating high-bitrate showreel assets without losing performance</li>
+                                                        <li>2. Designing a dark-mode first interface that feels cinematic</li>
+                                                        <li>3. High-resolution responsiveness for industry professionals</li>
+                                                        <li>4. Blending raw CGI wireframes with refined typography layout</li>
+                                                        <li>5. Delivering smooth motion transitions that mirror camera paths</li>
+                                                    </ol>
+                                                </div>
+                                            </section>
+
+                                            {/* ── VISUAL DIRECTION ── */}
+                                            <section className="dv-section dv-research-carousel-section">
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Cinematic</span>{" "}
+                                                        <em className="dv-heading-italic">Direction</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        We approached the Envision project with the same level of detail expected in a Hollywood blockbuster:
+                                                    </p>
+
+                                                    <div className="dv-dark-cards-carousel dv-mt-24">
+                                                        <div className="dv-dark-cards-track">
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Visual Research</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Exploring textures, lighting, and composition for the digital stage to create maximum emotional resonance.
+                                                                </p>
                                                             </div>
-                                                            <div className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
-                                                                {item.label}
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Art Direction</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Crafting a moody, high-contrast aesthetic that puts the visual work center stage without distractions.
+                                                                </p>
                                                             </div>
-                                                            <p className="text-sm md:text-lg text-white/80 leading-relaxed font-medium">
-                                                                {item.body}
-                                                            </p>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">CGI Integration</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Blending raw technical renders with a refined, minimalist user interface that highlights the craft.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Motion Library</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Custom interface transitions that mirror physical cinematic camera movements and focal changes.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Final Handover</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Delivering a high-performance, robust portfolio ready for any screen size, compressed with WebM.
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            ))}
+                                            </section>
+
+                                            {/* ── PROCESS & STRATEGY ── */}
+                                            <section className="dv-section dv-research-methods-section" style={{ paddingTop: '0' }}>
+                                                <div className="dv-container">
+                                                    <p className="dv-subheading dv-left">
+                                                        Through close visual audits, showreel compression pipelines, and WebGL integrations, we elevated Envision's portfolio layout.
+                                                    </p>
+
+                                                    <div className="dv-method-cards-grid dv-mt-40">
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Visual Research</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Curating moodboards and tone palettes to mirror cinematic film grades and post-processing styles.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Showreel Curation</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Compiling and optimizing high-fidelity 4K video clips to load in under a second on mobile platforms.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>WebGL Prototyping</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Developing smooth three-dimensional viewport transitions to guide users seamlessly through their projects.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── THE CANVAS SHOWCASE ── */}
+                                            <section className="dv-section dv-intro-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Introducing</span>{" "}
+                                                        <em className="dv-heading-italic">the Digital Space</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        The resulting site functions as a canvas—utilizing large cinematic reveals and fluid parallax effects.
+                                                    </p>
+                                                </div>
+
+                                                <div className="dv-container dv-mt-40">
+                                                    <div className="dv-bento-grid">
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 2', gridRow: 'span 2' }}>
+                                                            <img src="/VFX.png" alt="Envision VFX Presentation Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 1', gridRow: 'span 2' }}>
+                                                            <img src="/VFX2.png" alt="Envision VFX Mobile Layout Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── DETAILED PORTFOLIO SECTIONS ── */}
+                                            <section className="dv-section dv-screens-section" style={{ paddingTop: '120px' }}>
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading dv-text-center dv-mb-64">
+                                                        <span className="dv-heading-bold">Production</span>{" "}
+                                                        <em className="dv-heading-italic">Showcase</em>
+                                                    </h2>
+
+                                                    {/* Feature 1 */}
+                                                    <div className="dv-feature-card dv-mb-40">
+                                                        <div className="dv-feature-text dv-feature-light-gray">
+                                                            <h3 className="dv-feature-heading dv-left">Cinematic Flow</h3>
+                                                            <p className="dv-subheading dv-left">High-contrast visuals designed to make colors pop and shadows feel deep and meaningful. Perfect showcase for modern film production.</p>
+                                                        </div>
+                                                        <div className="dv-feature-visual dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)' }}>
+                                                            <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 2 & 3 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-40">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">CGI Mastery</h4>
+                                                                <p className="dv-screen-desc text-white-80">Showcasing the technical complexity and wireframe structures behind every frame of Envision's CGI work.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e53acb?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Visual Depth</h4>
+                                                                <p className="dv-screen-desc text-white-80">Using selective focus and depth-of-field effects to direct user focus on key scene objects.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 4 & 5 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-24">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Motion Craft</h4>
+                                                                <p className="dv-screen-desc text-white-80">Creating dynamic moments of interaction through smooth camera transitions on the web browser.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #090016 0%, #15002b 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Live Production</h4>
+                                                                <p className="dv-screen-desc text-white-80">A high-performance digital gallery built as a staging ground for Envision's global cinematic releases.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1535016120720-40c646bebbdc?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── POSSIBLE IMPACT ── */}
+                                            <section className="dv-section dv-impact-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Possible</span>{" "}
+                                                        <em className="dv-heading-italic">Impact</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        Designed to establish visual authority and drive production partnerships:
+                                                    </p>
+
+                                                    <div className="dv-impact-grid dv-mt-40">
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Production Inquiries</h4>
+                                                            <p className="dv-impact-text">Delivering a premium digital presence that successfully increased inbound inquiries from major production houses by 35%.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Brand Authority</h4>
+                                                            <p className="dv-impact-text">Positioned the studio as a high-fidelity CGI leader, elevating their credibility in global advertising and cinema markets.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Media Performance</h4>
+                                                            <p className="dv-impact-text">Optimized web pipelines ensure heavy cinematic reels play fluidly with minimal buffering or browser load delays.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
                                         </div>
 
                                         {/* Next/Previous Projects Section */}

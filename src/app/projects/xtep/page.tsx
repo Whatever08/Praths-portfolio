@@ -12,7 +12,7 @@ import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -36,8 +36,19 @@ const projectImages = [
 export default function XtepPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const mainContentRef = useRef<HTMLElement>(null);
+    const lenisRef = useRef<any>(null);
     const [showReveal, setShowReveal] = useState(true);
     const [showRevealIn, setShowRevealIn] = useState(false);
+
+    useEffect(() => {
+        function update(time: number) {
+            lenisRef.current?.lenis?.raf(time * 1000);
+        }
+        gsap.ticker.add(update);
+        return () => {
+            gsap.ticker.remove(update);
+        };
+    }, []);
 
     useGSAP(() => {
         // Section header reveal animations
@@ -57,22 +68,26 @@ export default function XtepPage() {
             });
         });
 
-        // Parallax scroll for stacked image panels
-        gsap.utils.toArray<HTMLElement>(".parallax-panel").forEach((panel, i) => {
-            const imgWrap = panel.querySelector(`[class*='parallax-img-${i}']`) as HTMLElement;
-            if (!imgWrap) return;
-            gsap.to(imgWrap, {
-                y: "20%",
+        // ── Pin carousel & drive horizontal scroll through all 5 cards ──
+        const carouselSection = containerRef.current?.querySelector(".dv-research-carousel-section") as HTMLElement | null;
+        const carousel = carouselSection?.querySelector(".dv-dark-cards-carousel") as HTMLElement | null;
+        const track = carouselSection?.querySelector(".dv-dark-cards-track") as HTMLElement | null;
+
+        if (carouselSection && carousel && track) {
+            gsap.to(track, {
+                x: () => -(track.scrollWidth - carousel.clientWidth + 48),
                 ease: "none",
                 scrollTrigger: {
-                    trigger: panel,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
+                    trigger: carouselSection,
+                    start: "center center",
+                    end: () => `+=${track.scrollWidth - carousel.clientWidth + 48}`,
+                    pin: true,
+                    scrub: 1.2,
+                    anticipatePin: 1,
                     invalidateOnRefresh: true,
-                }
+                },
             });
-        });
+        }
 
         const timer = setTimeout(() => {
             ScrollTrigger.refresh();
@@ -123,7 +138,8 @@ export default function XtepPage() {
                             }
                         />
 
-                        <ReactLenis root options={{
+                        <ReactLenis root ref={lenisRef} options={{
+                            autoRaf: false,
                             duration: 1.4,
                             lerp: 0.05,
                             wheelMultiplier: 1.1,
@@ -153,169 +169,235 @@ export default function XtepPage() {
                                     />
                                 </div>
 
-                                {/* Project Details Reference Section */}
-                                <div className="w-full relative">
-                                    <div className="absolute inset-0 bg-black/[0.15] pointer-events-none" />
-                                    <section className="w-full relative z-10 text-[#e5e5e5] py-20 md:py-32 px-6 md:px-12 max-w-[1400px] mx-auto font-sans" data-theme="dark">
-                                        {/* Top Row: Role & Timeline */}
-                                        <div className="flex flex-col md:flex-row justify-between w-full mb-16 md:mb-24">
-                                            <div className="w-full md:w-[65%] mb-8 md:mb-0">
-                                                <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-3 font-medium">Role</h3>
-                                                <p className="text-sm md:text-base font-medium text-white">Visual & Experience Designer</p>
-                                            </div>
-                                            <div className="w-full md:w-[30%]">
-                                                <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-3 font-medium">Timeline</h3>
-                                                <p className="text-sm md:text-base font-medium text-white">3 Months</p>
-                                            </div>
-                                        </div>
-
-                                        {/* Main Details 2-Col Grid */}
-                                        <div className="flex flex-col md:flex-row justify-between w-full">
-                                            {/* Left Column */}
-                                            <div className="w-full md:w-[65%] flex flex-col gap-12 md:gap-16 pr-0 md:pr-12">
-                                                <div>
-                                                    <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Overview</h3>
-                                                    <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl">
-                                                        A performance-driven redesign that emphasizes product durability and tech-specs through immersive 3D viewers and scroll-triggered kinetic typography.
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Goal</h3>
-                                                    <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl">
-                                                        Elevate the digital shopping experience to match the technical prowess of the footwear, ensuring a frictionless path to purchase.
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Challenges</h3>
-                                                    <ul className="list-disc pl-5 text-sm md:text-base text-white/80 leading-relaxed max-w-2xl space-y-2">
-                                                        <li>Optimizing heavy 3D assets for mobile devices</li>
-                                                        <li>Creating a motion system that feels athletic and fast</li>
-                                                        <li>Balancing high-fashion aesthetics with technical specs</li>
-                                                    </ul>
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Outcome</h3>
-                                                    <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl mb-4">
-                                                        Successfully launched a global digital flagship that saw a 25% increase in mobile engagement and average session duration.
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Right Column */}
-                                            <div className="w-full md:w-[30%] flex flex-col gap-12 md:gap-16 mt-12 md:mt-0">
-                                                <div>
-                                                    <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-6 font-medium">Understanding the Process</h3>
-                                                    <ul className="flex flex-col gap-1.5 text-sm md:text-base text-white/90">
-                                                        <li>Brand Immersion</li>
-                                                        <li>Motion Studies</li>
-                                                        <li>Web3D Prototyping</li>
-                                                        <li>Performance Optimization</li>
-                                                    </ul>
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-6 font-medium">Tools & Technologies</h3>
-                                                    <ul className="flex flex-col gap-1.5 text-sm md:text-base text-white/90">
-                                                        <li>Figma</li>
-                                                        <li>Cinema 4D</li>
-                                                        <li>Three.js</li>
-                                                        <li>Post Processing</li>
-                                                    </ul>
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-6 font-medium">View Website</h3>
-                                                    <button className="px-8 py-2.5 rounded-full border border-white/40 text-white text-sm hover:bg-white hover:text-black transition-colors font-medium">
-                                                        View Shop
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-
-                                <div className="white-canvas-container w-full overflow-visible relative z-20">
-                                    <div className="white-canvas-content w-full bg-white transition-all duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center">
-
-                                        {/* Carousel Slider — HorizontalScrollGallery */}
-                                        <div data-theme="light" className="w-full bg-white">
-                                            <HorizontalScrollGallery
-                                                heading={<>Motion is at the core of Xtep.</>}
-                                                description="We built a design system that feels alive, using momentum-based scrolling and dynamic image masks."
-                                                items={[
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200', alt: 'Xtep 1', title: 'Kinetic UI', description: 'Interface elements that react to scroll velocity for a fast-paced feel.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1511556532299-8f6617a75a34?q=80&w=1200', alt: 'Xtep 2', title: 'Product Showcase', description: 'High-fidelity product imagery that emphasizes texture and technology.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=1200', alt: 'Xtep 3', title: '3D Interaction', description: 'Interactive sneaker models with real-time material swapping.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1200', alt: 'Xtep 4', title: 'Grid System', description: 'A flexible, modular grid that adapts to any product story.' },
-                                                    { type: 'image', src: 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200', alt: 'Xtep 5', title: 'Typography', description: 'Bold, athletic typefaces that convey power and speed.' },
-                                                ]}
-                                            />
-                                        </div>
-
-                                        {/* ── STACKED PARALLAX IMAGE GALLERY ─────────────────── */}
-                                        <div data-theme="dark" className="w-full">
-                                            {[
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1539185441755-769473a23a5e?q=80&w=1600",
-                                                    label: "Fluid Mechanics",
-                                                    caption: "01 / Development",
-                                                    body: "Translating athletic movement into digital transitions that feel natural yet highly engineered."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1600",
-                                                    label: "Tech Specs",
-                                                    caption: "02 / Visualization",
-                                                    body: "Focusing on the materials and technology that give Xtep its competitive edge."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1516478177764-9fe5bd7e9717?q=80&w=1600",
-                                                    label: "Mobile First",
-                                                    caption: "03 / UX Strategy",
-                                                    body: "Designing for the athlete on the go, with ultra-fast loading and one-tap interactions."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1444491741275-3747c53c99b4?q=80&w=1600",
-                                                    label: "Motion Branding",
-                                                    caption: "04 / Interactive",
-                                                    body: "Creating a cohesive motion library that defines the brand's digital personality."
-                                                },
-                                                {
-                                                    src: "https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?q=80&w=1600",
-                                                    label: "Global Reach",
-                                                    caption: "05 / Production",
-                                                    body: "Scaling the experience for a worldwide audience with localized content hubs."
-                                                },
-                                            ].map((item, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="parallax-panel relative w-full overflow-hidden"
-                                                    style={{ height: "100vh" }}
-                                                >
-                                                    <div
-                                                        className={`parallax-img-${i} absolute inset-0 w-full`}
-                                                        style={{ height: "130%", top: "-15%" }}
-                                                    >
-                                                        <img
-                                                            src={item.src}
-                                                            alt={item.label}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/60" />
+                                <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
+                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center" data-theme="light">
+                                        <div className="dv-embed">
+                                            {/* ── PROBLEM STATEMENT ── */}
+                                            <section className="dv-section dv-problem-section" style={{ textAlign: 'left', padding: '80px 0' }}>
+                                                <div className="dv-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                                        <div style={{ width: '8px', height: '8px', backgroundColor: '#f15a22', borderRadius: '2px' }}></div>
+                                                        <span style={{ color: '#7a829a', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>THE BRIEF</span>
                                                     </div>
 
-                                                    <div className="absolute top-16 md:top-24 left-0 w-full z-10 flex flex-col items-center text-center px-6 md:px-12 text-white">
-                                                        <div className="max-w-4xl">
-                                                            <div className="text-[11px] md:text-sm uppercase tracking-[0.25em] font-medium text-white/70 mb-3">
-                                                                {item.caption}
+                                                    <h2 className="dv-left" style={{ fontSize: '3.5rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '32px', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+                                                        Running Faster Digitally
+                                                    </h2>
+
+                                                    <p className="dv-body" style={{ fontSize: '1.15rem', color: '#6b7280', marginBottom: '24px', lineHeight: '1.6' }}>
+                                                        <strong>Xtep needed a digital ecosystem that reflected the energy of their physical products. The existing storefront felt static and failed to capture the 'momentum' that defines the brand. Key challenges included:</strong>
+                                                    </p>
+
+                                                    <ol style={{ paddingLeft: '0', listStyleType: 'none', color: '#6b7280', fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '32px' }}>
+                                                        <li>1. Optimizing complex 3D assets to load instantly on mobile networks</li>
+                                                        <li>2. Designing a liquid transition and motion library reflecting athletic power</li>
+                                                        <li>3. Balancing high-fashion visuals with technical specification panels</li>
+                                                        <li>4. Constructing a personalized interactive product customization module</li>
+                                                        <li>5. Lowering checkout friction for a global audience with localized payment routes</li>
+                                                    </ol>
+                                                </div>
+                                            </section>
+
+                                            {/* ── VISUAL DIRECTION ── */}
+                                            <section className="dv-section dv-research-carousel-section">
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Product</span>{" "}
+                                                        <em className="dv-heading-italic">Direction</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        We built a design system that feels alive, using momentum-based scrolling and dynamic image masks:
+                                                    </p>
+
+                                                    <div className="dv-dark-cards-carousel dv-mt-24">
+                                                        <div className="dv-dark-cards-track">
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Fluid Mechanics</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Translating athletic movement into digital transitions that feel natural yet highly engineered.
+                                                                </p>
                                                             </div>
-                                                            <div className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
-                                                                {item.label}
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Tech Specs</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Focusing on the materials and technology that give Xtep its competitive edge.
+                                                                </p>
                                                             </div>
-                                                            <p className="text-sm md:text-lg text-white/80 leading-relaxed font-medium">
-                                                                {item.body}
-                                                            </p>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Mobile First</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Designing for the athlete on the go, with ultra-fast loading and one-tap interactions.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Motion Branding</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Creating a cohesive motion library that defines the brand's digital personality.
+                                                                </p>
+                                                            </div>
+                                                            <div className="dv-dark-card" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)' }}>
+                                                                <h3 className="dv-dark-card-title">Global Reach</h3>
+                                                                <p className="dv-dark-card-body">
+                                                                    Scaling the experience for a worldwide audience with localized content hubs.
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            ))}
+                                            </section>
+
+                                            {/* ── PROCESS & STRATEGY ── */}
+                                            <section className="dv-section dv-research-methods-section" style={{ paddingTop: '0' }}>
+                                                <div className="dv-container">
+                                                    <p className="dv-subheading dv-left">
+                                                        Through brand immersion, motion studies, and Web3D prototyping, we engineered an e-commerce platform that matches Xtep's technical footwear details.
+                                                    </p>
+
+                                                    <div className="dv-method-cards-grid dv-mt-40">
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Brand Immersion</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Studying product anatomy and material science at Xtep's labs to translate engineering into visual storefront patterns.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Motion Studies</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Iterating on easing curves and inertia models to make page navigation feel athletic, springy, and responsive.</p>
+                                                        </div>
+                                                        <div className="dv-method-card" style={{ padding: '40px 32px', minHeight: '340px' }}>
+                                                            <h5 className="dv-method-title dv-left" style={{ fontWeight: 600, marginBottom: '8px', fontSize: '1.25rem' }}>Web3D Optimization</h5>
+                                                            <p className="dv-method-desc" style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', lineHeight: '1.6', flexGrow: 1 }}>Simplifying mesh complexity and high-res textures to render interactive 3D sneakers smoothly at 60fps on mobile.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── THE CANVAS SHOWCASE ── */}
+                                            <section className="dv-section dv-intro-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Introducing</span>{" "}
+                                                        <em className="dv-heading-italic">the Experience</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        A digital flagship built to bring performance footwear to life.
+                                                    </p>
+                                                </div>
+
+                                                <div className="dv-container dv-mt-40">
+                                                    <div className="dv-bento-grid">
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 2', gridRow: 'span 2' }}>
+                                                            <img src="/Xtep.png" alt="Xtep Digital Flagfront Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 1', gridRow: 'span 2' }}>
+                                                            <img src="/Xtep2.png" alt="Xtep Mobile E-Commerce Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── DETAILED PORTFOLIO SECTIONS ── */}
+                                            <section className="dv-section dv-screens-section" style={{ paddingTop: '120px' }}>
+                                                <div className="dv-container">
+                                                    <h2 className="dv-mixed-heading dv-text-center dv-mb-64">
+                                                        <span className="dv-heading-bold">Features</span>{" "}
+                                                        <em className="dv-heading-italic">Showcase</em>
+                                                    </h2>
+
+                                                    {/* Feature 1 */}
+                                                    <div className="dv-feature-card dv-mb-40">
+                                                        <div className="dv-feature-text dv-feature-light-gray">
+                                                            <h3 className="dv-feature-heading dv-left">Fluid Mechanics</h3>
+                                                            <p className="dv-subheading dv-left">Translating athletic movement into digital transitions that feel natural, incorporating liquid easing profiles and instant response times.</p>
+                                                        </div>
+                                                        <div className="dv-feature-visual dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)' }}>
+                                                            <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 2 & 3 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-40">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Tech Specs</h4>
+                                                                <p className="dv-screen-desc text-white-80">Focusing on the carbon plates and lightweight foam technology that give Xtep footwear its competitive edge.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1511556532299-8f6617a75a34?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Mobile First</h4>
+                                                                <p className="dv-screen-desc text-white-80">Designing for the customer on the go, with ultra-fast loading, lightweight pages, and responsive tap targets.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Feature 4 & 5 in grid */}
+                                                    <div className="dv-screens-2grid dv-mb-24">
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">Motion Branding</h4>
+                                                                <p className="dv-screen-desc text-white-80">Creating a cohesive kinetic motion library that defines Xtep's digital product showcases and checkout loops.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="dv-screen-card dv-feature-purple-bg" style={{ background: 'linear-gradient(135deg, #1f0b03 0%, #2e1005 100%)', height: 'auto', paddingBottom: '40px' }}>
+                                                            <div className="dv-screen-card-text dv-text-center">
+                                                                <h4 className="dv-screen-title text-white">3D Customizer</h4>
+                                                                <p className="dv-screen-desc text-white-80">Allowing users to customize colorways and test cushioning details under simulated impact graphs in real time.</p>
+                                                            </div>
+                                                            <div className="dv-screen-card-visual dv-mt-24">
+                                                                <div className="dv-video-wrapper" style={{ aspectRatio: '16/10' }}>
+                                                                    <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── POSSIBLE IMPACT ── */}
+                                            <section className="dv-section dv-impact-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading">
+                                                        <span className="dv-heading-bold">Possible</span>{" "}
+                                                        <em className="dv-heading-italic">Impact</em>
+                                                    </h2>
+                                                    <p className="dv-subheading">
+                                                        Accelerating conversion and user engagement through motion:
+                                                    </p>
+
+                                                    <div className="dv-impact-grid dv-mt-40">
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Mobile Engagement</h4>
+                                                            <p className="dv-impact-text">Launched a global digital flagship that saw a 25% increase in mobile session duration.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Conversion Increase</h4>
+                                                            <p className="dv-impact-text">Frictionless checkout flows and interactive 3D sizing guides boosted conversions by 18%.</p>
+                                                        </div>
+                                                        <div className="dv-impact-card">
+                                                            <h4 className="dv-impact-title">Performance Overhead</h4>
+                                                            <p className="dv-impact-text">Reduced initial page load times by 40% through asset compression and progressive hydration.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
                                         </div>
 
                                         {/* Next/Previous Projects Section */}
