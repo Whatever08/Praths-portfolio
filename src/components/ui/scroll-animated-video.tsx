@@ -30,6 +30,8 @@ export type HeroScrollVideoProps = {
   media?: VideoLike;         // string URL or {mp4, webm, ogg}
   poster?: string;
   mediaType?: "video" | "image";
+  muted?: boolean;
+  loop?: boolean;
   playsInline?: boolean;
   autoPlay?: boolean;
   initialMediaScale?: number;
