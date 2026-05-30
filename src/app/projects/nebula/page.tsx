@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LiquidBackground } from "@/components/ui/LiquidBackground";
 import { HeroScrollVideo } from "@/components/ui/scroll-animated-video";
 import { Icon } from "@iconify/react";
-import { ReactLenis } from "lenis/react";
+import { ReactLenis, useLenis } from "lenis/react";
 import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
@@ -84,6 +84,10 @@ export default function NebulaPage() {
     setTimeout(() => { setActiveScreen(key); setFadeClass(""); }, 150);
   };
 
+  useLenis(() => {
+    ScrollTrigger.update();
+  });
+
   useGSAP(() => {
     gsap.utils.toArray<HTMLElement>(".reveal-section").forEach((section) => {
       gsap.from(section.querySelectorAll(".reveal-item"), {
@@ -106,7 +110,6 @@ export default function NebulaPage() {
           start: "center center",
           end: () => `+=${track.scrollWidth - carousel.clientWidth + 48}`,
           pin: true,
-          pinType: "transform",
           scrub: 1.2,
           anticipatePin: 1,
           invalidateOnRefresh: true,
