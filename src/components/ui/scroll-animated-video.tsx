@@ -30,10 +30,11 @@ export type HeroScrollVideoProps = {
   media?: VideoLike;         // string URL or {mp4, webm, ogg}
   poster?: string;
   mediaType?: "video" | "image";
-  muted?: boolean;
-  loop?: boolean;
   playsInline?: boolean;
   autoPlay?: boolean;
+  initialMediaScale?: number;
+  objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
+  videoScale?: number;
 
   // Overlay content (shown over sticky media on scroll)
   overlay?: {
@@ -107,6 +108,9 @@ export const HeroScrollVideo: React.FC<HeroScrollVideoProps> = ({
   loop = true,
   playsInline = true,
   autoPlay = false,
+  initialMediaScale = 1.5,
+  objectFit = "cover",
+  videoScale = 1.0,
 
   overlay = {
     caption: "PROJECT • 07",
@@ -436,7 +440,7 @@ export const HeroScrollVideo: React.FC<HeroScrollVideoProps> = ({
           <img
             src={src}
             alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            style={{ width: "100%", height: "100%", objectFit, display: "block", transform: videoScale !== 1.0 ? `scale(${videoScale})` : undefined }}
           />
         </div>
       );
@@ -462,7 +466,7 @@ export const HeroScrollVideo: React.FC<HeroScrollVideoProps> = ({
           loop={loop}
           playsInline={playsInline}
           autoPlay={autoPlay || muted}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          style={{ width: "100%", height: "100%", objectFit, display: "block", transform: videoScale !== 1.0 ? `scale(${videoScale})` : undefined }}
         >
           {sources}
         </video>
