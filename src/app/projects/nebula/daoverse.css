@@ -504,10 +504,9 @@
 }
 
 /* Dark Cards Carousel */
-.dv-embed .dv-carousel-pin-wrapper {
+.dv-embed .dv-research-carousel-section {
   background: var(--dv-bg);
-  padding-bottom: 48px;
-  /* needs width beyond container for correct pinning */
+  padding: 100px 0;
   width: 100%;
 }
 

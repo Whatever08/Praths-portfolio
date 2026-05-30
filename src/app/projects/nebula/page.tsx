@@ -93,19 +93,20 @@ export default function NebulaPage() {
     });
 
     // ── Pin carousel & drive horizontal scroll through all 5 cards ──
-    const pinWrapper = containerRef.current?.querySelector(".dv-carousel-pin-wrapper") as HTMLElement | null;
-    const carousel   = pinWrapper?.querySelector(".dv-dark-cards-carousel") as HTMLElement | null;
-    const track      = pinWrapper?.querySelector(".dv-dark-cards-track") as HTMLElement | null;
+    const carouselSection = containerRef.current?.querySelector(".dv-research-carousel-section") as HTMLElement | null;
+    const carousel        = carouselSection?.querySelector(".dv-dark-cards-carousel") as HTMLElement | null;
+    const track           = carouselSection?.querySelector(".dv-dark-cards-track") as HTMLElement | null;
 
-    if (pinWrapper && carousel && track) {
+    if (carouselSection && carousel && track) {
       gsap.to(track, {
         x: () => -(track.scrollWidth - carousel.clientWidth + 48),
         ease: "none",
         scrollTrigger: {
-          trigger: pinWrapper,
+          trigger: carouselSection,
           start: "center center",
           end: () => `+=${track.scrollWidth - carousel.clientWidth + 48}`,
           pin: true,
+          pinType: "transform",
           scrub: 1.2,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -300,58 +301,60 @@ export default function NebulaPage() {
                         </div>
                       </section>
 
-                      {/* ── RESEARCH & STRATEGY ── */}
-                      <section className="dv-section dv-research-section">
+                      {/* ── RESEARCH & STRATEGY (Carousel) ── */}
+                      <section className="dv-section dv-research-carousel-section">
                         <div className="dv-container">
-                          {/* ── Pin wrapper: heading + carousel get pinned together ── */}
-                          <div className="dv-carousel-pin-wrapper">
-                            <h2 className="dv-mixed-heading">
-                              <span className="dv-heading-bold">Research</span>{" "}
-                              <em className="dv-heading-italic">&amp; Strategy</em>
-                            </h2>
-                            <p className="dv-subheading">
-                              Through <strong>interviews, surveys, and secondary research</strong> with Indian creators, I uncovered critical gaps in the existing tools:
-                            </p>
+                          <h2 className="dv-mixed-heading">
+                            <span className="dv-heading-bold">Research</span>{" "}
+                            <em className="dv-heading-italic">&amp; Strategy</em>
+                          </h2>
+                          <p className="dv-subheading">
+                            Through <strong>interviews, surveys, and secondary research</strong> with Indian creators, I uncovered critical gaps in the existing tools:
+                          </p>
 
-                            {/* 5 dark cards — track scrolls horizontally via GSAP */}
-                            <div className="dv-dark-cards-carousel dv-mt-24">
-                              <div className="dv-dark-cards-track">
-                                <div className="dv-dark-card">
-                                  <h3 className="dv-dark-card-title">No India-First<br/>Analytics Tool</h3>
-                                  <p className="dv-dark-card-body">
-                                    Existing platforms like Hootsuite and Sprout Social are built for Western markets — they miss regional languages, Tier-2 audiences, and Indian platform behaviors.
-                                  </p>
-                                </div>
-                                <div className="dv-dark-card">
-                                  <h3 className="dv-dark-card-title">Trend Discovery<br/>Is Manual &amp; Slow</h3>
-                                  <p className="dv-dark-card-body">
-                                    Creators spend hours scrolling Reels and Twitter/X to spot trends — by the time they act, the moment has passed.
-                                  </p>
-                                </div>
-                                <div className="dv-dark-card">
-                                  <h3 className="dv-dark-card-title">Creators Want<br/>Predictive Guidance</h3>
-                                  <p className="dv-dark-card-body">
-                                    Analytics tools show what happened — creators need AI-powered forecasts for what to create next to maximize reach.
-                                  </p>
-                                </div>
-                                <div className="dv-dark-card">
-                                  <h3 className="dv-dark-card-title">Data Overwhelm<br/>Kills Action</h3>
-                                  <p className="dv-dark-card-body">
-                                    Dashboards flood creators with raw metrics. Without clear, actionable insights, most data goes unused or misunderstood.
-                                  </p>
-                                </div>
-                                <div className="dv-dark-card">
-                                  <h3 className="dv-dark-card-title">Brand Deals Are<br/>Hard to Manage</h3>
-                                  <p className="dv-dark-card-body">
-                                    Small creators juggle brand collaborations in WhatsApp and Google Sheets — there's no unified space to track deliverables, deadlines, and payments.
-                                  </p>
-                                </div>
+                          {/* 5 dark cards — track scrolls horizontally via GSAP */}
+                          <div className="dv-dark-cards-carousel dv-mt-24">
+                            <div className="dv-dark-cards-track">
+                              <div className="dv-dark-card">
+                                <h3 className="dv-dark-card-title">No India-First<br/>Analytics Tool</h3>
+                                <p className="dv-dark-card-body">
+                                  Existing platforms like Hootsuite and Sprout Social are built for Western markets — they miss regional languages, Tier-2 audiences, and Indian platform behaviors.
+                                </p>
+                              </div>
+                              <div className="dv-dark-card">
+                                <h3 className="dv-dark-card-title">Trend Discovery<br/>Is Manual &amp; Slow</h3>
+                                <p className="dv-dark-card-body">
+                                  Creators spend hours scrolling Reels and Twitter/X to spot trends — by the time they act, the moment has passed.
+                                </p>
+                              </div>
+                              <div className="dv-dark-card">
+                                <h3 className="dv-dark-card-title">Creators Want<br/>Predictive Guidance</h3>
+                                <p className="dv-dark-card-body">
+                                  Analytics tools show what happened — creators need AI-powered forecasts for what to create next to maximize reach.
+                                </p>
+                              </div>
+                              <div className="dv-dark-card">
+                                <h3 className="dv-dark-card-title">Data Overwhelm<br/>Kills Action</h3>
+                                <p className="dv-dark-card-body">
+                                  Dashboards flood creators with raw metrics. Without clear, actionable insights, most data goes unused or misunderstood.
+                                </p>
+                              </div>
+                              <div className="dv-dark-card">
+                                <h3 className="dv-dark-card-title">Brand Deals Are<br/>Hard to Manage</h3>
+                                <p className="dv-dark-card-body">
+                                  Small creators juggle brand collaborations in WhatsApp and Google Sheets — there's no unified space to track deliverables, deadlines, and payments.
+                                </p>
                               </div>
                             </div>
-                          </div>{/* end pin wrapper */}
+                          </div>
+                        </div>
+                      </section>
 
+                      {/* ── RESEARCH METHODS ── */}
+                      <section className="dv-section dv-research-methods-section" style={{ paddingTop: '0' }}>
+                        <div className="dv-container">
                           {/* Secondary para */}
-                          <p className="dv-subheading dv-left" style={{ marginTop: '40px' }}>
+                          <p className="dv-subheading dv-left">
                             To design a platform built for Indian creators, I explored competitors, ran interviews with 20+ influencers, and crafted personas based on real growth pain points across niches — fashion, gaming, food, and finance.
                           </p>
 
