@@ -14,6 +14,7 @@ import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import "./../nebula/nebula.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,6 +32,18 @@ const projectImages = [
     "/generated/xtep_vision.png",
     "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200",
     "https://images.unsplash.com/photo-1511556532299-8f6617a75a34?q=80&w=1200",
+];
+
+const wireframeCards = [
+    { id: 1, src: "/l1.png", alt: "Wireframe Screen 1" },
+    { id: 2, src: "/l2.png", alt: "Wireframe Screen 2" },
+    { id: 3, src: "/l3.png", alt: "Wireframe Screen 3" },
+    { id: 4, src: "/l4.png", alt: "Wireframe Screen 4" },
+    { id: 5, src: "/l5.png", alt: "Wireframe Screen 5" },
+    { id: 6, src: "/l6.png", alt: "Wireframe Screen 6" },
+    { id: 7, src: "/l7.png", alt: "Wireframe Screen 7" },
+    { id: 8, src: "/l8.png", alt: "Wireframe Screen 8" },
+    { id: 9, src: "/l9.png", alt: "Wireframe Screen 9" },
 ];
 
 export default function XtepPage() {
@@ -270,6 +283,71 @@ export default function XtepPage() {
                                                 </div>
                                             </section>
 
+                                            {/* ── SKETCH & WIREFRAMES ── */}
+                                            <section className="dv-section dv-wireframes-section" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
+                                                <div className="dv-container">
+                                                    <div className="dv-edge-cases-block dv-feature-light-gray dv-mb-24">
+                                                        <div className="dv-edge-text dv-text-center">
+                                                            <h3 className="dv-mixed-heading" style={{ fontSize: '2.5rem', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+                                                                <span className="dv-heading-bold">Storefront</span>{" "}
+                                                                <em className="dv-heading-italic">Wireframing</em>
+                                                            </h3>
+                                                            <p className="dv-subheading">
+                                                                Sketched product customizer interfaces, cart flyouts, and sneaker specification dashboards to optimize transactional flow and conversion metrics before visual styling.
+                                                            </p>
+                                                        </div>
+                                                        <div className="dv-marquee dv-mt-40">
+                                                            <div className="dv-marquee-track">
+                                                                {wireframeCards.map((card) => (
+                                                                    <div key={`track1-${card.id}`} className="dv-marquee-card">
+                                                                        <img src={card.src} alt={card.alt} className="dv-marquee-img" loading="lazy" />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            <div className="dv-marquee-track" aria-hidden="true">
+                                                                {wireframeCards.map((card) => (
+                                                                    <div key={`track2-${card.id}`} className="dv-marquee-card">
+                                                                        <img src={card.src} alt={card.alt} className="dv-marquee-img" loading="lazy" />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── DESIGN ARCHITECTURE FIGMA EMBED ── */}
+                                            <section className="dv-section dv-architecture-section" style={{ paddingBottom: '40px' }}>
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading dv-mb-40">
+                                                        <span className="dv-heading-bold">E-Commerce</span>{" "}
+                                                        <em className="dv-heading-italic">Architecture</em>
+                                                    </h2>
+
+                                                    <div className="dv-prototype-window-wrapper">
+                                                        <div className="dv-prototype-window-header">
+                                                            <div className="dv-window-dots">
+                                                                <span className="dv-dot-red"></span>
+                                                                <span className="dv-dot-yellow"></span>
+                                                                <span className="dv-dot-green"></span>
+                                                            </div>
+                                                            <div className="dv-window-title">
+                                                                <Icon icon="solar:figma-bold-duotone" className="text-[#F24E1E] text-sm" />
+                                                                <span className="font-sans font-medium text-xs tracking-wider">FIGMA BOARD</span>
+                                                            </div>
+                                                            <div className="dv-window-spacer"></div>
+                                                        </div>
+                                                        <div className="dv-prototype-embed-container">
+                                                            <iframe
+                                                                className="dv-prototype-iframe"
+                                                                src="https://embed.figma.com/design/DSBKMu5b9w7FOs5EkQKAol/Data-Analytics-Project?node-id=1132-13335&t=ahg3kYmic4LqAEfy-4&embed-host=share"
+                                                                allowFullScreen
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
                                             {/* ── THE CANVAS SHOWCASE ── */}
                                             <section className="dv-section dv-intro-section">
                                                 <div className="dv-container dv-text-center">
@@ -284,11 +362,27 @@ export default function XtepPage() {
 
                                                 <div className="dv-container dv-mt-40">
                                                     <div className="dv-bento-grid">
-                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 2', gridRow: 'span 2' }}>
+                                                        {/* Card 1 (Top Left) */}
+                                                        <div className="dv-bento-card" style={{ padding: 0 }}>
                                                             <img src="/Xtep.png" alt="Xtep Digital Flagfront Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                         </div>
-                                                        <div className="dv-bento-card" style={{ padding: 0, gridColumn: 'span 1', gridRow: 'span 2' }}>
+                                                        {/* Card 2 (Bottom Left) */}
+                                                        <div className="dv-bento-card" style={{ padding: 0 }}>
                                                             <img src="/Xtep2.png" alt="Xtep Mobile E-Commerce Mockup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+
+                                                        {/* Card 3 (Top Mid) */}
+                                                        <div className="dv-bento-card" style={{ padding: 0 }}>
+                                                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200" alt="Xtep Sneaker Closeup" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        {/* Card 4 (Bottom Mid) */}
+                                                        <div className="dv-bento-card" style={{ padding: 0 }}>
+                                                            <img src="https://images.unsplash.com/photo-1511556532299-8f6617a75a34?q=80&w=1200" alt="Athletic Display" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+
+                                                        {/* Card 5 (Right Tall) */}
+                                                        <div className="dv-bento-card dv-bento-tall" style={{ padding: 0 }}>
+                                                            <img src="https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=1200" alt="Running Shoes Detail" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -366,6 +460,38 @@ export default function XtepPage() {
                                                                     <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1600" className="dv-screen-media" style={{ objectFit: 'cover' }} />
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            {/* ── PRODUCT PROTOTYPE (MVP) ── */}
+                                            <section className="dv-section dv-prototype-section">
+                                                <div className="dv-container dv-text-center">
+                                                    <h2 className="dv-mixed-heading dv-mb-40">
+                                                        <span className="dv-heading-bold">Experience</span>{" "}
+                                                        <em className="dv-heading-italic">the Storefront</em>
+                                                    </h2>
+
+                                                    <div className="dv-prototype-window-wrapper">
+                                                        <div className="dv-prototype-window-header">
+                                                            <div className="dv-window-dots">
+                                                                <span className="dv-dot-red"></span>
+                                                                <span className="dv-dot-yellow"></span>
+                                                                <span className="dv-dot-green"></span>
+                                                            </div>
+                                                            <div className="dv-window-title">
+                                                                <Icon icon="solar:figma-bold-duotone" className="text-[#F24E1E] text-sm" />
+                                                                <span className="font-sans font-medium text-xs tracking-wider">INTERACTIVE PROTOTYPE</span>
+                                                            </div>
+                                                            <div className="dv-window-spacer"></div>
+                                                        </div>
+                                                        <div className="dv-prototype-embed-container">
+                                                            <iframe
+                                                                className="dv-prototype-iframe"
+                                                                src="https://embed.figma.com/proto/DSBKMu5b9w7FOs5EkQKAol/Data-Analytics-Project?node-id=323-2905&viewport=-1260%2C-100%2C0.16&scaling=scale-down&content-scaling=fixed&starting-point-node-id=323%3A2905&page-id=0%3A1&embed-host=share"
+                                                                allowFullScreen
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>
