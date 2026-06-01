@@ -24,6 +24,7 @@ interface Project {
   link: string;
   liveLink?: string;
   isLight?: boolean;
+  isDetailsComingSoon?: boolean;
 }
 
 const PROJECTS: Project[] = [
@@ -45,28 +46,20 @@ const PROJECTS: Project[] = [
     isLight: true,
   },
   {
-    title: "Exsavvy",
-    year: "2025",
-    role: "Product Design",
-    desc: "A brief description of this new project will go here. Coming soon.",
-    img: "/Exsavvy.png",
-    link: "/projects/exsavvy",
-  },
-  {
     title: "McLaren Racing",
     year: "2024",
     role: "UI Design · Interaction Design",
-    desc: "Crafting high-performance fan-facing digital experiences that mirror the precision and speed of the McLaren brand on and off the track.",
+    desc: "Crafting high-performance fan-facing digital experiences that mirror the precision and speed of the McLaren brand on and off the track. Coming Soon.",
     img: "/MCl.png",
-    link: "/projects/mclaren-racing",
+    link: "",
   },
   {
     title: "Flytbase",
     year: "2025",
     role: "Product Design · UX Research",
-    desc: "Designing the command and control interface for autonomous drone fleets. A mission-critical platform demanding precision, clarity and real-time situational awareness.",
+    desc: "Designing the command and control interface for autonomous drone fleets. A mission-critical platform demanding precision, clarity and real-time situational awareness. Coming Soon.",
     img: "/flytbase.png",
-    link: "/projects/flytbase",
+    link: "",
   },
   {
     title: "Envision VFX",
@@ -76,6 +69,7 @@ const PROJECTS: Project[] = [
     img: "/VFX.png",
     link: "/projects/envision-vfx",
     liveLink: "https://envisionvfx.in",
+    isDetailsComingSoon: true,
   },
   {
     title: "Akshara Events",
@@ -85,6 +79,7 @@ const PROJECTS: Project[] = [
     img: "/Aksharaevents.png",
     link: "/projects/akshara-events",
     liveLink: "https://aaksharaevents.com",
+    isDetailsComingSoon: true,
   },
 ];
 
@@ -464,12 +459,21 @@ export default function ProjectsPage() {
                         style={{ opacity: 0, transform: "translateY(12px)", willChange: "opacity, transform" }}
                       >
                         {p.link && (
-                          <button
-                            className={`px-7 py-3 rounded-full border border-white/20 text-white ${type.button} hover:bg-white hover:text-black transition-all duration-300 cursor-none`}
-                            onClick={() => handleProjectClick(p.link!)}
-                          >
-                            View Project
-                          </button>
+                          p.isDetailsComingSoon ? (
+                            <button
+                              className={`px-7 py-3 rounded-full border border-white/10 text-white/40 ${type.button} cursor-not-allowed`}
+                              disabled
+                            >
+                              Coming Soon
+                            </button>
+                          ) : (
+                            <button
+                              className={`px-7 py-3 rounded-full border border-white/20 text-white ${type.button} hover:bg-white hover:text-black transition-all duration-300 cursor-none`}
+                              onClick={() => handleProjectClick(p.link!)}
+                            >
+                              View Project
+                            </button>
+                          )
                         )}
                         {p.liveLink && (
                           <button

@@ -251,7 +251,7 @@ export default function McLarenRacingPage() {
                                 </div>
 
                                 <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
-                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center" data-theme="light">
+                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out shadow-2xl origin-center" data-theme="light">
                                         <div className="dv-embed">
                                             {/* ── PROBLEM STATEMENT ── */}
                                             <section className="dv-section dv-problem-section" style={{ textAlign: 'left', padding: '80px 0' }}>
@@ -596,11 +596,11 @@ export default function McLarenRacingPage() {
 
                                         {/* Next/Previous Projects Section */}
                                         <div data-theme="light" className="w-full bg-white border-t border-black/10 flex flex-col sm:flex-row">
-                                            <Link href="/projects/exsavvy" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 border-b sm:border-b-0 sm:border-r border-black/10 flex flex-col items-start justify-center group hover:bg-black/5 transition-colors duration-500">
+                                            <Link href="/projects/xtep" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 border-b sm:border-b-0 sm:border-r border-black/10 flex flex-col items-start justify-center group hover:bg-black/5 transition-colors duration-500">
                                                 <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest mb-4 md:mb-6">Previous Project</span>
                                                 <div className="flex items-center gap-4 md:gap-6">
                                                     <span className="text-2xl md:text-4xl lg:text-5xl text-black/40 group-hover:text-black group-hover:-translate-x-4 transition-all duration-500">&larr;</span>
-                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:-translate-x-2 transition-all duration-500 leading-none pb-1">Exsavvy</h3>
+                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:-translate-x-2 transition-all duration-500 leading-none pb-1">Xtep</h3>
                                                 </div>
                                             </Link>
 

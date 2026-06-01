@@ -232,6 +232,7 @@
 }
 
 @media (min-width: 768px) {
+
   .dv-embed .dv-bento-grid,
   .dv-embed .dv-bento-grid-4 {
     grid-template-columns: repeat(3, 1fr);

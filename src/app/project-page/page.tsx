@@ -247,7 +247,7 @@ export default function ProjectPage() {
                                 </div>
 
                                 <div className="white-canvas-container w-full overflow-visible relative z-20">
-                                    <div className="white-canvas-content w-full bg-white transition-all duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center">
+                                    <div className="white-canvas-content w-full bg-white transition-all duration-300 ease-out shadow-2xl origin-center">
 
                                         {/* Carousel Slider — HorizontalScrollGallery */}
                                         <div data-theme="light" className="w-full bg-white">

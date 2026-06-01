@@ -244,7 +244,7 @@ export default function EnvisionVFXPage() {
                                 </div>
 
                                 <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
-                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center" data-theme="light">
+                                    <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out shadow-2xl origin-center" data-theme="light">
                                         <div className="dv-embed">
                                             {/* ── PROBLEM STATEMENT ── */}
                                             <section className="dv-section dv-problem-section" style={{ textAlign: 'left', padding: '80px 0' }}>

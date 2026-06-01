@@ -23,11 +23,10 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const GALLERY_ITEMS = [
   { image: "/Nebula2.png", text: "Nebula", link: "/projects/nebula" },
   { image: "/Xtep2.png", text: "Xtep", link: "/projects/xtep" },
-  { image: "/Exsavvy2.png", text: "Exsavvy", link: "/projects/exsavvy" },
-  { image: "/MCL2.png", text: "McLaren Racing", link: "/projects/mclaren-racing" },
-  { image: "/flytbase2.png", text: "Flytbase", link: "/projects/flytbase" },
-  { image: "/VFX2.png", text: "Envision VFX", link: "/projects/envision-vfx" },
-  { image: "/Aksharaevents2.png", text: "Akshara Events", link: "/projects/akshara-events" }
+  { image: "/MCL2.png", text: "MCL Racing (Coming Soon)", link: "#" },
+  { image: "/flytbase2.png", text: "Flytbase (Coming Soon)", link: "#" },
+  { image: "/VFX2.png", text: "Envision VFX", link: "https://envisionvfx.in" },
+  { image: "/Aksharaevents2.png", text: "Akshara Events", link: "https://aaksharaevents.com" }
 ];
 
 export default function Home() {
@@ -310,7 +309,7 @@ export default function Home() {
 
             {/* Right: Menu Icon for Mobile — Functional */}
             <div className="w-1/2 md:w-1/4 flex justify-end">
-              <button 
+              <button
                 onClick={() => setShowRevealIn(true)} // Reusing the reveal for mobile menu feel or just plain toggle
                 className="md:hidden text-white drop-shadow-md p-2"
               >
@@ -373,15 +372,11 @@ export default function Home() {
               </div>
 
               {/* ── SOCIAL ICONS — MOBILE ONLY (hidden on desktop) ── */}
-              {/* Edit: bottom-[calc(1.5rem+10vh)] = distance from bottom | gap-10 = spacing between icons */}
               <div className="md:hidden absolute bottom-[calc(1.5rem+10vh)] left-0 right-0 flex justify-center items-center gap-10 z-20 pointer-events-auto scale-[1.08] origin-center">
-                <a href="#" title="LinkedIn" className="text-white/80 hover:text-white transition-colors">
+                <a href="https://www.linkedin.com/in/prathamesh-tipnis-653b00142/" title="LinkedIn" className="text-white/80 hover:text-white transition-colors">
                   <Icon icon="line-md:linkedin" className="text-2xl" />
                 </a>
-                <a href="#" title="Instagram" className="text-white/80 hover:text-white transition-colors">
-                  <Icon icon="line-md:instagram" className="text-2xl" />
-                </a>
-                <a href="#" title="Behance" className="text-white/80 hover:text-white transition-colors">
+                <a href="https://www.behance.net/tprathameshUXD1" title="Behance" className="text-white/80 hover:text-white transition-colors">
                   <Icon icon="fa6-brands:behance" className="text-2xl" />
                 </a>
                 <a href="mailto:tprathamesh8@gmail.com" title="Email" className="text-white/80 hover:text-white transition-colors">
@@ -392,9 +387,8 @@ export default function Home() {
               {/* ── SOCIAL TEXT LINKS — DESKTOP ONLY (hidden on mobile) ── */}
               {/* Edit: md:bottom-[calc(3rem+2vh)] = desktop position */}
               <div className="hidden md:flex absolute md:bottom-[calc(3rem+2vh)] right-12 items-center gap-8 z-20 pointer-events-auto scale-[1.08] origin-right">
-                <a href="#" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">LinkedIn ↗</a>
-                <a href="#" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">Instagram ↗</a>
-                <a href="#" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">Behance ↗</a>
+                <a href="https://www.linkedin.com/in/prathamesh-tipnis-653b00142/" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">LinkedIn ↗</a>
+                <a href="https://www.behance.net/tprathameshUXD1" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">Behance ↗</a>
                 <a href="mailto:tprathamesh8@gmail.com" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">tprathamesh8@gmail.com ↗</a>
               </div>
 
@@ -412,10 +406,15 @@ export default function Home() {
                 <CircularGallery
                   items={GALLERY_ITEMS}
                   onItemClick={(item) => {
-                    setShowRevealIn(true);
-                    setTimeout(() => {
-                      window.location.href = item.link || "/projects";
-                    }, 1000);
+                    if (item.link === "#") return;
+                    if (item.link?.startsWith("http")) {
+                      window.open(item.link, "_blank");
+                    } else {
+                      setShowRevealIn(true);
+                      setTimeout(() => {
+                        window.location.href = item.link || "/projects";
+                      }, 1000);
+                    }
                   }}
                 />
               </div>
@@ -437,11 +436,11 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Text Reveal About Section */}
-          <div id="about"><TextRevealSection /></div>
-
-          {/* Services Section */}
-          <div id="services"><ServicesSection /></div>
+          {/* Text Reveal About Section + Services Section — unified background */}
+          <div className="bg-black/90 relative z-30">
+            <div id="about"><TextRevealSection /></div>
+            <div id="services"><ServicesSection /></div>
+          </div>
 
           {/* Case Studies Section */}
           <div id="case-studies"><CaseStudiesSection /></div>

@@ -1,205 +1,230 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { motion, Variants } from "motion/react";
-import Image from "next/image";
+import React, { useRef } from "react";
+import { Icon } from "@iconify/react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-interface Service {
-    title: string;
-    description: string;
-    color: string;
-    image: string;
-}
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const SERVICES: Service[] = [
-    {
-        title: "Visual Design",
-        description: "Aesthetic Direction",
-        color: "#000000",
-        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200",
-    },
-    {
-        title: "UI/UX Design",
-        description: "User-Centric Interfaces",
-        color: "#1C1C1C",
-        image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200",
-    },
-    {
-        title: "Branding",
-        description: "Identity & Strategy",
-        color: "#2C2C2C",
-        image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=1200",
-    },
-    {
-        title: "Frontend Development",
-        description: "Creative & Vibe Coding",
-        color: "#0D0D0D",
-        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200",
-    },
-    {
-        title: "Mobile Applications",
-        description: "Responsive Exp.",
-        color: "#1A1A1A",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200",
-    },
+const SERVICES_TAGS = [
+  {
+    label: "Design System",
+    icon: "solar:widget-2-bold-duotone",
+    iconColor: "bg-[#FF6B35]",
+    x: "-130px",
+    y: "-20px",
+    rotate: -8,
+    animationClass: "animate-float-1",
+  },
+  {
+    label: "Design Research",
+    icon: "solar:minimalistic-magnifer-bold-duotone",
+    iconColor: "bg-[#00A8E8]",
+    x: "-10px",
+    y: "-30px",
+    rotate: 4,
+    animationClass: "animate-float-2",
+  },
+  {
+    label: "Experience Design",
+    icon: "solar:heart-bold-duotone",
+    iconColor: "bg-[#EF476F]",
+    x: "110px",
+    y: "-25px",
+    rotate: -6,
+    animationClass: "animate-float-3",
+  },
+  {
+    label: "Prototyping",
+    icon: "solar:screencast-bold-duotone",
+    iconColor: "bg-[#FF3366]",
+    x: "-70px",
+    y: "25px",
+    rotate: 6,
+    animationClass: "animate-float-4",
+  },
+  {
+    label: "coding / Vibe coding",
+    icon: "solar:code-bold-duotone",
+    iconColor: "bg-[#06D6A0]",
+    x: "25px",
+    y: "20px",
+    rotate: -20,
+    animationClass: "animate-float-5",
+  },
+  {
+    label: "Design Mgmt",
+    icon: "solar:settings-bold-duotone",
+    iconColor: "bg-[#FFD166]",
+    x: "120px",
+    y: "28px",
+    rotate: 9,
+    animationClass: "animate-float-6",
+  },
 ];
 
-const scaleAnimation: Variants = {
-    closed: { scale: 0, x: "-50%", y: "-50%", transition: { duration: 0.4, ease: [0.32, 0, 0.67, 0] } },
-    enter: { scale: 1, x: "-50%", y: "-50%", transition: { duration: 0.4, ease: [0.76, 0, 0.24, 1] } },
-    hidden: { scale: 0, x: "-50%", y: "-50%" },
-};
+const WORDS = [
+  { text: "I", className: "" },
+  { text: "DESIGN", className: "" },
+  { text: "DIGITAL", className: "" },
+  { text: "EXPERIENCES", className: "" },
+  { text: "THAT", className: "" },
+  { text: "BALANCE", className: "" },
+  { text: "USER", className: "" },
+  { text: "NEEDS", className: "" },
+  { text: "AND", className: "" },
+  { text: "PRODUCT", className: "" },
+  { text: "GOALS,", className: "" },
+  { text: "CREATING", className: "" },
+  { text: "VALUE", className: "" },
+  { text: "FOR", className: "" },
+  { text: "BOTH.", className: "" },
+];
 
-interface ModalState {
-    active: boolean;
-    index: number;
-}
+const styles = `
+  @keyframes float-1 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(0.5deg); }
+  }
+  @keyframes float-2 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(-0.5deg); }
+  }
+  @keyframes float-3 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-3px) rotate(0.3deg); }
+  }
+  @keyframes float-4 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(-0.4deg); }
+  }
+  @keyframes float-5 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(0.6deg); }
+  }
+  @keyframes float-6 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-3px) rotate(-0.3deg); }
+  }
 
-const ServicesSection = () => {
-    const [modal, setModal] = useState<ModalState>({ active: false, index: 0 });
-    const sectionRef = useRef<HTMLElement>(null);
+  .animate-float-1 { animation: float-1 5s ease-in-out infinite; }
+  .animate-float-2 { animation: float-2 4.5s ease-in-out infinite; }
+  .animate-float-3 { animation: float-3 6s ease-in-out infinite; }
+  .animate-float-4 { animation: float-4 5.5s ease-in-out infinite; }
+  .animate-float-5 { animation: float-5 4.8s ease-in-out infinite; }
+  .animate-float-6 { animation: float-6 6.5s ease-in-out infinite; }
+`;
 
-    return (
-        <section ref={sectionRef} className="py-32 bg-black/90 relative z-30 pointer-events-auto overflow-hidden border-t border-white/5">
-            <div className="max-w-[100rem] mx-auto px-6 md:px-12 mb-20 flex flex-col items-center">
-                <h2 className="text-[30px] font-semibold font-sans text-white text-center">
-                    Services
-                </h2>
-            </div>
+export default function ServicesSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-            <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
-                <div className="flex flex-col items-center">
-                    {SERVICES.map((service, index) => (
-                        <ServiceItem
-                            key={index}
-                            index={index}
-                            service={service}
-                            setModal={setModal}
-                        />
-                    ))}
-                </div>
-                <Modal modal={modal} services={SERVICES} />
-            </div>
-        </section>
+  useGSAP(() => {
+    // 1. Thoughtful scrub-based word reveal (same feel as About Me section)
+    gsap.fromTo(
+      ".services-reveal-word",
+      { opacity: 0.12 },
+      {
+        opacity: 1,
+        stagger: 0.08,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 70%",
+          end: "center 40%",
+          scrub: 1.2,
+        },
+      }
     );
-};
 
-interface ServiceItemProps {
-    index: number;
-    service: Service;
-    setModal: React.Dispatch<React.SetStateAction<ModalState>>;
-}
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 60%",
+        toggleActions: "play none none reverse",
+      }
+    });
 
-function ServiceItem({ index, service, setModal }: ServiceItemProps) {
-    const titleRef = useRef<HTMLHeadingElement>(null);
-    const circleRef = useRef<HTMLDivElement>(null);
-    const descRef = useRef<HTMLSpanElement>(null);
+    // 2. Drop Pill Badges from Above centered, then landing/spreading in a Bounce Pile
+    tl.fromTo(
+      ".service-pill",
+      {
+        y: -450,
+        x: () => gsap.utils.random(-25, 25), // Falls directly down the center path
+        opacity: 0,
+        rotation: () => gsap.utils.random(-80, 80),
+      },
+      {
+        y: (i) => parseFloat(SERVICES_TAGS[i].y), // Lands at pile Y
+        x: (i) => parseFloat(SERVICES_TAGS[i].x), // Spreads out to pile X
+        opacity: 1,
+        rotation: (i) => SERVICES_TAGS[i].rotate,
+        stagger: {
+          each: 0.12,
+          from: "random",
+        },
+        duration: 1.2,
+        ease: "bounce.out",
+      },
+      "-=0.3"
+    );
+  }, { scope: containerRef });
 
-    const handleMouseEnter = () => {
-        setModal({ active: true, index });
-        gsap.to(titleRef.current, { x: 25, opacity: 1, duration: 0.5, ease: "power3.out" });
-        gsap.to(circleRef.current, { backgroundColor: "#fff", color: "#000", scale: 1.05, duration: 0.4 });
-
-        const tl = gsap.timeline();
-        tl.to(descRef.current, { opacity: 1, x: -20, duration: 0.6, ease: "power2.out" })
-            .to(descRef.current, { opacity: 0, x: -10, duration: 0.6, delay: 1.5, ease: "power2.in" });
-    };
-
-    const handleMouseLeave = () => {
-        setModal({ active: false, index });
-        gsap.to(titleRef.current, { x: 0, opacity: 0.6, duration: 0.5, ease: "power3.out" });
-        gsap.to(circleRef.current, { backgroundColor: "transparent", color: "#fff", scale: 1, duration: 0.4 });
-
-        gsap.killTweensOf(descRef.current);
-        gsap.to(descRef.current, { opacity: 0, x: 0, duration: 0.3, ease: "power2.in" });
-    };
-
-    return (
-        <div
-            className="group flex w-full cursor-pointer items-center justify-between border-white/5 border-t py-12 transition-all duration-300 last:border-b"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-        >
-            <div className="flex items-center gap-6 md:gap-10">
-                <div
-                    ref={circleRef}
-                    className="w-8 h-8 md:w-12 md:h-12 border border-white/10 rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm shrink-0 transition-all duration-300"
-                >
-                    {index + 1}
-                </div>
-                <h2
-                    ref={titleRef}
-                    className="text-2xl md:text-4xl lg:text-5xl font-semibold tracking-tighter text-white opacity-60 transition-opacity"
-                >
-                    {service.title}
-                </h2>
-            </div>
-
+  return (
+    <section ref={containerRef} className="py-36 relative pointer-events-auto overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
+      
+      <div className="max-w-[85rem] mx-auto px-6 md:px-12 relative flex flex-col items-center justify-center min-h-[580px]">
+        
+        {/* Header (Same font & layout style as About Me) */}
+        <h2 className="text-[24px] font-semibold font-sans text-white mb-6 text-center">
+          What I Do
+        </h2>
+        
+        {/* Central Content (Same font & size style as About Me text) */}
+        <h3 className="text-[1.15rem] md:text-[2rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em] text-center max-w-4xl mx-auto px-4 z-10 py-6 select-none">
+          {WORDS.map((w, idx) => (
             <span
-                ref={descRef}
-                className="opacity-0 font-sans text-sm md:text-xl font-black text-white tracking-widest uppercase text-right md:pr-4"
+              key={idx}
+              className={`services-reveal-word inline-block opacity-[0.12] ${w.className}`}
             >
-                — {service.description}
+              {w.text}
             </span>
-        </div>
-    );
-}
+          ))}
+        </h3>
 
-interface ModalProps {
-    modal: ModalState;
-    services: Service[];
-}
-
-function Modal({ modal, services }: ModalProps) {
-    const { active, index } = modal;
-    const modalContainer = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!modalContainer.current) return;
-
-        const xMoveContainer = gsap.quickTo(modalContainer.current, "left", { duration: 0.8, ease: "power3" });
-        const yMoveContainer = gsap.quickTo(modalContainer.current, "top", { duration: 0.8, ease: "power3" });
-
-        const handleMouseMove = (e: MouseEvent) => {
-            const { clientX, clientY } = e;
-            xMoveContainer(clientX);
-            yMoveContainer(clientY);
-        };
-
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, []);
-
-    return (
-        <motion.div
-            variants={scaleAnimation}
-            initial="hidden"
-            animate={active ? "enter" : "closed"}
-            ref={modalContainer}
-            className="pointer-events-none fixed top-0 left-0 z-[100] flex h-[220px] w-[280px] md:h-[280px] md:w-[380px] items-center justify-center overflow-hidden rounded-2xl bg-black border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.7)]"
+        {/* Floating Badges Pile — truly centered on the page */}
+        <div className="relative h-[200px] mt-4 pointer-events-none"
+          style={{ width: "100vw", marginLeft: "calc(-50vw + 50%)" }}
         >
-            <div
-                className="absolute h-full w-full transition-[top] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]"
-                style={{ top: `${index * -100}%` }}
-            >
-                {services.map((service, idx) => (
-                    <div
-                        className="flex h-full w-full items-center justify-center relative overflow-hidden"
-                        key={idx}
-                    >
-                        <Image
-                            src={service.image}
-                            alt={service.title}
-                            fill
-                            className="w-full h-full object-cover"
-                            sizes="(max-width: 768px) 280px, 380px"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+          {/* Inner anchor sits at exact horizontal center */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.8] xs:scale-[0.9] sm:scale-100 md:scale-[1.12] lg:scale-[1.18] origin-center">
+            {SERVICES_TAGS.map((tag, i) => (
+              <div
+                key={i}
+                className="absolute service-pill pointer-events-auto opacity-0"
+                style={{
+                  left: "0px",
+                  top: "0px",
+                  transformOrigin: "center center",
+                }}
+              >
+                {/* Inner wrapper for independent floating animations without interfering with GSAP drop */}
+                <div className={tag.animationClass}>
+                  <div className="flex items-center gap-3 bg-[#121214]/90 text-white pl-3 pr-6 py-3 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5),0_4px_12px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform duration-300 border border-white/10 select-none">
+                    <div className={`w-8 h-8 rounded-full ${tag.iconColor} flex items-center justify-center text-white shrink-0 shadow-sm`}>
+                      <Icon icon={tag.icon} className="text-lg" />
                     </div>
-                ))}
-            </div>
-        </motion.div>
-    );
-}
+                    <span className="font-bold text-sm text-[#E5E5E7] tracking-tight whitespace-nowrap">
+                      {tag.label}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-export default ServicesSection;
+      </div>
+    </section>
+  );
+}

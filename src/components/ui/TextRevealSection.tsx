@@ -8,13 +8,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const textContent = [
-    "AN", "INTERACTION", "DESIGNER", "AND", "VIBE-CODING", "NOVICE", "FROM", "PUNE,",
+    "AN", "INTERACTION", "DESIGNER", "AND", "VIBE-CODING", "ENTHUSIAST", "FROM", "PUNE,",
     "DRIVEN", "BY", "CURIOSITY", "BEYOND", "TRADITIONAL", "INTERFACES.", "I", "DESIGN",
-    "FOR", "WEB", "AND", "APPS,", "WHILE", "CONTINUOUSLY", "EXPLORING", "NEW", "WAYS",
-    "PEOPLE", "INTERACT", "WITH", "DIGITAL", "SYSTEMS.", "MY", "FUTURE", "GOALS", "LIE",
-    "IN", "IMMERSIVE", "ENVIRONMENTS-", "EXPLORING", "AR,", "VR,", "AND", "BUILDING",
-    "GENERATIVE,", "REAL-TIME", "EXPERIENCES.", "MY", "WORK", "BLENDS", "CODE,", "MOTION,",
-    "AND", "SENSORY", "INPUT", "TO", "CREATE", "DYNAMIC,", "EXPERIMENTAL", "INTERFACES."
+    "DIGITAL", "EXPERIENCES", "FOR", "WEB", "AND", "MOBILE", "PRODUCTS,", "BLENDING",
+    "DESIGN,", "CODE,", "AND", "MOTION", "TO", "CREATE", "ENGAGING", "AND", "DYNAMIC",
+    "INTERACTIONS.", "I'M", "PASSIONATE", "ABOUT", "CRAFTING", "USER", "EXPERIENCES",
+    "THAT", "BUILD", "TRUST,", "ENCOURAGE", "ENGAGEMENT,", "AND", "CREATE", "MEANINGFUL",
+    "CONNECTIONS", "BETWEEN", "PRODUCTS", "AND", "THE", "PEOPLE", "WHO", "USE", "THEM."
 ];
 
 const highlights: string[] = [];
@@ -44,9 +44,9 @@ export function TextRevealSection() {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="py-40 px-6 flex items-center justify-center min-h-[100vh] bg-black/90 relative z-30 pointer-events-auto">
+        <section ref={containerRef} className="py-40 px-6 flex items-center justify-center min-h-[100vh] relative pointer-events-auto">
             <div className="max-w-[75rem] mx-auto text-center flex flex-col items-center">
-                <h2 className="text-[30px] font-semibold font-sans text-white mb-16 text-center">
+                <h2 className="text-[24px] font-semibold font-sans text-white mb-16 text-center">
                     About Me
                 </h2>
 

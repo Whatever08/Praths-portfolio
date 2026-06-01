@@ -183,11 +183,10 @@ function XtepMarqueeShowcase({ screens }: { screens: MarqueeScreens }) {
                         <button
                             key={i}
                             onClick={() => switchCategory(i)}
-                            className={`rounded-full transition-all duration-300 ${
-                                i === activeIdx
+                            className={`rounded-full transition-all duration-300 ${i === activeIdx
                                     ? "w-6 h-2 bg-[#E8002D]"
                                     : "w-2 h-2 bg-[#E4DFD7] hover:bg-[#6B6762]"
-                            }`}
+                                }`}
                         />
                     ))}
                 </div>
@@ -1084,9 +1083,9 @@ export default function XtepPage() {
                                                     <XtepMarqueeShowcase
                                                         screens={{
                                                             onboarding: [SplashImg.src, OnboardingImg.src, OnboardingImg2.src, OnboardingImg3.src, OnboardingImg4.src],
-                                                            home:        [HomeImg.src,  HomeImg2.src,  HomeImg3.src],
-                                                            store:       [StoreImg.src, StoreImg2.src, StoreImg3.src],
-                                                            checkout:    [CheckoutImg.src, CheckoutImg2.src, CheckoutImg3.src],
+                                                            home: [HomeImg.src, HomeImg2.src, HomeImg3.src],
+                                                            store: [StoreImg.src, StoreImg2.src, StoreImg3.src],
+                                                            checkout: [CheckoutImg.src, CheckoutImg2.src, CheckoutImg3.src],
                                                         }}
                                                     />
 
@@ -1201,10 +1200,10 @@ export default function XtepPage() {
                                                 </div>
                                             </Link>
 
-                                            <Link href="/projects/exsavvy" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 flex flex-col items-end justify-center group hover:bg-black/5 transition-colors duration-500">
+                                            <Link href="/projects/mclaren-racing" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 flex flex-col items-end justify-center group hover:bg-black/5 transition-colors duration-500">
                                                 <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest mb-4 md:mb-6">Next Project</span>
                                                 <div className="flex items-center gap-4 md:gap-6">
-                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:translate-x-2 transition-all duration-500 leading-none pb-1">Exsavvy</h3>
+                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:translate-x-2 transition-all duration-500 leading-none pb-1">McLaren Racing</h3>
                                                     <span className="text-2xl md:text-4xl lg:text-5xl text-black/40 group-hover:text-black group-hover:translate-x-4 transition-all duration-500">&rarr;</span>
                                                 </div>
                                             </Link>

@@ -7,8 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const row1 = ["HTML", "CSS", "Java", "GSAP", "Framer Motion"];
-const row2 = ["Figma", "Photoshop", "Illustrator", "Rive", "Spline"];
+const row1 = ["HTML", "CSS", "GSAP", "Lovable", "Google AI Studio"];
+const row2 = ["Figma", "Photoshop", "Illustrator", "Miro"];
 const row3 = ["Vercel", "Claude", "OpenAI", "Antigravity"];
 
 export default function StackSection() {

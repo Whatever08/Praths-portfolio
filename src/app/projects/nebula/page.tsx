@@ -299,7 +299,7 @@ export default function NebulaPage() {
 
                 {/* ── WHITE CANVAS: Nebula case-study sections ───── */}
                 <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
-                  <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out rounded-[40px] md:rounded-[80px] shadow-2xl origin-center" data-theme="light">
+                  <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out shadow-2xl origin-center" data-theme="light">
 
                     {/* All Nebula sections wrapped in .dv-embed for scoped CSS */}
                     <div className="dv-embed">
