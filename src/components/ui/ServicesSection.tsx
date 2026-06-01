@@ -12,8 +12,8 @@ const SERVICES_TAGS = [
     label: "Design System",
     icon: "solar:widget-2-bold-duotone",
     iconColor: "bg-[#FF6B35]",
-    x: "-130px",
-    y: "-20px",
+    x: "-180px",
+    y: "-35px",
     rotate: -8,
     animationClass: "animate-float-1",
   },
@@ -21,8 +21,8 @@ const SERVICES_TAGS = [
     label: "Design Research",
     icon: "solar:minimalistic-magnifer-bold-duotone",
     iconColor: "bg-[#00A8E8]",
-    x: "-10px",
-    y: "-30px",
+    x: "-15px",
+    y: "-70px",
     rotate: 4,
     animationClass: "animate-float-2",
   },
@@ -30,8 +30,8 @@ const SERVICES_TAGS = [
     label: "Experience Design",
     icon: "solar:heart-bold-duotone",
     iconColor: "bg-[#EF476F]",
-    x: "110px",
-    y: "-25px",
+    x: "165px",
+    y: "-40px",
     rotate: -6,
     animationClass: "animate-float-3",
   },
@@ -39,8 +39,8 @@ const SERVICES_TAGS = [
     label: "Prototyping",
     icon: "solar:screencast-bold-duotone",
     iconColor: "bg-[#FF3366]",
-    x: "-70px",
-    y: "25px",
+    x: "-110px",
+    y: "40px",
     rotate: 6,
     animationClass: "animate-float-4",
   },
@@ -48,8 +48,8 @@ const SERVICES_TAGS = [
     label: "coding / Vibe coding",
     icon: "solar:code-bold-duotone",
     iconColor: "bg-[#06D6A0]",
-    x: "25px",
-    y: "20px",
+    x: "20px",
+    y: "45px",
     rotate: -20,
     animationClass: "animate-float-5",
   },
@@ -57,8 +57,8 @@ const SERVICES_TAGS = [
     label: "Design Mgmt",
     icon: "solar:settings-bold-duotone",
     iconColor: "bg-[#FFD166]",
-    x: "120px",
-    y: "28px",
+    x: "160px",
+    y: "35px",
     rotate: 9,
     animationClass: "animate-float-6",
   },
@@ -197,7 +197,7 @@ export default function ServicesSection() {
           style={{ width: "100vw", marginLeft: "calc(-50vw + 50%)" }}
         >
           {/* Inner anchor sits at exact horizontal center */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.8] xs:scale-[0.9] sm:scale-100 md:scale-[1.12] lg:scale-[1.18] origin-center">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.88] xs:scale-[0.99] sm:scale-[1.10] md:scale-[1.23] lg:scale-[1.30] origin-center">
             {SERVICES_TAGS.map((tag, i) => (
               <div
                 key={i}

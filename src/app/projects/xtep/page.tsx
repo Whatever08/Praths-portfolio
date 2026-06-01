@@ -1083,7 +1083,7 @@ export default function XtepPage() {
                                                     <XtepMarqueeShowcase
                                                         screens={{
                                                             onboarding: [SplashImg.src, OnboardingImg.src, OnboardingImg2.src, OnboardingImg3.src, OnboardingImg4.src],
-                                                            home: [HomeImg.src, HomeImg2.src, HomeImg3.src],
+                                                            home: [HomeImg.src, HomeImg2.src, HomeImg4.src],
                                                             store: [StoreImg.src, StoreImg2.src, StoreImg3.src],
                                                             checkout: [CheckoutImg.src, CheckoutImg2.src, CheckoutImg3.src],
                                                         }}
