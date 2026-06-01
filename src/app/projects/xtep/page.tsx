@@ -25,7 +25,7 @@ import StoreImg2 from "./Store2.png";
 import StoreImg3 from "./Store3.png";
 import HomeImg from "./Homepage1.png";
 import HomeImg2 from "./Home2.png";
-import HomeImg3 from "./Home3.png";
+import HomeImg4 from "./Home4.png";
 import CheckoutImg from "./Checkout1.png";
 import CheckoutImg2 from "./Checkout2.png";
 import CheckoutImg3 from "./Checkout3.png";
@@ -459,8 +459,8 @@ export default function XtepPage() {
                                         titleClassName="text-[26px] md:text-[45px] lg:text-[58px] font-medium leading-[1.0] tracking-[-0.02em] text-white text-left w-full max-w-[840px] mx-auto"
                                         description="A design management case study examining how a mobile-first digital commerce ecosystem can solve Xtep's India market-entry challenges: trust, discovery, and community."
                                         scopeOfWork={["UX Design", "Business Strategy", "Design Management", "Mobile App"]}
-                                        media="/generated/xtep_vision.png"
-                                        mediaType="image"
+                                        media="/Introvid.mp4"
+                                        mediaType="video"
                                         scrollHeightVh={140}
                                         smoothScroll={false}
                                         targetSize="fullscreen"
