@@ -201,7 +201,16 @@ export default function NebulaPage() {
                   <HeroScrollVideo
                     title={<>Nebula: Designing the<br />Ai-Powered Social Media<br />Mgmt Platform</>}
                     titleClassName="text-[26px] md:text-[45px] lg:text-[58px] font-medium leading-[1.0] tracking-[-0.02em] text-white text-left w-full max-w-[840px] mx-auto"
-                    description="This Concept project aims to create a next-generation social media management platform designed to empower Indian influencers, creators, and small businesses to manage their online presence more effectively. By focusing on the unique needs, cultural nuances, and growth challenges faced by Indian talent, the platform will provide intuitive tools for campaign tracking, audience engagement, content performance insights, and brand-building strategies."
+                    description={
+                      <>
+                        <span className="hidden md:inline">
+                          This Concept project aims to create a next-generation social media management platform designed to empower Indian influencers, creators, and small businesses to manage their online presence more effectively. By focusing on the unique needs, cultural nuances, and growth challenges faced by Indian talent, the platform will provide intuitive tools for campaign tracking, audience engagement, content performance insights, and brand-building strategies.
+                        </span>
+                        <span className="inline md:hidden text-white/80">
+                          A next-generation platform designed to empower Indian creators and small businesses. It provides intuitive tools for campaign tracking, audience engagement, and content performance insights.
+                        </span>
+                      </>
+                    }
                     scopeOfWork={["Product Strategy", "UI/UX Design", "Data Visualisation", "System Design"]}
                     media="/Scene-2.mp4"
                     mediaType="video"
