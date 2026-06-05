@@ -235,10 +235,6 @@ export default function NebulaPage() {
                   >
                     {/* Role & Timeline row */}
                     <div className="flex flex-col md:flex-row justify-between w-full mb-16 md:mb-24">
-                      <div className="w-full md:w-[65%] mb-8 md:mb-0">
-                        <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-3 font-medium">Role</h3>
-                        <p className="text-sm md:text-base font-medium text-white">Lead Product Designer</p>
-                      </div>
                       <div className="w-full md:w-[30%]">
                         <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-3 font-medium">Timeline</h3>
                         <p className="text-sm md:text-base font-medium text-white">4 Months</p>
