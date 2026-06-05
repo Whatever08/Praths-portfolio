@@ -360,7 +360,7 @@ export default function XtepPage() {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: introSection,
-                    start: "center center",
+                    start: () => typeof window !== "undefined" && window.innerWidth >= 768 ? "center center" : "top top",
                     end: () => `+=${stepsCount * 450}`,
                     pin: true,
                     scrub: 1,
