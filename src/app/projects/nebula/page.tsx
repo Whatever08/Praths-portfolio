@@ -327,7 +327,7 @@ export default function NebulaPage() {
                             <span style={{ color: '#7a829a', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>PROBLEM STATEMENT</span>
                           </div>
 
-                          <h2 className="dv-left" style={{ fontSize: '3.5rem', fontWeight: 600, color: '#3b3b58', marginBottom: '32px', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+                          <h2 className="dv-left text-[2.1rem] md:text-[3.5rem]" style={{ fontWeight: 600, color: '#3b3b58', marginBottom: '32px', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
                             Understanding the Problem
                           </h2>
 
