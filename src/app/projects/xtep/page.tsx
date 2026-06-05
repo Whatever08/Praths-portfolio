@@ -335,8 +335,8 @@ export default function XtepPage() {
 
             // Layout factors based on screen size (fans out to the right)
             const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
-            const xOffset = isDesktop ? 40 : 27;
-            const yOffset = isDesktop ? -9 : -5;
+            const xOffset = isDesktop ? 40 : 20;
+            const yOffset = isDesktop ? -9 : -4;
 
             // Initialize card positions inside the fanned diagonal stack
             introCards.forEach((card, idx) => {
@@ -360,7 +360,7 @@ export default function XtepPage() {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: introSection,
-                    start: () => typeof window !== "undefined" && window.innerWidth >= 768 ? "center center" : "top top",
+                    start: () => typeof window !== "undefined" && window.innerWidth >= 768 ? "center center" : "top 100px",
                     end: () => `+=${stepsCount * 450}`,
                     pin: true,
                     scrub: 1,
@@ -1158,35 +1158,35 @@ export default function XtepPage() {
                                             </section>
 
                                             {/* ── PRODUCT INTRODUCING SECTION ── */}
-                                            <section className="dv-section dv-intro-section bg-white border-b border-[#E4DFD7] py-32 md:py-40 relative overflow-hidden" id="introducing">
-                                                <div className="dv-container max-w-[1200px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-16 md:gap-24 min-h-[80vh] md:min-h-screen">
+                                            <section className="dv-section dv-intro-section bg-white border-b border-[#E4DFD7] py-24 md:py-40 relative overflow-hidden" id="introducing">
+                                                <div className="dv-container max-w-[1200px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-12 md:gap-24 min-h-[60vh] md:min-h-screen">
 
                                                     {/* Left Column: Stacked Cards Deck */}
-                                                    <div className="w-full md:w-1/2 flex justify-center items-center relative min-h-[500px] md:min-h-[650px]">
-                                                        <div className="relative w-[252px] h-[522px] md:w-[280px] md:h-[576px] -translate-x-[20%]">
+                                                    <div className="w-full md:w-1/2 flex justify-center items-center relative min-h-[380px] md:min-h-[650px]">
+                                                        <div className="relative w-[190px] h-[395px] md:w-[280px] md:h-[576px] -translate-x-[20%]">
                                                             {/* 8 Cards stacked on top of each other */}
-                                                            <div className="dv-intro-card absolute inset-0 rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
+                                                            <div className="dv-intro-card absolute inset-0 rounded-[28px] md:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
                                                                 <img src={SplashImg.src} alt="Splash Screen" className="w-full h-full object-cover select-none pointer-events-none" />
                                                             </div>
-                                                            <div className="dv-intro-card absolute inset-0 rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
+                                                            <div className="dv-intro-card absolute inset-0 rounded-[28px] md:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
                                                                 <img src={OnboardingImg4.src} alt="Onboarding Screen 4" className="w-full h-full object-cover select-none pointer-events-none" />
                                                             </div>
-                                                            <div className="dv-intro-card absolute inset-0 rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
+                                                            <div className="dv-intro-card absolute inset-0 rounded-[28px] md:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
                                                                 <img src={OnboardingImg2.src} alt="Onboarding Screen 2" className="w-full h-full object-cover select-none pointer-events-none" />
                                                             </div>
-                                                            <div className="dv-intro-card absolute inset-0 rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
+                                                            <div className="dv-intro-card absolute inset-0 rounded-[28px] md:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
                                                                 <img src={OnboardingImg3.src} alt="Onboarding Screen 3" className="w-full h-full object-cover select-none pointer-events-none" />
                                                             </div>
-                                                            <div className="dv-intro-card absolute inset-0 rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
+                                                            <div className="dv-intro-card absolute inset-0 rounded-[28px] md:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
                                                                 <img src={OnboardingImg.src} alt="Onboarding Screen 1" className="w-full h-full object-cover select-none pointer-events-none" />
                                                             </div>
-                                                            <div className="dv-intro-card absolute inset-0 rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
+                                                            <div className="dv-intro-card absolute inset-0 rounded-[28px] md:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
                                                                 <img src={HomeImg.src} alt="Home Screen 1" className="w-full h-full object-cover select-none pointer-events-none" />
                                                             </div>
-                                                            <div className="dv-intro-card absolute inset-0 rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
+                                                            <div className="dv-intro-card absolute inset-0 rounded-[28px] md:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
                                                                 <img src={HomeImg2.src} alt="Home Screen 2" className="w-full h-full object-cover select-none pointer-events-none" />
                                                             </div>
-                                                            <div className="dv-intro-card absolute inset-0 rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
+                                                            <div className="dv-intro-card absolute inset-0 rounded-[28px] md:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-black/5 will-change-transform">
                                                                 <img src={StoreImg3.src} alt="Store Screen 3" className="w-full h-full object-cover select-none pointer-events-none" />
                                                             </div>
                                                         </div>
