@@ -24,7 +24,7 @@
 }
 
 .dv-embed .dv-mixed-heading {
-  font-size: 3rem;
+  font-size: 2rem;
   line-height: 1.1;
   text-align: center;
   color: var(--dv-text-dark);
@@ -76,7 +76,7 @@
 }
 
 .dv-embed .dv-subheading {
-  font-size: 1.54rem;
+  font-size: 1.15rem;
   line-height: 1.6;
   color: var(--dv-text-muted);
   text-align: center !important;
@@ -87,6 +87,12 @@
   font-family: 'Instrument Sans', sans-serif !important;
   font-style: normal !important;
   font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .dv-embed .dv-subheading {
+    font-size: 1.54rem;
+  }
 }
 
 .dv-embed .dv-left,
@@ -364,19 +370,31 @@
 }
 
 .dv-embed .dv-feature-text {
-  padding: 64px;
+  padding: 32px 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+@media (min-width: 768px) {
+  .dv-embed .dv-feature-text {
+    padding: 64px;
+  }
+}
+
 .dv-embed .dv-feature-heading {
-  font-size: 2.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
   font-family: 'Instrument Sans', sans-serif;
   text-align: center;
+}
+
+@media (min-width: 768px) {
+  .dv-embed .dv-feature-heading {
+    font-size: 2.5rem;
+  }
 }
 
 .dv-embed .dv-feature-visual {
@@ -443,7 +461,7 @@
 }
 
 .dv-embed .dv-screen-title {
-  font-size: 1.75rem;
+  font-size: 1.15rem;
   font-family: 'Instrument Sans', sans-serif;
   font-weight: 700;
   margin-bottom: 8px;
@@ -451,6 +469,12 @@
   letter-spacing: -0.01em;
   text-align: center;
   color: white !important;
+}
+
+@media (min-width: 768px) {
+  .dv-embed .dv-screen-title {
+    font-size: 1.75rem;
+  }
 }
 
 .dv-embed .dv-screen-desc {
@@ -804,12 +828,18 @@
 }
 
 .dv-embed .dv-dark-card-title {
-  font-size: 2.25rem;
+  font-size: 1.15rem;
   font-weight: 500;
   margin-bottom: 20px;
   line-height: 1.2;
   color: white;
   letter-spacing: -0.01em;
+}
+
+@media (min-width: 768px) {
+  .dv-embed .dv-dark-card-title {
+    font-size: 2.25rem;
+  }
 }
 
 .dv-embed .dv-dark-card-body {

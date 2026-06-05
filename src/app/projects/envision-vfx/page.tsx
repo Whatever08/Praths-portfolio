@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Link from "next/link";
 import "./../nebula/nebula.css";
+import ComingSoonGuard from "@/components/ui/ComingSoonGuard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -100,6 +101,7 @@ export default function EnvisionVFXPage() {
 
     return (
         <>
+            <ComingSoonGuard />
             <LiquidBackground colors={PAGE_COLORS}>
                 <>
                     {showReveal && (
@@ -484,10 +486,10 @@ export default function EnvisionVFXPage() {
                                                 </div>
                                             </Link>
 
-                                            <Link href="/projects/akshara-events" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 flex flex-col items-end justify-center group hover:bg-black/5 transition-colors duration-500">
+                                            <Link href="/projects/nebula" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 flex flex-col items-end justify-center group hover:bg-black/5 transition-colors duration-500">
                                                 <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest mb-4 md:mb-6">Next Project</span>
                                                 <div className="flex items-center gap-4 md:gap-6">
-                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:translate-x-2 transition-all duration-500 leading-none pb-1">Akshara</h3>
+                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:translate-x-2 transition-all duration-500 leading-none pb-1">Nebula</h3>
                                                     <span className="text-2xl md:text-4xl lg:text-5xl text-black/40 group-hover:text-black group-hover:translate-x-4 transition-all duration-500">&rarr;</span>
                                                 </div>
                                             </Link>

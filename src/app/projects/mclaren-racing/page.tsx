@@ -15,6 +15,7 @@ import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import "./../nebula/nebula.css";
+import ComingSoonGuard from "@/components/ui/ComingSoonGuard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -111,6 +112,7 @@ export default function McLarenRacingPage() {
 
     return (
         <>
+            <ComingSoonGuard />
             <LiquidBackground colors={PAGE_COLORS}>
                 <>
                     {showReveal && (

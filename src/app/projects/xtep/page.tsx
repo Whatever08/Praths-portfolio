@@ -266,6 +266,15 @@ export default function XtepPage() {
     const lenisRef = useRef<any>(null);
     const [showReveal, setShowReveal] = useState(true);
     const [showRevealIn, setShowRevealIn] = useState(false);
+    const [copiedColor, setCopiedColor] = useState<string | null>(null);
+
+    const handleCopyColor = (hex: string) => {
+        navigator.clipboard.writeText(hex);
+        setCopiedColor(hex);
+        setTimeout(() => {
+            setCopiedColor(null);
+        }, 1500);
+    };
 
     useEffect(() => {
         function update(time: number) {
@@ -1010,6 +1019,148 @@ export default function XtepPage() {
                                 <div className="white-canvas-container w-full overflow-visible relative z-20" data-theme="light">
                                     <div className="white-canvas-content w-full bg-white transition-colors duration-300 ease-out shadow-2xl origin-center" data-theme="light">
                                         <div className="dv-embed">
+                                            {/* ── TYPOGRAPHY & COLOR PALETTE SECTION ── */}
+                                            <section className="dv-section bg-white border-b border-[#E4DFD7] py-24 md:py-32 relative overflow-hidden" id="branding-assets">
+                                                <div className="dv-container max-w-[1200px] mx-auto px-6 md:px-12">
+                                                    
+                                                    {/* Section Header */}
+                                                    <div className="text-center mb-16 md:mb-20">
+                                                        <h2 className="dv-mixed-heading">
+                                                            <span className="dv-heading-bold">Brand Identity</span> <em className="dv-heading-italic">and Visual Identity</em>
+                                                        </h2>
+                                                    </div>
+
+                                                    {/* Brand Logo Card (Feature Card style, full width) */}
+                                                    <div className="dv-feature-card border border-[#E4DFD7] shadow-lg mb-16 rounded-[40px] overflow-hidden bg-white">
+                                                        <div className="dv-feature-text dv-feature-light-gray">
+                                                            <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-3 font-semibold text-left">BRANDMARK</span>
+                                                            <h3 className="dv-feature-heading dv-left">
+                                                                The Xtep Logo
+                                                            </h3>
+                                                            <p className="dv-subheading dv-left">
+                                                                The Xtep logo represents speed, movement, and athletic performance. The customized bold double-cross graphic emblem symbolizes energetic force and the carbon-plate running technology, while the clean geometric alignment conveys high-speed, professional footwear aesthetics.
+                                                            </p>
+                                                        </div>
+                                                        <div className="dv-feature-visual bg-white border-t border-[#E4DFD7] md:border-t-0 md:border-l md:border-[#E4DFD7] p-12 md:p-16 flex items-center justify-center aspect-square">
+                                                            <img src={XtepLogo.src} alt="Xtep Logo" className="w-[60%] md:w-[64%] max-w-[250px] md:max-w-[300px] object-contain select-none pointer-events-none transition-transform duration-300 hover:scale-[1.03]" />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* 2 Column Layout for Typography & Colors */}
+                                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+                                                        
+                                                        {/* Column 1: Typography */}
+                                                        <div className="flex flex-col gap-6">
+                                                            {/* Typography Showcase Card */}
+                                                            <div className="bg-[#E30613] rounded-3xl p-8 flex flex-col justify-between aspect-auto min-h-[340px] lg:aspect-[16/10] overflow-hidden relative shadow-lg text-white group hover:scale-[1.01] transition-transform duration-300 select-none">
+                                                                <div className="absolute top-0 right-0 p-8 opacity-10 text-white font-dm font-bold text-[150px] leading-none pointer-events-none select-none">
+                                                                    Aa
+                                                                </div>
+                                                                
+                                                                <div className="flex justify-between items-start z-10 w-full">
+                                                                    <div className="text-left">
+                                                                        <div className="text-[11px] tracking-widest font-mono text-white/75 uppercase font-bold mb-1">Type Specimen</div>
+                                                                        <div className="text-2xl font-dm font-bold tracking-tight">DM Sans</div>
+                                                                    </div>
+                                                                    <div className="text-right font-mono text-[9px] text-white/70 tracking-widest uppercase">
+                                                                        SANS-SERIF
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="flex flex-col gap-2 z-10 text-left mt-auto">
+                                                                    <div className="border-b border-white/20 pb-1.5">
+                                                                        <span className="font-dm font-bold text-lg">Bold</span>
+                                                                    </div>
+                                                                    <div className="border-b border-white/20 pb-1.5">
+                                                                        <span className="font-dm font-semibold text-lg">SemiBold</span>
+                                                                    </div>
+                                                                    <div className="border-b border-white/20 pb-1.5">
+                                                                        <span className="font-dm font-medium text-lg">Medium</span>
+                                                                    </div>
+                                                                    <div className="pb-1">
+                                                                        <span className="font-dm font-normal text-lg">Regular</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Typography Text Info */}
+                                                            <div className="text-left mt-2">
+                                                                <h3 className="text-xl md:text-2xl font-bold font-dm text-[#0C0C0C] mb-3">DM Sans Typography</h3>
+                                                                <p className="text-sm md:text-base text-[#6B6762] leading-relaxed font-dm">
+                                                                    We selected the clean, modern geometric typeface <strong>DM Sans</strong> for the Xtep digital experience. By leveraging <strong>Bold, SemiBold, Medium, and Regular</strong> weights, we established a robust typography system that ensures high legibility, professional visual hierarchy, and a fast, performance-driven aesthetic that aligns with Xtep's athletic brand image.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Column 2: Color Palette */}
+                                                        <div className="flex flex-col gap-6">
+                                                            {/* Color Palette Specimen Card */}
+                                                            <div className="bg-white rounded-3xl p-8 flex flex-col justify-between aspect-auto min-h-[340px] lg:aspect-[16/10] overflow-hidden relative shadow-lg border border-[#E4DFD7] hover:scale-[1.01] transition-transform duration-300">
+                                                                
+                                                                {/* Floating Copy Notification */}
+                                                                {copiedColor && (
+                                                                    <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white/95 text-[#0C0C0C] px-3 py-1.5 rounded-full text-xs font-mono font-bold shadow-md z-30 flex items-center gap-1.5 animate-bounce border border-[#E4DFD7]">
+                                                                        <Icon icon="solar:check-circle-bold" className="text-[#E30613] text-sm" />
+                                                                        Copied {copiedColor}!
+                                                                    </div>
+                                                                )}
+
+                                                                <div className="flex justify-between items-start z-10 w-full mb-6">
+                                                                    <div className="text-left">
+                                                                        <div className="text-[11px] tracking-widest font-mono text-[#6B6762] uppercase font-bold mb-1">Color Palette</div>
+                                                                        <div className="text-lg font-dm font-bold text-[#0C0C0C] tracking-tight">Active Colors</div>
+                                                                    </div>
+                                                                    <div className="text-right font-mono text-[8px] text-[#6B6762]/70 tracking-widest uppercase">
+                                                                        HOVER FOR HEX
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* Interactive Swatches Bar Style */}
+                                                                <div className="flex h-32 md:h-40 w-full rounded-xl overflow-hidden border border-[#E4DFD7] shadow-sm bg-[#FAFAF9] mt-auto">
+                                                                    {[
+                                                                        { hex: "#E30613", label: "Red", darkText: false },
+                                                                        { hex: "#2A2A2A", label: "Charcoal", darkText: false },
+                                                                        { hex: "#FFFFFF", label: "White", darkText: true, border: true },
+                                                                        { hex: "#000000", label: "Black", darkText: false },
+                                                                        { hex: "#666666", label: "Dark Grey", darkText: false },
+                                                                        { hex: "#8C8C8C", label: "Med Grey", darkText: false },
+                                                                        { hex: "#B3B3B3", label: "Grey", darkText: true },
+                                                                        { hex: "#CCCCCC", label: "Light Grey", darkText: true },
+                                                                        { hex: "#E6E6E6", label: "Extra Light", darkText: true },
+                                                                        { hex: "#F2F2F2", label: "Soft White", darkText: true }
+                                                                    ].map((color) => (
+                                                                        <button
+                                                                            key={color.hex}
+                                                                            onClick={() => handleCopyColor(color.hex)}
+                                                                            className="flex-1 h-full relative group transition-all duration-500 hover:flex-[2.2] cursor-pointer"
+                                                                            style={{ 
+                                                                                backgroundColor: color.hex,
+                                                                                borderLeft: color.border ? '1px solid #E4DFD7' : 'none',
+                                                                                borderRight: color.border ? '1px solid #E4DFD7' : 'none'
+                                                                            }}
+                                                                            title={`Click to copy ${color.hex}`}
+                                                                        >
+                                                                            <span className={`absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[8px] md:text-[10px] font-bold tracking-tighter whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${color.darkText ? 'text-black/80' : 'text-white/90'}`}>
+                                                                                {color.hex}
+                                                                            </span>
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Color Palette Text Info */}
+                                                            <div className="text-left mt-2">
+                                                                <h3 className="text-xl md:text-2xl font-bold font-dm text-[#0C0C0C] mb-3">Colour Style</h3>
+                                                                <p className="text-sm md:text-base text-[#6B6762] leading-relaxed font-dm">
+                                                                    We carefully selected a color style that incorporates the unique colors of each product into their respective pages. This approach allowed us to effectively communicate the story behind each product and showcase the individuality of each brand.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </section>
+
                                             {/* ── PRODUCT INTRODUCING SECTION ── */}
                                             <section className="dv-section dv-intro-section bg-white border-b border-[#E4DFD7] py-32 md:py-40 relative overflow-hidden" id="introducing">
                                                 <div className="dv-container max-w-[1200px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-16 md:gap-24 min-h-[80vh] md:min-h-screen">

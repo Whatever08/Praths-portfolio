@@ -25,8 +25,7 @@ const GALLERY_ITEMS = [
   { image: "/Xtep2.png", text: "Xtep", link: "/projects/xtep" },
   { image: "/MCL2.png", text: "MCL Racing (Coming Soon)", link: "#" },
   { image: "/flytbase2.png", text: "Flytbase (Coming Soon)", link: "#" },
-  { image: "/VFX2.png", text: "Envision VFX", link: "https://envisionvfx.in" },
-  { image: "/Aksharaevents2.png", text: "Akshara Events", link: "https://aaksharaevents.com" }
+  { image: "/VFX2.png", text: "Envision VFX", link: "https://envisionvfx.in" }
 ];
 
 export default function Home() {
@@ -44,13 +43,51 @@ export default function Home() {
 
   const [showReveal, setShowReveal] = useState(true);
   const [showRevealIn, setShowRevealIn] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Helper trigger to suppress GSAP scroll swallow during programmatic scroll
-  const handleNavClick = () => {
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
+  // Helper trigger to suppress GSAP scroll swallow during programmatic scroll and center target element
+  const handleNavClick = (e: React.MouseEvent<HTMLElement>, targetId: string) => {
+    e.preventDefault();
     isNavigating.current = true;
     setTimeout(() => {
       isNavigating.current = false;
     }, 1200); // Resume scroll detection after 1.2s smooth scroll completes
+
+    const element = document.getElementById(targetId);
+    if (element) {
+      let targetElement = element;
+      
+      // If we are centering the recent works, center the gallery container specifically
+      if (targetId === "recent-works") {
+        const galleryContainer = document.getElementById("gallery-container");
+        if (galleryContainer) {
+          targetElement = galleryContainer;
+        }
+      }
+
+      const elementRect = targetElement.getBoundingClientRect();
+      // Query the current GSAP y-translation of the parent section to subtract it from getBoundingClientRect
+      const currentY = (gsap.getProperty(element, "y") as number) || 0;
+      const absoluteElementTop = elementRect.top + window.scrollY - currentY;
+      const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+
+      window.history.pushState(null, "", `#${targetId}`);
+      window.scrollTo({
+        top: middle,
+        behavior: "smooth"
+      });
+    }
   };
 
   useEffect(() => {
@@ -256,6 +293,120 @@ export default function Home() {
           />
         )}
 
+        {/* Mobile Menu Overlay */}
+        <div 
+          className={`fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl transition-all duration-500 ease-in-out flex flex-col justify-between p-8 ${
+            isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+          }`}
+        >
+          {/* Header inside overlay */}
+          <div className="flex justify-between items-center w-full">
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="relative h-7 flex items-center">
+              <img
+                src="/logo.png"
+                alt="TP Logo"
+                className="h-full w-auto object-contain"
+              />
+            </Link>
+            <button 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-white p-2 hover:rotate-90 transition-transform duration-300"
+            >
+              <Icon icon="solar:close-circle-linear" className="text-4xl" />
+            </button>
+          </div>
+          
+          {/* Main Links */}
+          <div className="flex flex-col items-start justify-center gap-6 my-auto pl-4">
+            <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-2">Navigation</div>
+            
+            <a 
+              href="#recent-works" 
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleNavClick(e, "recent-works");
+              }} 
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
+            >
+              Recent Works
+            </a>
+            
+            <button 
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setShowRevealIn(true);
+                setTimeout(() => {
+                  window.location.href = "/projects";
+                }, 1000);
+              }}
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
+            >
+              View All Projects
+            </button>
+            
+            <a 
+              href="#about" 
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleNavClick(e, "about");
+              }} 
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
+            >
+              About
+            </a>
+            
+            <a 
+              href="#services" 
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleNavClick(e, "services");
+              }} 
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
+            >
+              What I do
+            </a>
+
+            <a 
+              href="#case-studies" 
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleNavClick(e, "case-studies");
+              }} 
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
+            >
+              Case Studies
+            </a>
+
+            <a 
+              href="#contact" 
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleNavClick(e, "contact");
+              }} 
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
+            >
+              Contact
+            </a>
+            
+            <Link 
+              href="/playground" 
+              onClick={() => setIsMobileMenuOpen(false)} 
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
+            >
+              Playground
+            </Link>
+          </div>
+
+          {/* Footer inside overlay */}
+          <div className="flex justify-between items-center w-full pt-6 border-t border-white/10 pl-4">
+            <div className="flex gap-6">
+              <a href="https://www.linkedin.com/in/prathamesh-tipnis-653b00142/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white text-xs uppercase tracking-widest font-bold">LinkedIn</a>
+              <a href="https://www.behance.net/tprathameshUXD1" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white text-xs uppercase tracking-widest font-bold">Behance</a>
+            </div>
+            <span className="text-white/20 text-xs font-mono">© 2026</span>
+          </div>
+        </div>
+
         {/* Background with wrapper */}
         <LiquidBackground>
           {/* Custom Cursor — desktop only */}
@@ -286,9 +437,9 @@ export default function Home() {
             {/* Center: Links & Logo (Desktop) — FULLY RESTORED */}
             <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-white pointer-events-auto w-2/4">
               <div className="flex-1 flex justify-end items-center nav-left-items">
-                <a onClick={handleNavClick} href="/#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
-                <a onClick={handleNavClick} href="/#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
-                <a onClick={handleNavClick} href="/#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">Services</a>
+                <a onClick={(e) => handleNavClick(e, "recent-works")} href="/#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
+                <a onClick={(e) => handleNavClick(e, "about")} href="/#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
+                <a onClick={(e) => handleNavClick(e, "services")} href="/#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">What I do</a>
               </div>
 
               {/* Logo */}
@@ -301,8 +452,8 @@ export default function Home() {
               </Link>
 
               <div className="flex-1 flex justify-start items-center nav-right-items">
-                <a onClick={handleNavClick} href="/#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
-                <a onClick={handleNavClick} href="/#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
+                <a onClick={(e) => handleNavClick(e, "case-studies")} href="/#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
+                <a onClick={(e) => handleNavClick(e, "contact")} href="/#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
                 <Link href="/playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</Link>
               </div>
             </div>
@@ -310,7 +461,7 @@ export default function Home() {
             {/* Right: Menu Icon for Mobile — Functional */}
             <div className="w-1/2 md:w-1/4 flex justify-end">
               <button
-                onClick={() => setShowRevealIn(true)} // Reusing the reveal for mobile menu feel or just plain toggle
+                onClick={() => setIsMobileMenuOpen(true)}
                 className="md:hidden text-white drop-shadow-md p-2"
               >
                 <Icon icon="solar:hamburger-menu-linear" className="text-2xl" />
@@ -360,19 +511,22 @@ export default function Home() {
                 </h2>
               </div>
 
-              {/* ── CTA BUTTONS ── */}
-              {/* Edit: top-[77%] = mobile position | md:bottom-[calc(3rem+2vh)] = desktop position */}
-              <div className="absolute top-[77%] md:top-auto md:bottom-[calc(3rem+2vh)] left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 flex items-center gap-3 z-20 pointer-events-auto scale-[1.08] md:origin-left origin-center">
-                <button className="px-5 py-3 md:px-8 md:py-4 rounded-full border border-white/60 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300 cursor-pointer whitespace-nowrap">
-                  Let&apos;s Work Together
-                </button>
-                <button className="w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-full border border-white/60 text-white hover:bg-white hover:text-black transition-all duration-300 cursor-pointer">
-                  <Icon icon="solar:arrow-right-up-linear" className="text-xl" />
-                </button>
+              {/* ── SCROLL TO EXPLORE INDICATOR ── */}
+              {/* Edit: top-[72%] = mobile position | md:bottom-[calc(3rem+2vh)] = desktop position */}
+              <div 
+                onClick={(e) => handleNavClick(e, "recent-works")}
+                className="absolute top-[72%] md:top-auto md:bottom-[calc(3rem+2vh)] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center gap-2.5 z-20 pointer-events-auto scale-[1.08] origin-center cursor-pointer group transition-all duration-300"
+              >
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/50 group-hover:text-white transition-colors duration-300">
+                  Scroll to begin experience
+                </span>
+                <div className="w-[20px] h-[34px] rounded-full border border-white/30 group-hover:border-white/60 flex justify-center py-1.5 transition-colors duration-300">
+                  <div className="w-[3px] h-[6px] rounded-full bg-white/70 animate-scroll-wheel" />
+                </div>
               </div>
 
               {/* ── SOCIAL ICONS — MOBILE ONLY (hidden on desktop) ── */}
-              <div className="md:hidden absolute bottom-[calc(1.5rem+10vh)] left-0 right-0 flex justify-center items-center gap-10 z-20 pointer-events-auto scale-[1.08] origin-center">
+              <div className="md:hidden absolute bottom-8 left-0 right-0 flex justify-center items-center gap-10 z-20 pointer-events-auto scale-[1.08] origin-center">
                 <a href="https://www.linkedin.com/in/prathamesh-tipnis-653b00142/" title="LinkedIn" className="text-white/80 hover:text-white transition-colors">
                   <Icon icon="line-md:linkedin" className="text-2xl" />
                 </a>
@@ -402,7 +556,7 @@ export default function Home() {
             </div>
 
             <div className="w-full relative px-6 md:px-0 flex justify-center">
-              <div className="relative h-[600px] w-full max-w-[100vw] rounded-lg">
+              <div id="gallery-container" className="relative h-[600px] w-full max-w-[100vw] rounded-lg">
                 <CircularGallery
                   items={GALLERY_ITEMS}
                   onItemClick={(item) => {

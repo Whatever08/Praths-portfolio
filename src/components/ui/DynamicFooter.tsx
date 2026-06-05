@@ -44,7 +44,7 @@ export const DynamicFooter = () => {
             <div className="max-w-[100rem] mx-auto px-6 md:px-12">
                 {/* Heading + Contact — same line */}
                 <div ref={textRef} className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-12 md:gap-8">
-                    <h2 className="text-[6vw] md:text-[5vw] font-black leading-[0.85] tracking-tighter text-white uppercase select-none">
+                    <h2 className="text-5xl sm:text-[6vw] md:text-[5vw] font-black leading-[0.85] tracking-tighter text-white uppercase select-none">
                         Let&apos;s <br />
                         Make <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-white font-serif italic font-normal">Vibes.</span>
                     </h2>
@@ -54,11 +54,11 @@ export const DynamicFooter = () => {
                         href="mailto:tprathamesh8@gmail.com"
                         className="group inline-flex flex-col items-start md:items-end gap-2 shrink-0 pb-2"
                     >
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-white text-[2.8vw] md:text-[2.4vw] font-black leading-[0.85] tracking-tighter italic whitespace-nowrap pr-2 md:pr-4">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-white text-lg sm:text-[2.8vw] md:text-[2.4vw] font-black leading-[0.85] tracking-tighter italic whitespace-nowrap pr-2 md:pr-4">
                             Shoot an Email
                         </span>
-                        <span className="text-white text-[4.8vw] md:text-[4vw] font-black leading-[0.85] tracking-tighter uppercase border-b border-transparent group-hover:border-white/50 transition-all flex items-center gap-2 whitespace-nowrap">
-                            Get in touch <Icon icon="solar:arrow-right-up-linear" className="w-[4.8vw] h-[4.8vw] md:w-[4vw] md:h-[4vw]" />
+                        <span className="text-white text-2xl sm:text-[4.8vw] md:text-[4vw] font-black leading-[0.85] tracking-tighter uppercase border-b border-transparent group-hover:border-white/50 transition-all flex items-center gap-2 whitespace-nowrap">
+                            Get in touch <Icon icon="solar:arrow-right-up-linear" className="w-6 h-6 sm:w-[4.8vw] sm:h-[4.8vw] md:w-[4vw] md:h-[4vw]" />
                         </span>
                     </a>
                 </div>

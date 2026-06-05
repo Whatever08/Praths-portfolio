@@ -71,16 +71,6 @@ const PROJECTS: Project[] = [
     liveLink: "https://envisionvfx.in",
     isDetailsComingSoon: true,
   },
-  {
-    title: "Akshara Events",
-    year: "2023",
-    role: "Branding · Print · Web",
-    desc: "Premium event management brand for high-end weddings and corporate gatherings. Elegant typographic identity with a bespoke booking and showcase website.",
-    img: "/Aksharaevents.png",
-    link: "/projects/akshara-events",
-    liveLink: "https://aaksharaevents.com",
-    isDetailsComingSoon: true,
-  },
 ];
 
 export default function ProjectsPage() {

@@ -14,6 +14,7 @@ import { Navbar } from "@/components/ui/Navbar";
 import { HorizontalScrollGallery } from "@/components/ui/HorizontalScrollGallery";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import ComingSoonGuard from "@/components/ui/ComingSoonGuard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -98,6 +99,7 @@ export default function FlytbasePage() {
 
     return (
         <>
+            <ComingSoonGuard />
             <LiquidBackground colors={PAGE_COLORS}>
                 <>
                     {showReveal && (

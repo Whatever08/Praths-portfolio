@@ -50,7 +50,7 @@ export function TextRevealSection() {
                     About Me
                 </h2>
 
-                <h3 ref={textRef} className="text-[1.15rem] md:text-[2rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em]">
+                <h3 ref={textRef} className="text-2xl sm:text-[2rem] md:text-[2.2rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em]">
                     {textContent.map((word, i) => {
                         const isHighlight = highlights.includes(word);
                         return (

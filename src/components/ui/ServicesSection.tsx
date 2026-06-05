@@ -164,9 +164,81 @@ export default function ServicesSection() {
         },
         duration: 1.2,
         ease: "bounce.out",
+        onComplete: () => {
+          setupInertiaParallax();
+        }
       },
       "-=0.3"
     );
+
+    function setupInertiaParallax() {
+      const container = containerRef.current;
+      if (!container) return;
+
+      // Build per-badge quickTo setters — each badge has its own X/Y velocity tracker.
+      // The lag duration increases per badge so they feel independently weighted.
+      const pills = gsap.utils.toArray<HTMLElement>(".service-pill");
+      const quickSetters = pills.map((el, i) => {
+        // Duration increases from 0.10s (snappy) to 0.22s (laggy) across the 6 badges
+        const lag = 0.10 + i * 0.022;
+        return {
+          x: gsap.quickTo(el, "x", { duration: lag, ease: "power3.out" }),
+          y: gsap.quickTo(el, "y", { duration: lag, ease: "power3.out" }),
+          rot: gsap.quickTo(el, "rotation", { duration: lag * 1.4, ease: "power2.out" }),
+        };
+      });
+
+      const onMouseMove = (e: MouseEvent) => {
+        const rect = container.getBoundingClientRect();
+        const relX = e.clientX - (rect.left + rect.width / 2);
+        const relY = e.clientY - (rect.top + rect.height / 2);
+        const normX = relX / (rect.width / 2);
+        const normY = relY / (rect.height / 2);
+
+        quickSetters.forEach((qs, i) => {
+          const baseX = parseFloat(SERVICES_TAGS[i].x);
+          const baseY = parseFloat(SERVICES_TAGS[i].y);
+          // Each badge shifts a different amount — spread factor increases with index
+          const spreadX = 40 + i * 8;
+          const spreadY = 30 + i * 5;
+          qs.x(baseX + normX * spreadX);
+          qs.y(baseY + normY * spreadY);
+          qs.rot(SERVICES_TAGS[i].rotate + normX * 10);
+        });
+      };
+
+      const onMouseLeave = () => {
+        // Elastic spring back to original rest positions
+        pills.forEach((el, i) => {
+          gsap.to(el, {
+            x: parseFloat(SERVICES_TAGS[i].x),
+            y: parseFloat(SERVICES_TAGS[i].y),
+            rotation: SERVICES_TAGS[i].rotate,
+            duration: 1.8 + i * 0.05,
+            ease: "elastic.out(1.2, 0.5)",
+            overwrite: "auto",
+          });
+        });
+      };
+
+      container.addEventListener("mousemove", onMouseMove);
+      container.addEventListener("mouseleave", onMouseLeave);
+
+      (container as any)._inertiaMouseMove = onMouseMove;
+      (container as any)._inertiaMouseLeave = onMouseLeave;
+    }
+
+    return () => {
+      const container = containerRef.current;
+      if (container) {
+        if ((container as any)._inertiaMouseMove) {
+          container.removeEventListener("mousemove", (container as any)._inertiaMouseMove);
+        }
+        if ((container as any)._inertiaMouseLeave) {
+          container.removeEventListener("mouseleave", (container as any)._inertiaMouseLeave);
+        }
+      }
+    };
   }, { scope: containerRef });
 
   return (
@@ -181,7 +253,7 @@ export default function ServicesSection() {
         </h2>
         
         {/* Central Content (Same font & size style as About Me text) */}
-        <h3 className="text-[1.15rem] md:text-[2rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em] text-center max-w-4xl mx-auto px-4 z-10 py-6 select-none">
+        <h3 className="text-2xl sm:text-[2rem] md:text-[2.2rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em] text-center max-w-4xl mx-auto px-4 z-10 py-6 select-none">
           {WORDS.map((w, idx) => (
             <span
               key={idx}
@@ -208,15 +280,18 @@ export default function ServicesSection() {
                   transformOrigin: "center center",
                 }}
               >
-                {/* Inner wrapper for independent floating animations without interfering with GSAP drop */}
-                <div className={tag.animationClass}>
-                  <div className="flex items-center gap-3 bg-[#121214]/90 text-white pl-3 pr-6 py-3 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5),0_4px_12px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform duration-300 border border-white/10 select-none">
-                    <div className={`w-8 h-8 rounded-full ${tag.iconColor} flex items-center justify-center text-white shrink-0 shadow-sm`}>
-                      <Icon icon={tag.icon} className="text-lg" />
+                {/* Centering wrapper */}
+                <div className="absolute -translate-x-1/2 -translate-y-1/2">
+                  {/* Inner wrapper for independent floating animations without interfering with GSAP drop */}
+                  <div className={tag.animationClass}>
+                    <div className="flex items-center gap-3 bg-[#121214]/90 text-white pl-3 pr-6 py-3 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5),0_4px_12px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform duration-300 border border-white/10 select-none">
+                      <div className={`w-8 h-8 rounded-full ${tag.iconColor} flex items-center justify-center text-white shrink-0 shadow-sm`}>
+                        <Icon icon={tag.icon} className="text-lg" />
+                      </div>
+                      <span className="font-bold text-sm text-[#E5E5E7] tracking-tight whitespace-nowrap">
+                        {tag.label}
+                      </span>
                     </div>
-                    <span className="font-bold text-sm text-[#E5E5E7] tracking-tight whitespace-nowrap">
-                      {tag.label}
-                    </span>
                   </div>
                 </div>
               </div>

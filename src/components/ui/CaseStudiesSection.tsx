@@ -25,7 +25,7 @@ const CASE_STUDIES: CaseStudy[] = [
         title: "Exsavvy Platform",
         description: "A comprehensive digital ecosystem designed to elevate brand interactions. We crafted a highly intuitive interface with immersive animations and a deeply integrated design language.",
         collaborators: ["Prathamesh Tipnis"],
-        image: "https://customer-assets.emergentagent.com/job_scroll-portfolio-12/artifacts/se5z93ey_Exsavvy2.png",
+        image: "/Exsavvy2.png",
         color: "#FFFFFF",
         link: "https://www.behance.net/gallery/137709183/Exsavvy-UX-Case-Study",
     },
@@ -36,7 +36,7 @@ const CASE_STUDIES: CaseStudy[] = [
         title: "Nebula System",
         description: "A futuristic data visualization and management dashboard. Focused on cutting-edge aesthetics and seamless performance, we engineered a scalable solution tailored for complex data ecosystems.",
         collaborators: ["Prathamesh Tipnis", "Sandrea Joseph"],
-        image: "https://customer-assets.emergentagent.com/job_scroll-portfolio-12/artifacts/f72bdm85_Nebula2.png",
+        image: "/Nebula2.png",
         color: "#FFFFFF",
         link: "https://www.figma.com/deck/P7FWip4bgwJ8kEPoqCnXsV",
     },
@@ -47,7 +47,7 @@ const CASE_STUDIES: CaseStudy[] = [
         title: "User Testing 2FA in Indian Banking Apps",
         description: "A comprehensive user testing study evaluating the friction and security trade-offs of two-factor authentication in Indian banking applications.",
         collaborators: ["Prathamesh Tipnis", "Tanvi Jain", "Kshitij Bhoyar", "Nisha Nage"],
-        image: "https://customer-assets.emergentagent.com/job_scroll-portfolio-12/artifacts/2kq18x1g_2fa_face.png",
+        image: "/2fa_face.png",
         color: "#FFFFFF",
         link: "https://www.figma.com/proto/lybG9pm8ll1DW1IxBckVQR/User-Testing--Two-Factor-Authentication-in-Indian-Banking--Apps?page-id=0%3A1&node-id=119-10990&viewport=-202%2C487%2C0.09&t=R1qXnK4g7P46yuYj-1&scaling=scale-down&content-scaling=fixed",
     },
@@ -82,28 +82,28 @@ const CaseStudyCard = ({
     return (
         <div
             ref={container}
-            className="h-[80vh] md:h-screen w-full flex items-center justify-center sticky top-0 px-4 md:px-12 pointer-events-none"
+            className="h-[85vh] md:h-screen w-full flex items-center justify-center sticky top-0 px-4 md:px-12 pointer-events-none"
         >
             <motion.div
                 style={{
                     scale,
                     top: `calc(var(--sticky-top, 10vh) + ${i * 25}px)`,
                 }}
-                className="relative flex flex-col w-full max-w-5xl origin-top rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-visible pointer-events-auto [--sticky-top:20vh] md:[--sticky-top:10vh]"
+                className="relative flex flex-col w-[85vw] md:w-full max-w-5xl origin-top rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-visible pointer-events-auto [--sticky-top:20vh] md:[--sticky-top:10vh]"
             >
                 {/* Card Body */}
-                <div className="bg-white rounded-[2.5rem] p-6 md:p-10 lg:p-14 flex flex-col md:flex-row gap-8 lg:gap-14 min-h-[300px] md:min-h-[450px] lg:min-h-[500px] overflow-hidden">
+                <div className="bg-white rounded-[2.5rem] p-5 md:p-10 lg:p-14 grid grid-cols-1 grid-rows-2 md:flex md:flex-row gap-6 md:gap-8 lg:gap-14 min-h-[540px] md:min-h-[450px] lg:min-h-[500px] overflow-hidden">
                     {/* Content Left */}
                     <div className="flex-1 flex flex-col justify-between py-2 md:py-4 order-2 md:order-1">
                         <div>
-                            <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tighter leading-[1.1] mb-6">
+                            <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold text-black tracking-tighter leading-[1.1] mb-3 md:mb-6">
                                 {study.title}
                             </h3>
-                            <p className="text-base md:text-lg lg:text-xl text-black/60 leading-[1.6] max-w-xl font-normal line-clamp-3 md:line-clamp-none tracking-tight">
+                            <p className="text-sm md:text-lg lg:text-xl text-black/60 leading-[1.6] max-w-xl font-normal line-clamp-3 md:line-clamp-none tracking-tight">
                                 {study.description}
                             </p>
 
-                            <div className="flex items-center gap-4 mt-8 md:mt-10">
+                            <div className="flex items-center gap-4 mt-4 md:mt-10">
                                 <Link
                                     href={study.link}
                                     target="_blank"
@@ -115,8 +115,8 @@ const CaseStudyCard = ({
                             </div>
                         </div>
 
-                        <div className="mt-8 md:mt-12">
-                            <div className="text-[10px] font-bold text-black/30 uppercase tracking-[0.2em] mb-4">
+                        <div className="mt-4 md:mt-12">
+                            <div className="text-[10px] font-bold text-black/30 uppercase tracking-[0.2em] mb-2 md:mb-4">
                                 Collaborators
                             </div>
                             <div className="flex flex-wrap gap-2">
@@ -130,7 +130,14 @@ const CaseStudyCard = ({
                     </div>
 
                     {/* Image Right */}
-                    <div className="flex-1 relative rounded-[2rem] overflow-hidden min-h-[250px] md:min-h-full bg-[#0a0a0a] order-1 md:order-2 shadow-inner">
+                    <div 
+                        className="flex-1 md:h-auto md:min-h-full relative rounded-[2rem] overflow-hidden bg-[#0a0a0a] order-1 md:order-2 shadow-inner"
+                        style={{
+                            transform: "translate3d(0, 0, 0)",
+                            WebkitTransform: "translate3d(0, 0, 0)",
+                            WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+                        }}
+                    >
                         <motion.div
                             className="w-full h-full"
                             style={{ scale: imageScale }}
@@ -140,6 +147,10 @@ const CaseStudyCard = ({
                                 src={study.image}
                                 alt={study.title}
                                 className="absolute inset-0 w-full h-full object-cover"
+                                style={{
+                                    transform: "translate3d(0, 0, 0)",
+                                    WebkitTransform: "translate3d(0, 0, 0)",
+                                }}
                             />
                         </motion.div>
                     </div>

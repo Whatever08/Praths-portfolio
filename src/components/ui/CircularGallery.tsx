@@ -11,7 +11,7 @@ import {
   Transform,
   type OGLRenderingContext,
 } from "ogl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils"; // Assuming shadcn 'cn' utility path
 
 /* --------------------------------
@@ -556,9 +556,17 @@ class App {
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
   boundOnMouseMove!: (e: MouseEvent) => void;
+  boundOnWindowScroll!: () => void;
   mouseWorld: { x: number; y: number } = { x: 0, y: 0 };
   speed: number = 0;
   direction: "left" | "right" = "right";
+  startX: number = 0;
+  startY: number = 0;
+  hasDragged: boolean = false;
+  onCardSelect?: (item: GalleryItem | null) => void;
+  lastClickTime: number = 0;
+  lastClickMediaIndex: number | null = null;
+  lastScrollTime: number = 0;
 
   constructor(
     container: HTMLElement,
@@ -571,6 +579,7 @@ class App {
       scrollSpeed,
       scrollEase,
       onItemClick,
+      onCardSelect,
     }: {
       items?: GalleryItem[];
       bend: number;
@@ -580,6 +589,7 @@ class App {
       scrollSpeed: number;
       scrollEase: number;
       onItemClick?: (item: GalleryItem) => void;
+      onCardSelect?: (item: GalleryItem | null) => void;
     },
   ) {
     this.container = container;
@@ -588,6 +598,7 @@ class App {
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 500);
 
     (this as any).onItemClick = onItemClick;
+    this.onCardSelect = onCardSelect;
 
     autoBind(this);
 
@@ -659,44 +670,102 @@ class App {
     });
   }
 
+  updateMouseWorld(clientX: number, clientY: number) {
+    if (!this.screen || !this.viewport) return;
+    const rect = this.container.getBoundingClientRect();
+    const localX = clientX - rect.left;
+    const localY = clientY - rect.top;
+
+    const nx = (localX / this.screen.width) * 2 - 1;
+    const ny = -(localY / this.screen.height) * 2 + 1;
+    this.mouseWorld.x = nx * (this.viewport.width / 2);
+    this.mouseWorld.y = ny * (this.viewport.height / 2);
+  }
+
   onTouchDown(e: MouseEvent | TouchEvent) {
     this.isDown = true;
     this.scroll.position = this.scroll.target;
-    this.start = "touches" in e ? e.touches[0].clientX : e.clientX;
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+    this.start = clientX;
+    this.startX = clientX;
+    this.startY = clientY;
+    this.hasDragged = false;
+    this.updateMouseWorld(clientX, clientY);
   }
 
   onMouseMove(e: MouseEvent) {
-    if (!this.screen || !this.viewport) return;
-    const nx = (e.clientX / this.screen.width) * 2 - 1;
-    const ny = -(e.clientY / this.screen.height) * 2 + 1;
-    this.mouseWorld.x = nx * (this.viewport.width / 2);
-    this.mouseWorld.y = ny * (this.viewport.height / 2);
+    this.updateMouseWorld(e.clientX, e.clientY);
   }
 
   onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return;
     const x = "touches" in e ? e.touches[0].clientX : e.clientX;
+    const y = "touches" in e ? e.touches[0].clientY : e.clientY;
+    
+    // Set hasDragged flag if the user moves the pointer more than 7px in any direction
+    const dx = Math.abs(x - this.startX);
+    const dy = Math.abs(y - this.startY);
+    if (dx > 7 || dy > 7) {
+      if (!this.hasDragged) {
+        this.hasDragged = true;
+        if (this.onCardSelect) {
+          this.onCardSelect(null);
+        }
+      }
+    }
+
     const distance = (this.start - x) * (this.scrollSpeed * 0.08);
     this.scroll.target = (this.scroll as any).position + distance;
+    this.updateMouseWorld(x, y);
   }
 
   onTouchUp() {
     this.isDown = false;
 
-    // Check if it was a drag or just a click
-    const distanceDragged = Math.abs((this.scroll as any).position - this.scroll.target);
-    if (distanceDragged < 10) {
+    // Block clicking if page was scrolled within the last 150ms
+    const timeSinceScroll = Date.now() - this.lastScrollTime;
+    if (timeSinceScroll < 150) {
+      this.hasDragged = false;
+      return;
+    }
+
+    // Trigger click only if the user clicked/tapped without performing a drag operation
+    if (!this.hasDragged) {
       const hoveredMedia = this.medias.find((m) => m.isHovered);
-      if (hoveredMedia && hoveredMedia.link) {
-        if ((this as any).onItemClick) {
-          (this as any).onItemClick(this.mediasImages[hoveredMedia.index]);
+      if (hoveredMedia) {
+        const now = Date.now();
+        const clickedItem = this.mediasImages[hoveredMedia.index];
+
+        // Check for double click/tap (clicked twice within 300ms on the same card)
+        if (this.lastClickMediaIndex === hoveredMedia.index && (now - this.lastClickTime) < 300) {
+          if ((this as any).onItemClick) {
+            (this as any).onItemClick(clickedItem);
+          } else if (clickedItem.link && clickedItem.link !== "#") {
+            if (clickedItem.link.startsWith("/")) {
+              window.location.href = clickedItem.link;
+            } else {
+              window.open(clickedItem.link, "_blank");
+            }
+          }
+          this.lastClickMediaIndex = null;
         } else {
-          if (hoveredMedia.link.startsWith("/")) {
-            window.location.href = hoveredMedia.link;
-          } else {
-            window.open(hoveredMedia.link, "_blank");
+          // Single click: Snap to center and select card
+          this.lastClickMediaIndex = hoveredMedia.index;
+          this.lastClickTime = now;
+
+          this.scroll.target = hoveredMedia.x - hoveredMedia.extra;
+
+          if (this.onCardSelect) {
+            this.onCardSelect(clickedItem);
           }
         }
+      } else {
+        // Clicked outside card hitboxes: clear selection
+        if (this.onCardSelect) {
+          this.onCardSelect(null);
+        }
+        this.lastClickMediaIndex = null;
       }
     }
 
@@ -706,6 +775,9 @@ class App {
   onWheel(e: WheelEvent) {
     const delta = e.deltaY;
     this.scroll.target += delta * 0.025 * this.scrollSpeed;
+    if (this.onCardSelect) {
+      this.onCardSelect(null);
+    }
     this.onCheckDebounce();
   }
 
@@ -767,10 +839,19 @@ class App {
     this.boundOnTouchUp = this.onTouchUp;
     this.boundOnMouseMove = this.onMouseMove;
 
+    this.lastScrollTime = 0;
+    this.boundOnWindowScroll = () => {
+      this.lastScrollTime = Date.now();
+      if (this.onCardSelect) {
+        this.onCardSelect(null);
+      }
+    };
+
     window.addEventListener("resize", this.boundOnResize);
     window.addEventListener("mousewheel", this.boundOnWheel as EventListener);
     window.addEventListener("wheel", this.boundOnWheel as EventListener);
     window.addEventListener("mousemove", this.boundOnMouseMove);
+    window.addEventListener("scroll", this.boundOnWindowScroll);
     this.container.addEventListener("mousedown", this.boundOnTouchDown);
     window.addEventListener("mousemove", this.boundOnTouchMove);
     window.addEventListener("mouseup", this.boundOnTouchUp);
@@ -785,6 +866,7 @@ class App {
     window.removeEventListener("mousewheel", this.boundOnWheel as EventListener);
     window.removeEventListener("wheel", this.boundOnWheel as EventListener);
     window.removeEventListener("mousemove", this.boundOnMouseMove);
+    window.removeEventListener("scroll", this.boundOnWindowScroll);
     this.container.removeEventListener("mousedown", this.boundOnTouchDown);
     window.removeEventListener("mousemove", this.boundOnTouchMove);
     window.removeEventListener("mouseup", this.boundOnTouchUp);
@@ -817,6 +899,12 @@ const CircularGallery = ({
   ...props
 }: CircularGalleryProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -844,6 +932,7 @@ const CircularGallery = ({
       scrollSpeed: adaptiveSpeed,
       scrollEase: adaptiveEase,
       onItemClick,
+      onCardSelect: (item) => setSelectedItem(item),
     });
 
     return () => {
@@ -852,17 +941,40 @@ const CircularGallery = ({
   }, [items, bend, borderRadius, scrollSpeed, scrollEase, fontClassName]);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "w-full h-full overflow-hidden cursor-grab active:cursor-grabbing",
-        // Apply theme-aware defaults for getComputedStyle to read
-        "text-foreground font-medium text-[70px] tracking-tight",
-        fontClassName,
-        className,
-      )}
-      {...props}
-    />
+    <div className="relative w-full h-full">
+      <div
+        ref={containerRef}
+        className={cn(
+          "w-full h-full overflow-hidden cursor-grab active:cursor-grabbing",
+          // Apply theme-aware defaults for getComputedStyle to read
+          "text-foreground font-medium text-[70px] tracking-tight",
+          fontClassName,
+          className,
+        )}
+        {...props}
+      />
+
+      {/* Floating Glassmorphism Interaction Hint */}
+      <div
+        className={cn(
+          "absolute bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none transition-all duration-300 transform",
+          selectedItem ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
+        )}
+      >
+        <div className="bg-[#1C1A17]/80 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full text-white text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 shadow-2xl">
+          {selectedItem?.link === "#" ? (
+            <span className="text-white/40">{selectedItem.text}</span>
+          ) : (
+            <>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>
+                {isTouchDevice ? "Double-tap" : "Double-click"} to open {selectedItem?.text}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
