@@ -226,7 +226,7 @@ function XtepMarqueeShowcase({ screens }: { screens: MarqueeScreens }) {
                         return (
                             <div
                                 key={idx}
-                                className="relative flex-shrink-0 w-[140px] md:w-[170px] aspect-[9/19.5] group flex items-center justify-center"
+                                className="relative flex-shrink-0 w-[182px] md:w-[221px] aspect-[9/19.5] group flex items-center justify-center"
                                 {...(isFirstOfCat ? { "data-sentinel": String(card.catIdx) } : {})}
                             >
                                 <img
@@ -266,15 +266,6 @@ export default function XtepPage() {
     const lenisRef = useRef<any>(null);
     const [showReveal, setShowReveal] = useState(true);
     const [showRevealIn, setShowRevealIn] = useState(false);
-    const [copiedColor, setCopiedColor] = useState<string | null>(null);
-
-    const handleCopyColor = (hex: string) => {
-        navigator.clipboard.writeText(hex);
-        setCopiedColor(hex);
-        setTimeout(() => {
-            setCopiedColor(null);
-        }, 1500);
-    };
 
     useEffect(() => {
         function update(time: number) {
@@ -1092,14 +1083,6 @@ export default function XtepPage() {
                                                         <div className="flex flex-col gap-6">
                                                             {/* Color Palette Specimen Card */}
                                                             <div className="bg-white rounded-3xl p-8 flex flex-col justify-between aspect-auto min-h-[340px] lg:aspect-[16/10] overflow-hidden relative shadow-lg border border-[#E4DFD7] hover:scale-[1.01] transition-transform duration-300">
-                                                                
-                                                                {/* Floating Copy Notification */}
-                                                                {copiedColor && (
-                                                                    <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white/95 text-[#0C0C0C] px-3 py-1.5 rounded-full text-xs font-mono font-bold shadow-md z-30 flex items-center gap-1.5 animate-bounce border border-[#E4DFD7]">
-                                                                        <Icon icon="solar:check-circle-bold" className="text-[#E30613] text-sm" />
-                                                                        Copied {copiedColor}!
-                                                                    </div>
-                                                                )}
 
                                                                 <div className="flex justify-between items-start z-10 w-full mb-6">
                                                                     <div className="text-left">
@@ -1120,26 +1103,22 @@ export default function XtepPage() {
                                                                         { hex: "#000000", label: "Black", darkText: false },
                                                                         { hex: "#666666", label: "Dark Grey", darkText: false },
                                                                         { hex: "#8C8C8C", label: "Med Grey", darkText: false },
-                                                                        { hex: "#B3B3B3", label: "Grey", darkText: true },
-                                                                        { hex: "#CCCCCC", label: "Light Grey", darkText: true },
                                                                         { hex: "#E6E6E6", label: "Extra Light", darkText: true },
                                                                         { hex: "#F2F2F2", label: "Soft White", darkText: true }
                                                                     ].map((color) => (
-                                                                        <button
+                                                                        <div
                                                                             key={color.hex}
-                                                                            onClick={() => handleCopyColor(color.hex)}
-                                                                            className="flex-1 h-full relative group transition-all duration-500 hover:flex-[2.2] cursor-pointer"
+                                                                            className="flex-1 h-full relative group transition-all duration-500 hover:flex-[2.2] cursor-default"
                                                                             style={{ 
                                                                                 backgroundColor: color.hex,
                                                                                 borderLeft: color.border ? '1px solid #E4DFD7' : 'none',
                                                                                 borderRight: color.border ? '1px solid #E4DFD7' : 'none'
                                                                             }}
-                                                                            title={`Click to copy ${color.hex}`}
                                                                         >
                                                                             <span className={`absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[8px] md:text-[10px] font-bold tracking-tighter whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${color.darkText ? 'text-black/80' : 'text-white/90'}`}>
                                                                                 {color.hex}
                                                                             </span>
-                                                                        </button>
+                                                                        </div>
                                                                     ))}
                                                                 </div>
                                                             </div>
@@ -1215,7 +1194,7 @@ export default function XtepPage() {
 
                                             {/* ── 07 UI DESIGN SYSTEM ── */}
                                             <section className="dv-section bg-white border-b border-[#E4DFD7] py-32 md:py-40" id="design">
-                                                <div className="dv-container">
+                                                <div className="dv-container" style={{ maxWidth: '1500px' }}>
                                                     <div className="text-center mb-16">
                                                         <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-4">07 UI DESIGN SYSTEM</span>
                                                         <h2 className="dv-mixed-heading">

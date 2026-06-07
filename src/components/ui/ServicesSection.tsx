@@ -265,9 +265,7 @@ export default function ServicesSection() {
         </h3>
 
         {/* Floating Badges Pile — truly centered on the page */}
-        <div className="relative h-[200px] mt-4 pointer-events-none"
-          style={{ width: "100vw", marginLeft: "calc(-50vw + 50%)" }}
-        >
+        <div className="relative w-full h-[200px] mt-16 pointer-events-none">
           {/* Inner anchor sits at exact horizontal center */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.88] xs:scale-[0.99] sm:scale-[1.10] md:scale-[1.23] lg:scale-[1.30] origin-center">
             {SERVICES_TAGS.map((tag, i) => (
