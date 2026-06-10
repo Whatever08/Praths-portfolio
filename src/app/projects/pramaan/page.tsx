@@ -977,7 +977,7 @@ export default function PramaanPage() {
     useEffect(() => {
         if (typeof window !== "undefined") {
             const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-            setIsWip(!isLocal);
+            setIsWip(false);
             setIsLocalhost(isLocal);
         }
     }, []);
