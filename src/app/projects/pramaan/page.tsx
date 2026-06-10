@@ -958,7 +958,7 @@ export default function PramaanPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const mainContentRef = useRef<HTMLElement>(null);
     const lenisRef = useRef<any>(null);
-    const [isWip, setIsWip] = useState(true);
+    const [isWip, setIsWip] = useState(false);
     const [showReveal, setShowReveal] = useState(true);
     const [showRevealIn, setShowRevealIn] = useState(false);
     const [activeJourney, setActiveJourney] = useState<"mngl" | "drain" | "gap">("mngl");
