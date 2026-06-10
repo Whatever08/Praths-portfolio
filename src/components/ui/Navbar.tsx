@@ -83,7 +83,7 @@ export const Navbar = ({
             borderBottom: "1px solid rgba(255,255,255,0.05)",
             duration: 0.4
           });
-        } 
+        }
         // SCROLL UP: Reveal links
         else {
           smartNavTl.current?.reverse();
@@ -109,11 +109,11 @@ export const Navbar = ({
     const sampleTheme = () => {
       const checkY = 40;
       const checkX = window.innerWidth / 2;
-      
+
       // Use elementsFromPoint to see through the fixed navbar
       const elements = document.elementsFromPoint(checkX, checkY);
-      const el = elements.find(node => 
-        node !== navRef.current && 
+      const el = elements.find(node =>
+        node !== navRef.current &&
         !navRef.current?.contains(node)
       ) as HTMLElement | null;
 
@@ -126,7 +126,7 @@ export const Navbar = ({
         if (theme) { foundTheme = theme; break; }
         cursor = cursor.parentElement;
       }
-      
+
       const isLight = foundTheme === "light";
       gsap.to(navRef.current, {
         color: isLight ? "#000000" : "#ffffff",
@@ -155,7 +155,7 @@ export const Navbar = ({
 
   return (
     <>
-      <nav 
+      <nav
         ref={navRef}
         className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 md:px-12 py-6 md:py-8 bg-transparent"
       >
@@ -179,7 +179,7 @@ export const Navbar = ({
         <div ref={rightItemsRef} className="w-1/3 md:w-1/4 flex justify-end items-center">
           <div className="hidden md:flex">{rightContent}</div>
           {showMobileMenu && (
-            <button 
+            <button
               onClick={() => setIsMenuOpen(true)}
               className="md:hidden ml-4 p-2 hover:opacity-60 transition-opacity"
             >
@@ -191,34 +191,31 @@ export const Navbar = ({
 
       {/* Mobile Menu Overlay */}
       {showMobileMenu && (
-        <div 
-          className={`fixed inset-0 z-[200] bg-black transition-all duration-500 ease-in-out ${
-            isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-          }`}
+        <div
+          className={`fixed inset-0 z-[200] bg-black transition-all duration-500 ease-in-out ${isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+            }`}
         >
           <div className="absolute top-8 right-8">
-            <button 
+            <button
               onClick={() => setIsMenuOpen(false)}
               className="text-white p-2 hover:rotate-90 transition-transform duration-300"
             >
               <Icon icon="solar:close-circle-linear" className="text-4xl" />
             </button>
           </div>
-          
+
           <div className="flex flex-col items-center justify-center h-full gap-8">
             <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-4">Nav</div>
-            
+
             {/* Standard Mobile Links */}
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-3xl font-bold tracking-tighter text-white hover:text-white/60 transition-colors uppercase">Home</Link>
-            
+
             <a href="/#recent-works" onClick={() => setIsMenuOpen(false)} className="text-3xl font-bold tracking-tighter text-white hover:text-white/60 transition-colors uppercase">Works</a>
-            
-            <Link href="/playground" onClick={() => setIsMenuOpen(false)} className="text-3xl font-bold tracking-tighter text-white hover:text-white/60 transition-colors uppercase">Playground</Link>
-            
+
             <div className="mt-12 flex gap-6">
-               <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">In</a>
-               <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">Ig</a>
-               <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">Be</a>
+              <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">In</a>
+              <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">Ig</a>
+              <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">Be</a>
             </div>
           </div>
         </div>

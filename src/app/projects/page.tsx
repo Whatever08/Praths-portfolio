@@ -46,12 +46,12 @@ const PROJECTS: Project[] = [
     isLight: true,
   },
   {
-    title: "McLaren Racing",
-    year: "2024",
-    role: "UI Design · Interaction Design",
-    desc: "Crafting high-performance fan-facing digital experiences that mirror the precision and speed of the McLaren brand on and off the track. Coming Soon.",
-    img: "/MCl.png",
-    link: "",
+    title: "Pramaan",
+    year: "2025",
+    role: "UX/UI Design · Product Strategy",
+    desc: "Designing a Cyber Fraud Evidence & Learning Platform to secure digital evidence and train fraud investigators.",
+    img: "/Pramaan.png",
+    link: "/projects/pramaan",
   },
   {
     title: "Flytbase",

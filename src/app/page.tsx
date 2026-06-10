@@ -23,7 +23,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const GALLERY_ITEMS = [
   { image: "/Nebula2.png", text: "Nebula", link: "/projects/nebula" },
   { image: "/Xtep2.png", text: "Xtep", link: "/projects/xtep" },
-  { image: "/MCL2.png", text: "MCL Racing (Coming Soon)", link: "#" },
+  { image: "/Pramaan2.png", text: "Pramaan", link: "/projects/pramaan" },
   { image: "/flytbase2.png", text: "Flytbase (Coming Soon)", link: "#" },
   { image: "/VFX2.png", text: "Envision VFX", link: "https://envisionvfx.in" }
 ];
@@ -67,7 +67,7 @@ export default function Home() {
     const element = document.getElementById(targetId);
     if (element) {
       let targetElement = element;
-      
+
       // If we are centering the recent works, center the gallery container specifically
       if (targetId === "recent-works") {
         const galleryContainer = document.getElementById("gallery-container");
@@ -294,10 +294,9 @@ export default function Home() {
         )}
 
         {/* Mobile Menu Overlay */}
-        <div 
-          className={`fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl transition-all duration-500 ease-in-out flex flex-col justify-between p-8 ${
-            isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
-          }`}
+        <div
+          className={`fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl transition-all duration-500 ease-in-out flex flex-col justify-between p-8 ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+            }`}
         >
           {/* Header inside overlay */}
           <div className="flex justify-between items-center w-full">
@@ -308,30 +307,30 @@ export default function Home() {
                 className="h-full w-auto object-contain"
               />
             </Link>
-            <button 
+            <button
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-white p-2 hover:rotate-90 transition-transform duration-300"
             >
               <Icon icon="solar:close-circle-linear" className="text-4xl" />
             </button>
           </div>
-          
+
           {/* Main Links */}
           <div className="flex flex-col items-start justify-center gap-6 my-auto pl-4">
             <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-2">Navigation</div>
-            
-            <a 
-              href="#recent-works" 
+
+            <a
+              href="#recent-works"
               onClick={(e) => {
                 setIsMobileMenuOpen(false);
                 handleNavClick(e, "recent-works");
-              }} 
+              }}
               className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
             >
               Recent Works
             </a>
-            
-            <button 
+
+            <button
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 setShowRevealIn(true);
@@ -343,58 +342,52 @@ export default function Home() {
             >
               View All Projects
             </button>
-            
-            <a 
-              href="#about" 
+
+            <a
+              href="#about"
               onClick={(e) => {
                 setIsMobileMenuOpen(false);
                 handleNavClick(e, "about");
-              }} 
+              }}
               className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
             >
               About
             </a>
-            
-            <a 
-              href="#services" 
+
+            <a
+              href="#services"
               onClick={(e) => {
                 setIsMobileMenuOpen(false);
                 handleNavClick(e, "services");
-              }} 
+              }}
               className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
             >
               What I do
             </a>
 
-            <a 
-              href="#case-studies" 
+            <a
+              href="#case-studies"
               onClick={(e) => {
                 setIsMobileMenuOpen(false);
                 handleNavClick(e, "case-studies");
-              }} 
+              }}
               className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
             >
               Case Studies
             </a>
 
-            <a 
-              href="#contact" 
+            <a
+              href="#contact"
               onClick={(e) => {
                 setIsMobileMenuOpen(false);
                 handleNavClick(e, "contact");
-              }} 
+              }}
               className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
             >
               Contact
             </a>
-            
-            <Link 
-              href="/playground" 
-              onClick={() => setIsMobileMenuOpen(false)} 
-              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
-            >
-              Playground
-            </Link>
+
+
           </div>
 
           {/* Footer inside overlay */}
@@ -453,8 +446,7 @@ export default function Home() {
 
               <div className="flex-1 flex justify-start items-center nav-right-items">
                 <a onClick={(e) => handleNavClick(e, "case-studies")} href="/#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
-                <a onClick={(e) => handleNavClick(e, "contact")} href="/#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Contact</a>
-                <Link href="/playground" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Playground</Link>
+                <a onClick={(e) => handleNavClick(e, "contact")} href="/#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Contact</a>
               </div>
             </div>
 
@@ -513,7 +505,7 @@ export default function Home() {
 
               {/* ── SCROLL TO EXPLORE INDICATOR ── */}
               {/* Edit: top-[72%] = mobile position | md:bottom-[calc(3rem+2vh)] = desktop position */}
-              <div 
+              <div
                 onClick={(e) => handleNavClick(e, "recent-works")}
                 className="absolute top-[72%] md:top-auto md:bottom-[calc(3rem+2vh)] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center gap-2.5 z-20 pointer-events-auto scale-[1.08] origin-center cursor-pointer group transition-all duration-300"
               >

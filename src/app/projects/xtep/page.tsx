@@ -295,7 +295,7 @@ export default function XtepPage() {
             });
         });
 
-        // ── Pin carousel & drive horizontal scroll through all 4 cards ──
+        // ── Pin carousel & drive horizontal scroll through all 5 cards ──
         const carouselSection = containerRef.current?.querySelector(".dv-research-carousel-section") as HTMLElement | null;
         const carousel = carouselSection?.querySelector(".dv-dark-cards-carousel") as HTMLElement | null;
         const track = carouselSection?.querySelector(".dv-dark-cards-track") as HTMLElement | null;
@@ -439,7 +439,6 @@ export default function XtepPage() {
                                 <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-inherit pointer-events-auto">
                                     <button className="hover:opacity-60 transition-colors duration-300 drop-shadow-sm cursor-pointer whitespace-nowrap text-[10px] uppercase tracking-widest">Process</button>
                                     <button className="hover:opacity-60 transition-colors duration-300 drop-shadow-sm cursor-pointer whitespace-nowrap text-[10px] uppercase tracking-widest">Contact</button>
-                                    <Link href="/playground" className="hover:opacity-60 transition-colors duration-300 drop-shadow-sm cursor-pointer whitespace-nowrap text-[10px] uppercase tracking-widest">Playground</Link>
                                 </div>
                             }
                         />
@@ -682,7 +681,7 @@ export default function XtepPage() {
                                                     <div className="text-center mb-16">
                                                         <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-4">03 USER RESEARCH</span>
                                                         <h2 className="dv-mixed-heading !text-[#0C0C0C]">
-                                                            <span className="dv-heading-bold">Four Real Problems</span> <em className="dv-heading-italic">from Real Users</em>
+                                                            <span className="dv-heading-bold">Five Real Problems</span> <em className="dv-heading-italic">from Real Users</em>
                                                         </h2>
                                                         <p className="dv-subheading !text-[#6B6762]">
                                                             Sourced entirely from community discussions on r/indianrunners: no assumptions, no fictional personas. Verbatim signals from the target audience.
@@ -693,20 +692,24 @@ export default function XtepPage() {
                                                         <div className="dv-dark-cards-track">
                                                             {[
                                                                 {
-                                                                    title: "Nobody Knows Xtep",
-                                                                    desc: "Discovery is the first barrier. Users encounter the brand with zero prior knowledge, making D2C first impressions critical."
+                                                                    title: "Low Brand Awareness",
+                                                                    desc: "Xtep is a leading running brand in China, but Indian consumers have little awareness or trust in the brand. A D2C app can help communicate its global credibility and performance legacy."
                                                                 },
                                                                 {
-                                                                    title: "Brand Name Dictates Purchase",
-                                                                    desc: "Runners consistently seek community validation, comparing Xtep to legacy brands. Building peer trust is essential."
+                                                                    title: "Counterfeit & Trust Issues",
+                                                                    desc: "Fake products on marketplaces damage customer trust. For a lesser-known brand like Xtep, one bad experience can permanently lose a customer."
                                                                 },
                                                                 {
-                                                                    title: "Technology is Not Communicated",
-                                                                    desc: "Technical innovations like carbon plates and cushioning systems require clear, point-of-purchase digital education."
+                                                                    title: "Hidden Product Technology",
+                                                                    desc: "Features like carbon plates, performance foam, and marathon-winning technology are not effectively communicated to Indian runners, reducing perceived value."
                                                                 },
                                                                 {
-                                                                    title: "Marketplace Trust Gap",
-                                                                    desc: "Doubt over third-party marketplace authenticity creates a direct opportunity for D2C verified commerce."
+                                                                    title: "Poor Mobile Shopping Experience",
+                                                                    desc: "Mobile websites often lead to high cart abandonment due to size confusion, missing product details, and complex checkout flows. A dedicated app can improve conversion and purchase confidence."
+                                                                },
+                                                                {
+                                                                    title: "No Running Community Ecosystem",
+                                                                    desc: "Xtep lacks an owned community of runners in India. Without clubs, challenges, training content, or social engagement, retention and long-term brand loyalty remain weak."
                                                                 }
                                                             ].map((prob, idx) => (
                                                                 <div
@@ -1326,10 +1329,10 @@ export default function XtepPage() {
                                                 </div>
                                             </Link>
 
-                                            <Link href="/projects/mclaren-racing" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 flex flex-col items-end justify-center group hover:bg-black/5 transition-colors duration-500">
+                                            <Link href="/projects/pramaan" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 flex flex-col items-end justify-center group hover:bg-black/5 transition-colors duration-500">
                                                 <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest mb-4 md:mb-6">Next Project</span>
                                                 <div className="flex items-center gap-4 md:gap-6">
-                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:translate-x-2 transition-all duration-500 leading-none pb-1">McLaren Racing</h3>
+                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:translate-x-2 transition-all duration-500 leading-none pb-1">Pramaan</h3>
                                                     <span className="text-2xl md:text-4xl lg:text-5xl text-black/40 group-hover:text-black group-hover:translate-x-4 transition-all duration-500">&rarr;</span>
                                                 </div>
                                             </Link>
