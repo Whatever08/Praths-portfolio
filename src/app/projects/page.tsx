@@ -37,6 +37,14 @@ const PROJECTS: Project[] = [
     link: "/projects/nebula",
   },
   {
+    title: "Pramaan",
+    year: "2025",
+    role: "UX/UI Design · Product Strategy",
+    desc: "Designing a Cyber Fraud Evidence & Learning Platform to secure digital evidence and train fraud investigators.",
+    img: "/Pramaan.png",
+    link: "/projects/pramaan",
+  },
+  {
     title: "Xtep",
     year: "2023",
     role: "E-commerce · Web Design",
