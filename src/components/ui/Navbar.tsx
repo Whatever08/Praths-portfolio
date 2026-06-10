@@ -31,6 +31,17 @@ export const Navbar = ({
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
   useGSAP(() => {
     // 1. DIRECTIONAL REVEAL & LOGO SWALLOWING Timeline
     smartNavTl.current = gsap.timeline({ paused: true });
@@ -192,10 +203,19 @@ export const Navbar = ({
       {/* Mobile Menu Overlay */}
       {showMobileMenu && (
         <div
-          className={`fixed inset-0 z-[200] bg-black transition-all duration-500 ease-in-out ${isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-            }`}
+          className={`fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl transition-all duration-500 ease-in-out flex flex-col justify-between p-8 ${
+            isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+          }`}
         >
-          <div className="absolute top-8 right-8">
+          {/* Header inside overlay */}
+          <div className="flex justify-between items-center w-full">
+            <Link href="/" onClick={() => setIsMenuOpen(false)} className="relative h-7 flex items-center">
+              <img
+                src={logoSrc}
+                alt="Logo"
+                className="h-full w-auto object-contain"
+              />
+            </Link>
             <button
               onClick={() => setIsMenuOpen(false)}
               className="text-white p-2 hover:rotate-90 transition-transform duration-300"
@@ -204,19 +224,80 @@ export const Navbar = ({
             </button>
           </div>
 
-          <div className="flex flex-col items-center justify-center h-full gap-8">
-            <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-4">Nav</div>
+          {/* Main Links */}
+          <div className="flex flex-col items-start justify-center gap-6 my-auto pl-4">
+            <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-2">Navigation</div>
 
-            {/* Standard Mobile Links */}
-            <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-3xl font-bold tracking-tighter text-white hover:text-white/60 transition-colors uppercase">Home</Link>
+            <Link
+              href="/#recent-works"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
+            >
+              Recent Works
+            </Link>
 
-            <a href="/#recent-works" onClick={() => setIsMenuOpen(false)} className="text-3xl font-bold tracking-tighter text-white hover:text-white/60 transition-colors uppercase">Works</a>
+            <Link
+              href="/projects"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
+            >
+              View All Projects
+            </Link>
 
-            <div className="mt-12 flex gap-6">
-              <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">In</a>
-              <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">Ig</a>
-              <a href="#" className="text-white/40 hover:text-white text-xs uppercase tracking-widest">Be</a>
+            <Link
+              href="/#about"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
+            >
+              About
+            </Link>
+
+            <Link
+              href="/#services"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
+            >
+              What I do
+            </Link>
+
+            <Link
+              href="/#case-studies"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
+            >
+              Case Studies
+            </Link>
+
+            <Link
+              href="/#contact"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
+            >
+              Contact
+            </Link>
+          </div>
+
+          {/* Footer inside overlay */}
+          <div className="flex justify-between items-center w-full pt-6 border-t border-white/10 pl-4">
+            <div className="flex gap-6">
+              <a
+                href="https://www.linkedin.com/in/prathamesh-tipnis-653b00142/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/40 hover:text-white text-xs uppercase tracking-widest font-bold"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://www.behance.net/tprathameshUXD1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/40 hover:text-white text-xs uppercase tracking-widest font-bold"
+              >
+                Behance
+              </a>
             </div>
+            <span className="text-white/20 text-xs font-mono">© 2026</span>
           </div>
         </div>
       )}
