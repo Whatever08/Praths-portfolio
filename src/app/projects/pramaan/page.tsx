@@ -377,16 +377,24 @@ function PramaanMobileMockups() {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
-    useGSAP(() => {
+    useEffect(() => {
         if (!mockupContainerRef.current) return;
-        
-        ScrollTrigger.create({
-            trigger: mockupContainerRef.current,
-            start: "top 75%",
-            onEnter: () => setIsRevealed(true),
-            onLeaveBack: () => setIsRevealed(false)
-        });
-    }, { scope: mockupContainerRef });
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsRevealed(true);
+                } else if (entry.boundingClientRect.top > 0) {
+                    // Only reset when scrolling back up past the element
+                    setIsRevealed(false);
+                }
+            },
+            { threshold: 0.15 }
+        );
+
+        observer.observe(mockupContainerRef.current);
+        return () => observer.disconnect();
+    }, []);
 
     const handleValChange = (idx: number, field: "rotate" | "translateX" | "translateY" | "scale", value: number) => {
         setMockupConfig((prev) => {
@@ -2304,19 +2312,11 @@ export default function PramaanPage() {
 
                                         {/* Next/Previous Projects Section */}
                                         <div data-theme="light" className="w-full bg-white border-t border-black/10 flex flex-col sm:flex-row">
-                                            <Link href="/projects/xtep" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 border-b sm:border-b-0 sm:border-r border-black/10 flex flex-col items-start justify-center group hover:bg-black/5 transition-colors duration-500">
+                                            <Link href="/projects/xtep" className="w-full p-12 md:p-24 lg:p-32 flex flex-col items-start justify-center group hover:bg-black/5 transition-colors duration-500">
                                                 <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest mb-4 md:mb-6">Previous Project</span>
                                                 <div className="flex items-center gap-4 md:gap-6">
                                                     <span className="text-2xl md:text-4xl lg:text-5xl text-black/40 group-hover:text-black group-hover:-translate-x-4 transition-all duration-500">&larr;</span>
                                                     <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:-translate-x-2 transition-all duration-500 leading-none pb-1">Xtep</h3>
-                                                </div>
-                                            </Link>
-
-                                            <Link href="/projects/exsavvy" className="w-full sm:w-1/2 p-12 md:p-24 lg:p-32 flex flex-col items-end justify-center group hover:bg-black/5 transition-colors duration-500">
-                                                <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest mb-4 md:mb-6">Next Project</span>
-                                                <div className="flex items-center gap-4 md:gap-6">
-                                                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black group-hover:translate-x-2 transition-all duration-500 leading-none pb-1">Exsavvy</h3>
-                                                    <span className="text-2xl md:text-4xl lg:text-5xl text-black/40 group-hover:text-black group-hover:translate-x-4 transition-all duration-500">&rarr;</span>
                                                 </div>
                                             </Link>
                                         </div>

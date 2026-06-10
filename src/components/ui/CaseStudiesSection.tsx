@@ -51,17 +51,6 @@ const CASE_STUDIES: CaseStudy[] = [
         color: "#FFFFFF",
         link: "https://www.figma.com/proto/lybG9pm8ll1DW1IxBckVQR/User-Testing--Two-Factor-Authentication-in-Indian-Banking--Apps?page-id=0%3A1&node-id=119-10990&viewport=-202%2C487%2C0.09&t=R1qXnK4g7P46yuYj-1&scaling=scale-down&content-scaling=fixed",
     },
-    {
-        id: "03",
-        tag: "SERVICE / 03",
-        number: "CASE STUDY / 03",
-        title: "Pramaan — Cyber Fraud Evidence Platform",
-        description: "A field-immersed UX research and product design project helping cyber fraud victims in India collect court-ready evidence, navigate fragmented reporting systems, and build lasting scam detection skills.",
-        collaborators: ["Prathamesh Tipnis"],
-        image: "/Pramaan2.png",
-        color: "#FFFFFF",
-        link: "/projects/pramaan",
-    },
 ];
 
 interface CardProps {

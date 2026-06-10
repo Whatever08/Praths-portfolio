@@ -46,14 +46,6 @@ const PROJECTS: Project[] = [
     isLight: true,
   },
   {
-    title: "Pramaan",
-    year: "2025",
-    role: "UX/UI Design · Product Strategy",
-    desc: "Designing a Cyber Fraud Evidence & Learning Platform to secure digital evidence and train fraud investigators.",
-    img: "/Pramaan.png",
-    link: "/projects/pramaan",
-  },
-  {
     title: "Flytbase",
     year: "2025",
     role: "Product Design · UX Research",

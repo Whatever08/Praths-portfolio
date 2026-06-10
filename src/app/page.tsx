@@ -23,7 +23,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const GALLERY_ITEMS = [
   { image: "/Nebula2.png", text: "Nebula", link: "/projects/nebula" },
   { image: "/Xtep2.png", text: "Xtep", link: "/projects/xtep" },
-  { image: "/Pramaan2.png", text: "Pramaan", link: "/projects/pramaan" },
   { image: "/flytbase2.png", text: "Flytbase (Coming Soon)", link: "#" },
   { image: "/VFX2.png", text: "Envision VFX", link: "https://envisionvfx.in" }
 ];
