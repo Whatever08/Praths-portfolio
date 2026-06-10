@@ -966,6 +966,14 @@ export default function PramaanPage() {
 
     const [isLocalhost, setIsLocalhost] = useState(false);
 
+    // ── Platform Showcase controller (localhost only) ──
+    const [showCtrl, setShowCtrl] = useState(false);
+    const [ctrlPaddingY, setCtrlPaddingY] = useState(40);   // px, section top/bottom
+    const [ctrlGap, setCtrlGap] = useState(36);             // px, column gap
+    const [ctrlHeadingSize, setCtrlHeadingSize] = useState(56); // px
+    const [ctrlBodySize, setCtrlBodySize] = useState(16);   // px
+    const [ctrlProtoScale, setCtrlProtoScale] = useState(55); // %, max-width of phone
+
     useEffect(() => {
         if (typeof window !== "undefined") {
             const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
@@ -1215,8 +1223,8 @@ export default function PramaanPage() {
                                             caption: "/01 BRIEF",
                                             heading: "Securing Digital Truth",
                                             paragraphs: [
-                                                "Cyber fraud cases suffer from broken chains of custody and fragmented log reporting between financial bodies and law enforcement.",
-                                                "Pramaan was built to standardize cybersecurity evidence schemas with cryptographic auditing logs while providing training sandbox simulations for forensic analysts."
+                                                "Every year, millions of Indians lose money to cyber fraud and are left alone to navigate a system that was never built for them. Victims do not know what to save, who to report to, or how to prove what happened.",
+                                                "Pramaan was designed for society. A platform that puts power back in the hands of the people, turning confusion into clarity, and giving every victim a fair chance at justice."
                                             ]
                                         }}
                                     />
@@ -1831,7 +1839,7 @@ export default function PramaanPage() {
                                              </section>
 
                                              {/* ── 05 KEY INSIGHTS ── */}
-                                             <section className="dv-section dv-research-carousel-section bg-white border-b border-[#E4DFD7] py-16 md:py-20" id="insights-section">
+                                             <section className="dv-section dv-research-carousel-section bg-white border-b border-[#E4DFD7] py-16 md:py-20" id="insights-section" style={{ paddingBottom: '40px' }}>
                                                  <div className="dv-container">
                                                      <div className="text-center mb-10 max-w-6xl mx-auto">
                                                          <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-4 font-semibold">05 KEY INSIGHTS</span>
@@ -1874,29 +1882,19 @@ export default function PramaanPage() {
                                              </section>
 
                                              {/* ── 06 PROBLEM STATEMENT ── */}
-                                             <section className="dv-section bg-[#FAFAF9] border-b border-[#E4DFD7] py-16 md:py-20" id="problem-statement-section">
+                                             <section className="dv-section bg-[#FAFAF9] border-b border-[#E4DFD7] py-16 md:py-20" id="problem-statement-section" style={{ paddingTop: '40px' }}>
                                                  <div className="dv-container">
-                                                     <div className="text-center mb-10 max-w-6xl mx-auto">
-                                                         <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-4 font-semibold">06 PROBLEM STATEMENT</span>
-                                                         <h2 className="dv-mixed-heading !text-[#0C0C0C]">
-                                                             <span className="dv-heading-bold">Proposed Problem</span> <em className="dv-heading-italic">Statement</em>
+                                                     <div className="text-center max-w-5xl mx-auto">
+                                                         <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-4 font-semibold">06 Problem Statement</span>
+                                                         <h2 className="dv-mixed-heading !text-[#0C0C0C] mb-4">
+                                                             <span className="dv-heading-bold">The</span> <em className="dv-heading-italic">Problem</em>
                                                          </h2>
-                                                         <p className="mt-4 text-base md:text-lg text-[#6B6762] uppercase tracking-wider font-semibold font-mono">
-                                                             Understanding the Problem
+                                                         <p className="dv-subheading !text-[#0C0C0C] max-w-3xl mx-auto">
+                                                             Police find it hard to trace financial frauds because evidence is collected too slow and forensic labs are overloaded. By the time investigation even starts, scammers have already moved the money abroad and wiped all digital proof.
                                                          </p>
                                                      </div>
-
-                                                      {/* Main HMW Question Box */}
-                                                      <div className="max-w-5xl mx-auto px-6 text-center">
-                                                           <h3 className="text-xl md:text-2xl lg:text-3xl font-bold font-sans text-[#0C0C0C] tracking-tight leading-relaxed mb-6">
-                                                               How might we help cyber fraud victims in India collect legally sound evidence quickly, navigate the fragmented reporting system with confidence, and build lasting scam detection skills so the system works for them, not against them?
-                                                           </h3>
-                                                           <p className="text-base md:text-lg lg:text-xl text-[#6B6762] leading-relaxed font-sans font-normal max-w-4xl mx-auto">
-                                                               Victims don't know what evidence to save. Reporting is fragmented across bank, police, and telecom. Awareness is generic and forgettable. Forensic labs face 22,000+ pending reports. First time and older users struggle with digital interfaces under stress. Every design decision addressed root causes not symptoms.
-                                                           </p>
-                                                       </div>
-                                                  </div>
-                                              </section>
+                                                 </div>
+                                             </section>
 
                                              {/* ── 07 INTRODUCING PRAMAAN ── */}
                                              <section className="dv-section bg-white border-b border-[#E4DFD7] py-16 md:py-20" id="overview-section">
@@ -1924,26 +1922,26 @@ export default function PramaanPage() {
                                             {/* ── DESIGN SYSTEM SECTION ── */}
                                             <section className="dv-section bg-white border-b border-[#E4DFD7] py-16 md:py-20 relative overflow-hidden" id="branding-assets-section">
                                                 <div className="dv-container max-w-[1200px] mx-auto px-6 md:px-12">
-                                                    
+
                                                     <div className="text-center mb-8 md:mb-12">
                                                         <h2 className="dv-mixed-heading">
-                                                            <span className="dv-heading-bold">Platform Interface</span> <em className="dv-heading-italic">and Visual System</em>
+                                                            <span className="dv-heading-bold">Design</span> <em className="dv-heading-italic">System</em>
                                                         </h2>
                                                     </div>
 
-
                                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
                                                         {/* Typography Card */}
                                                         <div className="flex flex-col gap-6">
-                                                            <div className="bg-[#0066FF] rounded-3xl p-8 flex flex-col justify-between aspect-auto min-h-[340px] lg:aspect-[16/10] overflow-hidden relative shadow-lg text-white group hover:scale-[1.01] transition-transform duration-300 select-none">
-                                                                <div className="absolute top-0 right-0 p-8 opacity-10 text-white font-dm font-bold text-[150px] leading-none pointer-events-none select-none">
+                                                            <div className="bg-[#1B3FAB] rounded-3xl p-8 flex flex-col justify-between aspect-auto min-h-[340px] lg:aspect-[16/10] overflow-hidden relative shadow-lg text-white group hover:scale-[1.01] transition-transform duration-300 select-none">
+                                                                <div className="absolute top-0 right-0 p-8 opacity-10 text-white font-sans font-bold text-[150px] leading-none pointer-events-none select-none">
                                                                     Aa
                                                                 </div>
-                                                                
+
                                                                 <div className="flex justify-between items-start z-10 w-full">
                                                                     <div className="text-left">
                                                                         <div className="text-[11px] tracking-widest font-mono text-white/75 uppercase font-bold mb-1">Type Specimen</div>
-                                                                        <div className="text-2xl font-sans font-bold tracking-tight">Outfit</div>
+                                                                        <div className="text-2xl font-sans font-bold tracking-tight">Inter</div>
                                                                     </div>
                                                                     <div className="text-right font-mono text-[9px] text-white/70 tracking-widest uppercase">
                                                                         SANS-SERIF
@@ -1967,117 +1965,247 @@ export default function PramaanPage() {
                                                             </div>
 
                                                             <div className="text-left mt-2">
-                                                                <h3 className="text-xl md:text-2xl font-bold font-sans text-[#0C0C0C] mb-3">Outfit Typography</h3>
+                                                                <h3 className="text-xl md:text-2xl font-bold font-sans text-[#0C0C0C] mb-3">Inter Typography</h3>
                                                                 <p className="text-sm md:text-base text-[#6B6762] leading-relaxed font-sans">
-                                                                    We selected the clean geometric sans-serif typeface <strong>Outfit</strong> for the Pramaan experience. By utilizing distinct font weights (Bold, SemiBold, Medium, and Regular), we created a solid typographic scale to differentiate log status fields, file metadata, and security alert warnings.
+                                                                    <strong>Inter</strong> was chosen for its clarity under stress — tight spacing and distinct letterforms reduce reading friction in high-anxiety moments like evidence collection and fraud reporting. Weight variation from Regular to Bold creates a clear information hierarchy.
                                                                 </p>
                                                             </div>
                                                         </div>
 
-                                                        {/* Color Swatch Card */}
+                                                        {/* Color System Card */}
                                                         <div className="flex flex-col gap-6">
-                                                            <div className="bg-white rounded-3xl p-8 flex flex-col justify-between aspect-auto min-h-[340px] lg:aspect-[16/10] overflow-hidden relative shadow-lg border border-[#E4DFD7] hover:scale-[1.01] transition-transform duration-300">
+                                                            <div className="bg-white rounded-3xl p-8 flex flex-col gap-6 overflow-hidden relative shadow-lg border border-[#E4DFD7] hover:scale-[1.01] transition-transform duration-300">
 
-                                                                <div className="flex justify-between items-start z-10 w-full mb-6">
+                                                                <div className="flex justify-between items-center">
                                                                     <div className="text-left">
                                                                         <div className="text-[11px] tracking-widest font-mono text-[#6B6762] uppercase font-bold mb-1">Color Palette</div>
-                                                                        <div className="text-lg font-sans font-bold text-[#0C0C0C] tracking-tight">Active Colors</div>
+                                                                        <div className="text-lg font-sans font-bold text-[#0C0C0C] tracking-tight">System Colors</div>
                                                                     </div>
                                                                     <div className="text-right font-mono text-[8px] text-[#6B6762]/70 tracking-widest uppercase">
                                                                         HOVER FOR HEX
                                                                     </div>
                                                                 </div>
 
-                                                                {/* Interactive Swatches Bar */}
-                                                                <div className="flex h-32 md:h-40 w-full rounded-xl overflow-hidden border border-[#E4DFD7] shadow-sm bg-[#FAFAF9] mt-auto">
-                                                                    {[
-                                                                        { hex: "#0066FF", label: "Electric Blue", darkText: false },
-                                                                        { hex: "#030F26", label: "Navy Blue", darkText: false },
-                                                                        { hex: "#00F0FF", label: "Cyber Blue", darkText: true },
-                                                                        { hex: "#01060F", label: "Dark Midnight", darkText: false },
-                                                                        { hex: "#3F00FF", label: "Cobalt Indigo", darkText: false },
-                                                                        { hex: "#E0F2FE", label: "Ice Blue", darkText: true },
-                                                                        { hex: "#64748B", label: "Slate Grey", darkText: false },
-                                                                        { hex: "#7C3AED", label: "Cyber Purple", darkText: false }
-                                                                    ].map((color) => (
-                                                                        <div
-                                                                            key={color.hex}
-                                                                            className="flex-1 h-full relative group transition-all duration-500 hover:flex-[2.2] cursor-default"
-                                                                            style={{ backgroundColor: color.hex }}
-                                                                        >
-                                                                            <span className={`absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[8px] md:text-[10px] font-bold tracking-tighter whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${color.darkText ? 'text-black/80' : 'text-white/90'}`}>
-                                                                                {color.hex}
-                                                                            </span>
-                                                                        </div>
-                                                                    ))}
+                                                                {/* Primary */}
+                                                                <div>
+                                                                    <div className="text-[10px] font-mono font-bold text-[#6B6762] uppercase tracking-widest mb-2">Primary</div>
+                                                                    <div className="flex h-16 w-full rounded-xl overflow-hidden border border-[#E4DFD7]">
+                                                                        {[
+                                                                            { hex: "#1B3FAB", darkText: false },
+                                                                            { hex: "#2B52CC", darkText: false },
+                                                                            { hex: "#4A6EE0", darkText: false },
+                                                                            { hex: "#D6E0FF", darkText: true },
+                                                                            { hex: "#EBF0FF", darkText: true },
+                                                                        ].map((c) => (
+                                                                            <div key={c.hex} className="flex-1 h-full relative group transition-all duration-300 hover:flex-[2] cursor-default" style={{ backgroundColor: c.hex }}>
+                                                                                <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 font-mono text-[8px] font-bold tracking-tighter whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${c.darkText ? 'text-black/70' : 'text-white/90'}`}>{c.hex}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
                                                                 </div>
+
+                                                                {/* Accent / Status */}
+                                                                <div>
+                                                                    <div className="text-[10px] font-mono font-bold text-[#6B6762] uppercase tracking-widest mb-2">Accent / Status</div>
+                                                                    <div className="flex h-16 w-full rounded-xl overflow-hidden border border-[#E4DFD7]">
+                                                                        {[
+                                                                            { hex: "#E63946", darkText: false },
+                                                                            { hex: "#FF6B35", darkText: false },
+                                                                            { hex: "#2EC27E", darkText: false },
+                                                                            { hex: "#F4B942", darkText: true },
+                                                                            { hex: "#FFE8CC", darkText: true },
+                                                                        ].map((c) => (
+                                                                            <div key={c.hex} className="flex-1 h-full relative group transition-all duration-300 hover:flex-[2] cursor-default" style={{ backgroundColor: c.hex }}>
+                                                                                <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 font-mono text-[8px] font-bold tracking-tighter whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${c.darkText ? 'text-black/70' : 'text-white/90'}`}>{c.hex}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* Neutral */}
+                                                                <div>
+                                                                    <div className="text-[10px] font-mono font-bold text-[#6B6762] uppercase tracking-widest mb-2">Neutral</div>
+                                                                    <div className="flex h-16 w-full rounded-xl overflow-hidden border border-[#E4DFD7]">
+                                                                        {[
+                                                                            { hex: "#0D0D0D", darkText: false },
+                                                                            { hex: "#4A4A4A", darkText: false },
+                                                                            { hex: "#9B9B9B", darkText: false },
+                                                                            { hex: "#E8E8E8", darkText: true },
+                                                                            { hex: "#F7F7F7", darkText: true },
+                                                                        ].map((c) => (
+                                                                            <div key={c.hex} className="flex-1 h-full relative group transition-all duration-300 hover:flex-[2] cursor-default" style={{ backgroundColor: c.hex }}>
+                                                                                <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 font-mono text-[8px] font-bold tracking-tighter whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${c.darkText ? 'text-black/70' : 'text-white/90'}`}>{c.hex}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+
                                                             </div>
 
                                                             <div className="text-left mt-2">
-                                                                <h3 className="text-xl md:text-2xl font-bold font-sans text-[#0C0C0C] mb-3">Cyber Color System</h3>
+                                                                <h3 className="text-xl md:text-2xl font-bold font-sans text-[#0C0C0C] mb-3">System Color Palette</h3>
                                                                 <p className="text-sm md:text-base text-[#6B6762] leading-relaxed font-sans">
-                                                                    Pramaan utilizes a color hierarchy mapped directly to cybersecurity contexts: electric blue and navy represent security and trust, neon cyan accents alert analysts to interactive logs, while cyber purple differentiates simulator loops.
+                                                                    Three-tier palette: Primary blues build institutional trust, Accent colours communicate real-time status (danger, warning, success), and Neutrals provide the clean canvas that keeps high-stress interfaces readable.
                                                                 </p>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </section>
 
                                             {/* ── 10 PLATFORM SHOWCASE ── */}
-                                            <section className="dv-section bg-white border-b border-[#E4DFD7] py-10 md:py-12" id="design-section">
+                                            <section
+                                                className="dv-section bg-white border-b border-[#E4DFD7] relative"
+                                                id="design-section"
+                                                style={{ paddingTop: ctrlPaddingY, paddingBottom: ctrlPaddingY }}
+                                            >
+                                                {/* ── Localhost controller toggle ── */}
+                                                {isLocalhost && (
+                                                    <button
+                                                        onClick={() => setShowCtrl(v => !v)}
+                                                        className="absolute top-4 right-4 z-50 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#0C0C0C] text-white font-mono text-[10px] font-bold tracking-widest hover:bg-[#1B3FAB] transition-colors shadow-lg"
+                                                    >
+                                                        {showCtrl ? "✕ CLOSE" : "⚙ CONTROLS"}
+                                                    </button>
+                                                )}
+
+                                                {/* ── Floating control panel ── */}
+                                                {isLocalhost && showCtrl && (
+                                                    <div className="absolute top-14 right-4 z-50 bg-[#0C0C0C] text-white rounded-2xl shadow-2xl p-5 w-72 flex flex-col gap-4 font-mono text-[11px]">
+                                                        <div className="text-white/50 uppercase tracking-widest text-[9px] font-bold border-b border-white/10 pb-2">Showcase Controls</div>
+
+                                                        {/* Padding */}
+                                                        <div className="flex flex-col gap-1">
+                                                            <div className="flex justify-between">
+                                                                <span className="text-white/70">Section Padding Y</span>
+                                                                <span className="text-[#1B3FAB] font-bold">{ctrlPaddingY}px</span>
+                                                            </div>
+                                                            <input type="range" min={0} max={160} step={4} value={ctrlPaddingY}
+                                                                onChange={e => setCtrlPaddingY(Number(e.target.value))}
+                                                                className="w-full accent-[#1B3FAB] cursor-pointer"
+                                                            />
+                                                        </div>
+
+                                                        {/* Column gap */}
+                                                        <div className="flex flex-col gap-1">
+                                                            <div className="flex justify-between">
+                                                                <span className="text-white/70">Column Gap</span>
+                                                                <span className="text-[#2EC27E] font-bold">{ctrlGap}px</span>
+                                                            </div>
+                                                            <input type="range" min={0} max={128} step={4} value={ctrlGap}
+                                                                onChange={e => setCtrlGap(Number(e.target.value))}
+                                                                className="w-full accent-[#2EC27E] cursor-pointer"
+                                                            />
+                                                        </div>
+
+                                                        {/* Heading size */}
+                                                        <div className="flex flex-col gap-1">
+                                                            <div className="flex justify-between">
+                                                                <span className="text-white/70">Heading Size</span>
+                                                                <span className="text-[#F4B942] font-bold">{ctrlHeadingSize}px</span>
+                                                            </div>
+                                                            <input type="range" min={24} max={96} step={2} value={ctrlHeadingSize}
+                                                                onChange={e => setCtrlHeadingSize(Number(e.target.value))}
+                                                                className="w-full accent-[#F4B942] cursor-pointer"
+                                                            />
+                                                        </div>
+
+                                                        {/* Body text size */}
+                                                        <div className="flex flex-col gap-1">
+                                                            <div className="flex justify-between">
+                                                                <span className="text-white/70">Body Text Size</span>
+                                                                <span className="text-[#E63946] font-bold">{ctrlBodySize}px</span>
+                                                            </div>
+                                                            <input type="range" min={12} max={28} step={1} value={ctrlBodySize}
+                                                                onChange={e => setCtrlBodySize(Number(e.target.value))}
+                                                                className="w-full accent-[#E63946] cursor-pointer"
+                                                            />
+                                                        </div>
+
+                                                        {/* Proto scale */}
+                                                        <div className="flex flex-col gap-1">
+                                                            <div className="flex justify-between">
+                                                                <span className="text-white/70">Prototype Scale</span>
+                                                                <span className="text-[#7C3AED] font-bold">{ctrlProtoScale}%</span>
+                                                            </div>
+                                                            <input type="range" min={30} max={160} step={5} value={ctrlProtoScale}
+                                                                onChange={e => setCtrlProtoScale(Number(e.target.value))}
+                                                                className="w-full accent-[#7C3AED] cursor-pointer"
+                                                            />
+                                                        </div>
+
+                                                        {/* Reset + Copy */}
+                                                        <div className="flex gap-2 pt-1 border-t border-white/10">
+                                                            <button
+                                                                onClick={() => { setCtrlPaddingY(40); setCtrlGap(32); setCtrlHeadingSize(56); setCtrlBodySize(16); setCtrlProtoScale(100); }}
+                                                                className="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 text-[10px] transition-colors"
+                                                            >↩ Reset</button>
+                                                            <button
+                                                                onClick={() => navigator.clipboard?.writeText(`paddingY:${ctrlPaddingY} gap:${ctrlGap} heading:${ctrlHeadingSize} body:${ctrlBodySize} proto:${ctrlProtoScale}%`)}
+                                                                className="flex-1 py-1.5 rounded-lg bg-[#1B3FAB] hover:bg-[#2B52CC] text-white text-[10px] transition-colors"
+                                                            >⎘ Copy</button>
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                                 <div className="max-w-[1280px] mx-auto px-6 md:px-12">
-                                                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-
+                                                    <div
+                                                        className="grid grid-cols-1 lg:grid-cols-12 items-center"
+                                                        style={{ gap: ctrlGap }}
+                                                    >
                                                         {/* Left: Text Details */}
-                                                        <div className="lg:col-span-4 flex flex-col items-start text-left gap-5">
-                                                                <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase font-semibold">10 Platform Showcase</span>
-                                                                <h2 className="dv-mixed-heading !text-left leading-[1.1] mb-0">
-                                                                    <span className="dv-heading-bold">Live</span>{" "}
-                                                                    <em className="dv-heading-italic">Prototype</em>
-                                                                </h2>
-                                                                <p className="text-base text-[#6B6762] leading-relaxed font-sans font-normal">
-                                                                    Tap through the Pramaan app. Explore evidence collection, guided reporting, and scam detection modules built for real users under stress.
-                                                                </p>
-                                                                <div className="flex flex-col gap-2 pt-2">
-                                                                    {[
-                                                                        { dot: "#0066FF", label: "Evidence Collection Flow" },
-                                                                        { dot: "#00C48C", label: "Guided Reporting Journey" },
-                                                                        { dot: "#7C3AED", label: "Scam Detection Modules" },
-                                                                    ].map(({ dot, label }) => (
-                                                                        <div key={label} className="flex items-center gap-2.5">
-                                                                            <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dot }} />
-                                                                            <span className="text-sm font-mono text-[#6B6762] font-medium">{label}</span>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-
-                                                            {/* Right: Figma Mobile Prototype — portrait phone ratio */}
-                                                            <div className="lg:col-span-8 w-full flex justify-center lg:justify-end">
-                                                                <div className="relative w-full max-w-[400px]">
-                                                                    {/* Phone shell */}
-                                                                    <div
-                                                                        className="relative w-full overflow-hidden rounded-[48px] shadow-[0_32px_80px_-12px_rgba(0,0,0,0.28)] border-[6px] border-[#0C0C0C]"
-                                                                        style={{ aspectRatio: "9/19" }}
-                                                                    >
-                                                                        {/* Status bar notch area */}
-                                                                        <div className="absolute top-0 left-0 right-0 h-8 bg-[#0C0C0C] z-10 flex items-center justify-center">
-                                                                            <div className="w-24 h-5 bg-[#0C0C0C] rounded-b-2xl" />
-                                                                        </div>
-                                                                        <iframe
-                                                                            style={{ border: "none" }}
-                                                                            width="100%"
-                                                                            height="100%"
-                                                                            src="https://embed.figma.com/proto/wjbbzs1eUB9XSs2g6AYPkW/Cyber-crime--DES-app-Design-?node-id=96-2568&viewport=717%2C-45%2C0.2&scaling=scale-down&content-scaling=fixed&starting-point-node-id=96%3A2568&page-id=82%3A2376&embed-host=share"
-                                                                            allowFullScreen
-                                                                            title="Pramaan App Prototype"
-                                                                        />
+                                                        <div className="lg:col-span-5 flex flex-col items-start text-left gap-5">
+                                                            <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase font-semibold">10 Platform Showcase</span>
+                                                            <h2
+                                                                className="dv-mixed-heading !text-left leading-[1.1] mb-0"
+                                                                style={{ fontSize: ctrlHeadingSize }}
+                                                            >
+                                                                <span className="dv-heading-bold">Live</span>{" "}
+                                                                <em className="dv-heading-italic">Prototype</em>
+                                                            </h2>
+                                                            <p className="text-[#6B6762] leading-relaxed font-sans font-normal" style={{ fontSize: ctrlBodySize }}>
+                                                                Tap through the Pramaan app. Explore evidence collection, guided reporting, and scam detection modules built for real users under stress.
+                                                            </p>
+                                                            <div className="flex flex-col gap-2 pt-2">
+                                                                {[
+                                                                    { dot: "#0066FF", label: "Evidence Collection Flow" },
+                                                                    { dot: "#00C48C", label: "Guided Reporting Journey" },
+                                                                    { dot: "#7C3AED", label: "Scam Detection Modules" },
+                                                                ].map(({ dot, label }) => (
+                                                                    <div key={label} className="flex items-center gap-2.5">
+                                                                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dot }} />
+                                                                        <span className="font-mono text-[#6B6762] font-medium" style={{ fontSize: ctrlBodySize - 2 }}>{label}</span>
                                                                     </div>
-                                                                    {/* Subtle glow beneath phone */}
-                                                                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-3/4 h-12 bg-[#0066FF]/20 blur-2xl rounded-full pointer-events-none" />
-                                                                </div>
+                                                                ))}
                                                             </div>
+                                                        </div>
+
+                                                        {/* Right: Figma Mobile Prototype */}
+                                                        <div className="lg:col-span-7 w-full flex justify-center lg:justify-end">
+                                                            <div className="relative" style={{ width: `${ctrlProtoScale}%`, maxWidth: 400 }}>
+                                                                {/* Phone shell */}
+                                                                <div
+                                                                    className="relative w-full overflow-hidden rounded-[48px] shadow-[0_32px_80px_-12px_rgba(0,0,0,0.28)] border-[6px] border-[#0C0C0C]"
+                                                                    style={{ aspectRatio: "9/19" }}
+                                                                >
+                                                                    {/* Status bar notch area */}
+                                                                    <div className="absolute top-0 left-0 right-0 h-8 bg-[#0C0C0C] z-10 flex items-center justify-center">
+                                                                        <div className="w-24 h-5 bg-[#0C0C0C] rounded-b-2xl" />
+                                                                    </div>
+                                                                    <iframe
+                                                                        style={{ border: "none" }}
+                                                                        width="100%"
+                                                                        height="100%"
+                                                                        src="https://embed.figma.com/proto/wjbbzs1eUB9XSs2g6AYPkW/Cyber-crime--DES-app-Design-?node-id=96-2568&viewport=717%2C-45%2C0.2&scaling=scale-down&content-scaling=fixed&starting-point-node-id=96%3A2568&page-id=82%3A2376&embed-host=share"
+                                                                        allowFullScreen
+                                                                        title="Pramaan App Prototype"
+                                                                    />
+                                                                </div>
+                                                                {/* Subtle glow beneath phone */}
+                                                                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-3/4 h-12 bg-[#0066FF]/20 blur-2xl rounded-full pointer-events-none" />
+                                                            </div>
+                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -2087,63 +2215,22 @@ export default function PramaanPage() {
                                             <section className="dv-section bg-white border-b border-[#E4DFD7] py-10 md:py-12" id="impact-section">
                                                 <div className="dv-container">
 
-                                                    {/* Section header */}
-                                                    <div className="text-center mb-10">
-                                                        <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-4">11 PROJECTED IMPACT</span>
-                                                        <h2 className="dv-mixed-heading">
-                                                            <span className="dv-heading-bold">Key Project</span> <em className="dv-heading-italic">Outcomes</em>
-                                                        </h2>
-                                                        <p className="dv-subheading">
-                                                            Outcomes mapped directly to digital forensics requirements and cross sector incident logging targets.
-                                                        </p>
-                                                    </div>
-
-                                                    {/* Metric tiles */}
-                                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-                                                        {[
-                                                            { num: "100%", label: "Tamper-proof Evidence Integrity" },
-                                                            { num: "55%", label: "Faster Post Incident Audit Speeds" },
-                                                            { num: "45%", label: "Reduced Analyst Alert Fatigue" },
-                                                            { num: "60%", label: "Team Learning Engagement Gain" }
-                                                        ].map((metric, idx) => (
-                                                            <div key={idx} className="bg-white hover:bg-[#0C0C0C] border border-[#E4DFD7] hover:border-[#0C0C0C] rounded-2xl p-8 text-center flex flex-col justify-center shadow-sm transition-colors duration-300 group">
-                                                                <div className="text-3xl md:text-4xl font-sans font-bold text-[#0C0C0C] group-hover:text-white leading-none mb-3 transition-colors duration-300">{metric.num}</div>
-                                                                <p className="text-sm text-[#6B6762] group-hover:text-white/70 font-sans leading-relaxed transition-colors duration-300">{metric.label}</p>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-
-                                                    {/* Design learnings grid */}
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mb-20">
-                                                        {[
-                                                            { title: "Design is a Security Lever", text: "Minimising visual friction on event logs speeds up threat identification and containment." },
-                                                            { title: "Auditing Requires Trust", text: "Enforcing cryptographic signature trails directly in log ingestion secures the evidence chain." },
-                                                            { title: "Standardisation is the Goal", text: "Replacing fragmented, custom spreadsheets with unified schemas accelerates investigator handoffs." },
-                                                            { title: "Learning Through Experience", text: "Interactive sandboxes improve operational readiness compared to static training manuals." }
-                                                        ].map((learning, idx) => (
-                                                            <div key={idx} className="bg-white hover:bg-[#0C0C0C] border border-[#E4DFD7] hover:border-[#0C0C0C] rounded-2xl p-8 flex flex-col justify-center text-left shadow-sm transition-colors duration-300 group" style={{ minHeight: '160px' }}>
-                                                                <div className="font-bold text-[#0C0C0C] group-hover:text-white mb-3 text-left font-sans transition-colors duration-300" style={{ fontSize: '1.375rem' }}>{learning.title}</div>
-                                                                <p className="text-[#6B6762] group-hover:text-white/70 leading-relaxed text-left font-sans transition-colors duration-300" style={{ fontSize: '1.05rem' }}>{learning.text}</p>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-
                                                     {/* ── POSSIBLE IMPACT ── */}
-                                                    <div className="border-t border-[#E4DFD7] pt-16">
+                                                    <div className="border-t border-[#E4DFD7] pt-20">
 
-                                                        {/* Intro */}
-                                                        <div className="max-w-3xl mb-12">
+                                                        {/* Intro — centred */}
+                                                        <div className="text-center max-w-4xl mx-auto mb-16">
                                                             <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-4 font-semibold">Possible Impact</span>
-                                                            <h3 className="text-3xl md:text-4xl font-black font-sans text-[#0C0C0C] tracking-tight leading-tight mb-4">
-                                                                Designed to solve real challenges cyber fraud victims face every day.
+                                                            <h3 className="dv-mixed-heading mb-6">
+                                                                <span className="dv-heading-bold">Designed for</span> <em className="dv-heading-italic">Society</em>
                                                             </h3>
-                                                            <p className="text-base md:text-lg text-[#6B6762] leading-relaxed font-sans">
-                                                                Turning complexity into clarity and helplessness into action.
+                                                            <p className="dv-subheading mb-12">
+                                                                Transforming the crisis of digital fraud from a state of paralysis into a structured, supported path to justice.
                                                             </p>
                                                         </div>
 
-                                                        {/* Three outcome cards */}
-                                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                                                        {/* Three outcome cards — white, left-aligned */}
+                                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 text-left">
                                                             {[
                                                                 {
                                                                     num: "01",
@@ -2155,7 +2242,7 @@ export default function PramaanPage() {
                                                                     num: "02",
                                                                     title: "Better Reporting Confidence",
                                                                     text: "Turns a confusing, fragmented system into a step-by-step guided journey. Users gain a clear sense of progress through case ID, status, and a downloadable report.",
-                                                                    accent: "#00C48C"
+                                                                    accent: "#2EC27E"
                                                                 },
                                                                 {
                                                                     num: "03",
@@ -2163,52 +2250,47 @@ export default function PramaanPage() {
                                                                     text: "Standardised evidence bundles with timestamps, digital signatures, and chain-of-custody speed up forensic lab work and reduce the 22,000+ case backlog.",
                                                                     accent: "#7C3AED"
                                                                 }
-                                                            ].map(({ num, title, text, accent }) => (
-                                                                <div key={num} className="bg-[#FAFAF9] border border-[#E4DFD7] rounded-2xl p-7 flex flex-col gap-4 hover:shadow-md transition-shadow duration-300">
-                                                                    <span className="text-[11px] font-mono font-bold tracking-[0.15em]" style={{ color: accent }}>{num}</span>
-                                                                    <h4 className="text-lg md:text-xl font-bold font-sans text-[#0C0C0C] leading-snug">{title}</h4>
-                                                                    <p className="text-sm md:text-base text-[#6B6762] leading-relaxed font-sans">{text}</p>
+                                                            ].map(({ title, text }) => (
+                                                                <div key={title} className="bg-white hover:bg-[#0C0C0C] border border-[#E4DFD7] hover:border-[#0C0C0C] rounded-2xl p-7 flex flex-col gap-3 dv-left transition-colors duration-300 group">
+                                                                    <h4 className="text-lg md:text-xl font-bold font-sans text-[#0C0C0C] group-hover:text-white leading-snug text-left transition-colors duration-300">{title}</h4>
+                                                                    <p className="text-sm md:text-base text-[#0C0C0C] group-hover:text-white/70 leading-relaxed font-sans text-left transition-colors duration-300">{text}</p>
                                                                 </div>
                                                             ))}
                                                         </div>
 
-                                                        {/* SDG Cards */}
-                                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+                                                        {/* SDG Cards — white bg, coloured left border, left-aligned */}
+                                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 text-left">
                                                             {[
                                                                 {
                                                                     num: "16",
-                                                                    color: "#0066FF",
-                                                                    bg: "#EFF6FF",
+                                                                    color: "#1B3FAB",
                                                                     title: "Peace, Justice & Strong Institutions",
                                                                     text: "Strengthens cybercrime reporting, evidence handling, and access to justice for digital fraud victims."
                                                                 },
                                                                 {
                                                                     num: "9",
-                                                                    color: "#F59E0B",
-                                                                    bg: "#FFFBEB",
+                                                                    color: "#F4B942",
                                                                     title: "Industry, Innovation & Infrastructure",
                                                                     text: "Builds secure digital infrastructure for scam reporting, evidence collection, and coordination."
                                                                 },
                                                                 {
                                                                     num: "4",
-                                                                    color: "#EF4444",
-                                                                    bg: "#FEF2F2",
+                                                                    color: "#E63946",
                                                                     title: "Quality Education",
                                                                     text: "Awareness Hub teaches practical digital safety, evidence basics, and scam recognition skills to all users."
                                                                 },
                                                                 {
                                                                     num: "1",
                                                                     color: "#7C3AED",
-                                                                    bg: "#F5F3FF",
                                                                     title: "No Poverty",
                                                                     text: "Helps protect savings from cyber fraud, especially for vulnerable users least able to absorb financial shocks."
                                                                 }
-                                                            ].map(({ num, color, bg, title, text }) => (
-                                                                <div key={num} className="rounded-2xl border p-6 flex flex-col gap-3" style={{ backgroundColor: bg, borderColor: `${color}30` }}>
-                                                                    <div className="text-4xl md:text-5xl font-black font-sans leading-none" style={{ color }}>{num}</div>
-                                                                    <div className="text-[10px] font-mono font-bold uppercase tracking-wider" style={{ color }}>SDG Goal</div>
-                                                                    <h5 className="text-sm md:text-base font-bold font-sans text-[#0C0C0C] leading-snug">{title}</h5>
-                                                                    <p className="text-xs md:text-sm text-[#6B6762] leading-relaxed font-sans">{text}</p>
+                                                            ].map(({ num, color, title, text }) => (
+                                                                <div key={num} className="bg-white hover:bg-[#0C0C0C] border border-[#E4DFD7] hover:border-[#0C0C0C] rounded-2xl p-6 flex flex-col gap-3 dv-left transition-colors duration-300 group">
+                                                                    <div className="text-4xl md:text-5xl font-black font-sans leading-none text-left text-[#0C0C0C] group-hover:text-white transition-colors duration-300">{num}</div>
+                                                                    <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-left text-[#6B6762] group-hover:text-white/50 transition-colors duration-300">SDG Goal</div>
+                                                                    <h5 className="text-sm md:text-base font-bold font-sans text-[#0C0C0C] group-hover:text-white leading-snug text-left transition-colors duration-300">{title}</h5>
+                                                                    <p className="text-xs md:text-sm text-[#0C0C0C] group-hover:text-white/70 leading-relaxed font-sans text-left transition-colors duration-300">{text}</p>
                                                                 </div>
                                                             ))}
                                                         </div>

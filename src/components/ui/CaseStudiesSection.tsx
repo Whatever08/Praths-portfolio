@@ -51,6 +51,17 @@ const CASE_STUDIES: CaseStudy[] = [
         color: "#FFFFFF",
         link: "https://www.figma.com/proto/lybG9pm8ll1DW1IxBckVQR/User-Testing--Two-Factor-Authentication-in-Indian-Banking--Apps?page-id=0%3A1&node-id=119-10990&viewport=-202%2C487%2C0.09&t=R1qXnK4g7P46yuYj-1&scaling=scale-down&content-scaling=fixed",
     },
+    {
+        id: "03",
+        tag: "SERVICE / 03",
+        number: "CASE STUDY / 03",
+        title: "Pramaan — Cyber Fraud Evidence Platform",
+        description: "A field-immersed UX research and product design project helping cyber fraud victims in India collect court-ready evidence, navigate fragmented reporting systems, and build lasting scam detection skills.",
+        collaborators: ["Prathamesh Tipnis"],
+        image: "/Pramaan2.png",
+        color: "#FFFFFF",
+        link: "/projects/pramaan",
+    },
 ];
 
 interface CardProps {
@@ -106,8 +117,8 @@ const CaseStudyCard = ({
                             <div className="flex items-center gap-4 mt-4 md:mt-10">
                                 <Link
                                     href={study.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    target={study.link.startsWith("http") ? "_blank" : "_self"}
+                                    rel={study.link.startsWith("http") ? "noopener noreferrer" : undefined}
                                     className="px-6 py-3 rounded-full border border-black/20 text-black text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300 cursor-pointer inline-block text-center"
                                 >
                                     View Project
