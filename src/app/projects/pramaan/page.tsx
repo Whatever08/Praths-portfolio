@@ -1222,8 +1222,13 @@ export default function PramaanPage() {
                                         titleClassName="text-[26px] md:text-[45px] lg:text-[58px] font-medium leading-[1.0] tracking-[-0.02em] text-white text-left w-full max-w-[840px] mx-auto"
                                         description="A field immersed UX research and product design project helping cyber fraud victims in India collect court ready evidence, navigate fragmented reporting systems, and build lasting scam detection skills so the system works for them, not against them."
                                         scopeOfWork={["UX RESEARCH", "PRODUCT STRATEGY", "UI/UX DESIGN", "ETHNOGRAPHIC FIELDWORK", "SDG ALIGNMENT", "USABILITY TESTING"]}
-                                        media="/Pramaan.png"
-                                        mediaType="image"
+                                        media="/Pramaan.mp4"
+                                        mediaType="video"
+                                        poster="/Pramaan2.png"
+                                        autoPlay={true}
+                                        muted={true}
+                                        loop={true}
+                                        playsInline={true}
                                         scrollHeightVh={140}
                                         smoothScroll={false}
                                         targetSize="fullscreen"
