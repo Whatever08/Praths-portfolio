@@ -565,8 +565,12 @@ export const HeroScrollVideo: React.FC<HeroScrollVideoProps> = ({
         .hsv-container {
           height: 100vh;
           display: grid;
-          place-items: center;
-          padding: clamp(32px, 8vw, 120px);
+          /* safe center: falls back to start-align when content overflows,
+             preventing the title from disappearing behind the fixed navbar */
+          place-items: safe center;
+          /* Top/bottom padding clamps to ≥88px so the ~80px fixed navbar
+             never overlaps the hero title, even on tall mobile content */
+          padding: clamp(88px, 12vh, 140px) clamp(32px, 8vw, 120px);
           perspective: 1200px;
         }
 
