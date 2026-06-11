@@ -417,15 +417,15 @@ function PramaanMobileMockups() {
             opacity = 0;
             zIndex = 10;
         } else if (isMobile) {
-            // Mobile stack: slight tilt and scale
+            // Mobile fan: overlap phones horizontally just like desktop
             if (idx === 0) {
-                transform = "rotate(-4deg) scale(0.98)";
-                zIndex = 10;
+                transform = "rotate(-7deg) translateX(70px) translateY(6px) scale(1.0)";
+                zIndex = 30;
             } else if (idx === 1) {
-                transform = "rotate(0deg) scale(1.0)";
+                transform = "rotate(0deg) translateX(0px) translateY(-6px) scale(1.08)";
                 zIndex = 20;
             } else {
-                transform = "rotate(4deg) scale(0.98)";
+                transform = "rotate(0deg) translateX(-80px) translateY(0px) scale(1.08)";
                 zIndex = 10;
             }
             opacity = 1;
@@ -451,7 +451,7 @@ function PramaanMobileMockups() {
     return (
         <div ref={mockupContainerRef} className="w-full flex flex-col items-center justify-center mt-12 md:mt-20 select-none overflow-visible">
             {/* ── CENTER PHONE MOCKUPS ── */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-4 lg:gap-8 min-h-[580px] md:min-h-[640px] w-full max-w-4xl overflow-visible relative z-20">
+            <div className="flex flex-row items-center justify-center gap-0 md:gap-4 lg:gap-8 min-h-[300px] md:min-h-[640px] w-full max-w-4xl overflow-visible relative z-20">
                 
                 {/* ── PHONE 1: WELCOME SCREEN (LEFT) ── */}
                 <div 
@@ -461,7 +461,7 @@ function PramaanMobileMockups() {
                     <img 
                         src={deviceFrame3.src} 
                         alt="Welcome Screen Mockup"
-                        className="h-[420px] md:h-[540px] w-auto object-contain pointer-events-none select-none drop-shadow-[0_25px_50px_rgba(15,23,42,0.15)]"
+                        className="h-[260px] md:h-[540px] w-auto object-contain pointer-events-none select-none drop-shadow-[0_25px_50px_rgba(15,23,42,0.15)]"
                     />
                 </div>
 
@@ -473,7 +473,7 @@ function PramaanMobileMockups() {
                     <img 
                         src={deviceFrame2.src} 
                         alt="Report Scam Mockup"
-                        className="h-[420px] md:h-[540px] w-auto object-contain pointer-events-none select-none drop-shadow-[0_25px_50px_rgba(15,23,42,0.15)]"
+                        className="h-[260px] md:h-[540px] w-auto object-contain pointer-events-none select-none drop-shadow-[0_25px_50px_rgba(15,23,42,0.15)]"
                     />
                 </div>
 
@@ -485,7 +485,7 @@ function PramaanMobileMockups() {
                     <img 
                         src={deviceFrame1.src} 
                         alt="Awareness Hub Mockup"
-                        className="h-[420px] md:h-[540px] w-auto object-contain pointer-events-none select-none drop-shadow-[0_25px_50px_rgba(15,23,42,0.15)]"
+                        className="h-[260px] md:h-[540px] w-auto object-contain pointer-events-none select-none drop-shadow-[0_25px_50px_rgba(15,23,42,0.15)]"
                     />
                 </div>
 
