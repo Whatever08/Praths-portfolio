@@ -269,9 +269,11 @@ export default function Home() {
               {/* ── SUBTITLE (top center on mobile / top-right on desktop) ── */}
               {/* Edit: top-[30%] = mobile vertical position | md:top-40 = desktop position (+8% down) */}
               <div className="absolute top-[30%] md:top-40 lg:top-48 left-0 right-0 flex justify-center md:justify-end px-6 md:px-12 z-20 pointer-events-auto scale-[1.10] origin-top md:origin-top-right">
-                <div className="text-center md:text-right lg:pr-10">
-                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide">Designer. Problem Solver. Vibe coder</p>
-                  <p className="text-base md:text-2xl text-white/80 italic font-serif mt-1">Creative Thinker</p>
+                <div className="text-center md:text-right lg:pr-10 flex flex-col gap-1">
+                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide leading-none">Designer.</p>
+                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide leading-none">Problem Solver.</p>
+                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide leading-none">Vibe Coder.</p>
+                  <p className="text-base md:text-2xl text-white/80 italic font-serif mt-2">Creative Thinker</p>
                 </div>
               </div>
 
