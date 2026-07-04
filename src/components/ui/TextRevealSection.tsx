@@ -8,16 +8,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const textContent = [
-    "I'M", "PRATHAMESH,", "A", "UX", "DESIGNER", "FROM", "PUNE,", 
-    "DRIVEN", "BY", "CURIOSITY", "ABOUT", "HOW", "TECHNOLOGY", "BECOMES", 
-    "PART", "OF", "PEOPLE'S", "EVERYDAY", "LIVES.", "I'M", "FASCINATED", 
-    "BY", "HOW", "A", "SIMPLE", "INTERACTION", "CAN", "SAVE", "TIME,", 
-    "REDUCE", "FRUSTRATION,", "CONNECT", "PEOPLE,", "AND", "SHAPE", "THE", 
-    "WAY", "WE", "EXPERIENCE", "THE", "WORLD.", "THAT", "CURIOSITY", "IS", 
-    "WHAT", "DREW", "ME", "TO", "UX", "DESIGN.", "I", "WANT", "TO", 
-    "UNDERSTAND", "HOW", "THOUGHTFUL", "DIGITAL", "EXPERIENCES", "SOLVE", 
-    "REAL", "PROBLEMS", "AND", "CREATE", "MEANINGFUL", "CONNECTIONS", 
-    "BETWEEN", "PEOPLE", "AND", "PRODUCTS."
+    "I'm", "Prathamesh,", "a", "UX", "designer", "from", "Pune,", 
+    "driven", "by", "curiosity", "about", "how", "technology", "becomes", 
+    "part", "of", "people's", "everyday", "lives.", "I'm", "fascinated", 
+    "by", "how", "a", "simple", "interaction", "can", "save", "time,", 
+    "reduce", "frustration,", "connect", "people,", "and", "shape", "the", 
+    "way", "we", "experience", "the", "world.", "That", "curiosity", "is", 
+    "what", "drew", "me", "to", "UX", "design.", "I", "want", "to", 
+    "understand", "how", "thoughtful", "digital", "experiences", "solve", 
+    "real", "problems", "and", "create", "meaningful", "connections", 
+    "between", "people", "and", "products."
 ];
 
 const highlights: string[] = [];
@@ -53,7 +53,7 @@ export function TextRevealSection() {
                     About Me
                 </h2>
 
-                <h3 ref={textRef} className="text-2xl sm:text-[2rem] md:text-[2.2rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em]">
+                <h3 ref={textRef} className="text-2xl sm:text-[2rem] md:text-[2.2rem] lg:text-[2.6rem] leading-[1.4] font-medium text-white tracking-wide flex flex-wrap justify-center gap-x-[0.4em] gap-y-[0.3em]">
                     {textContent.map((word, i) => {
                         const isHighlight = highlights.includes(word);
                         return (
