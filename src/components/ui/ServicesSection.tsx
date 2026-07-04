@@ -7,123 +7,105 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+// SOHub-style: large vivid pills with bold colours and varied rotations
 const SERVICES_TAGS = [
   {
     label: "Design System",
     icon: "solar:widget-2-bold-duotone",
-    iconColor: "bg-[#FF6B35]",
-    x: "-180px",
-    y: "-35px",
-    rotate: -8,
-    animationClass: "animate-float-1",
+    bg: "#FF6B35",        // vibrant orange
+    textColor: "#fff",
+    x: -220,
+    y: -55,
+    rotate: -12,
   },
   {
     label: "Design Research",
     icon: "solar:minimalistic-magnifer-bold-duotone",
-    iconColor: "bg-[#00A8E8]",
-    x: "-15px",
-    y: "-70px",
-    rotate: 4,
-    animationClass: "animate-float-2",
+    bg: "#00C6FF",        // electric cyan
+    textColor: "#000",
+    x: 10,
+    y: -80,
+    rotate: 6,
   },
   {
     label: "Experience Design",
     icon: "solar:heart-bold-duotone",
-    iconColor: "bg-[#EF476F]",
-    x: "165px",
-    y: "-40px",
-    rotate: -6,
-    animationClass: "animate-float-3",
+    bg: "#FF3FA4",        // hot pink
+    textColor: "#fff",
+    x: 230,
+    y: -50,
+    rotate: -7,
   },
   {
     label: "Prototyping",
     icon: "solar:screencast-bold-duotone",
-    iconColor: "bg-[#FF3366]",
-    x: "-110px",
-    y: "40px",
-    rotate: 6,
-    animationClass: "animate-float-4",
+    bg: "#C8FF00",        // acid green-yellow
+    textColor: "#000",
+    x: -150,
+    y: 60,
+    rotate: 10,
   },
   {
-    label: "coding / Vibe coding",
+    label: "Vibe Coding",
     icon: "solar:code-bold-duotone",
-    iconColor: "bg-[#06D6A0]",
-    x: "20px",
-    y: "45px",
-    rotate: -20,
-    animationClass: "animate-float-5",
+    bg: "#7B2FFF",        // electric purple
+    textColor: "#fff",
+    x: 50,
+    y: 70,
+    rotate: -16,
   },
   {
     label: "Design Mgmt",
     icon: "solar:settings-bold-duotone",
-    iconColor: "bg-[#FFD166]",
-    x: "160px",
-    y: "35px",
-    rotate: 9,
-    animationClass: "animate-float-6",
+    bg: "#FFD166",        // golden yellow
+    textColor: "#000",
+    x: 240,
+    y: 55,
+    rotate: 8,
   },
 ];
 
 const WORDS = [
-  { text: "I", className: "" },
-  { text: "DESIGN", className: "" },
-  { text: "DIGITAL", className: "" },
-  { text: "EXPERIENCES", className: "" },
-  { text: "THAT", className: "" },
-  { text: "BALANCE", className: "" },
-  { text: "USER", className: "" },
-  { text: "NEEDS", className: "" },
-  { text: "AND", className: "" },
-  { text: "PRODUCT", className: "" },
-  { text: "GOALS,", className: "" },
-  { text: "CREATING", className: "" },
-  { text: "VALUE", className: "" },
-  { text: "FOR", className: "" },
-  { text: "BOTH.", className: "" },
+  "I", "DESIGN", "DIGITAL", "EXPERIENCES", "THAT",
+  "BALANCE", "USER", "NEEDS", "AND", "PRODUCT",
+  "GOALS,", "CREATING", "VALUE", "FOR", "BOTH.",
 ];
 
 const styles = `
-  @keyframes float-1 {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-4px) rotate(0.5deg); }
+  @keyframes sohub-breathe {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50%       { transform: translateY(-6px) scale(1.015); }
   }
-  @keyframes float-2 {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-5px) rotate(-0.5deg); }
-  }
-  @keyframes float-3 {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-3px) rotate(0.3deg); }
-  }
-  @keyframes float-4 {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-6px) rotate(-0.4deg); }
-  }
-  @keyframes float-5 {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-4px) rotate(0.6deg); }
-  }
-  @keyframes float-6 {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-3px) rotate(-0.3deg); }
-  }
+  .pill-breathe-1 { animation: sohub-breathe 4.2s ease-in-out infinite; }
+  .pill-breathe-2 { animation: sohub-breathe 5.1s ease-in-out infinite 0.6s; }
+  .pill-breathe-3 { animation: sohub-breathe 3.8s ease-in-out infinite 1.1s; }
+  .pill-breathe-4 { animation: sohub-breathe 4.7s ease-in-out infinite 0.3s; }
+  .pill-breathe-5 { animation: sohub-breathe 5.3s ease-in-out infinite 0.9s; }
+  .pill-breathe-6 { animation: sohub-breathe 4.0s ease-in-out infinite 0.5s; }
 
-  .animate-float-1 { animation: float-1 5s ease-in-out infinite; }
-  .animate-float-2 { animation: float-2 4.5s ease-in-out infinite; }
-  .animate-float-3 { animation: float-3 6s ease-in-out infinite; }
-  .animate-float-4 { animation: float-4 5.5s ease-in-out infinite; }
-  .animate-float-5 { animation: float-5 4.8s ease-in-out infinite; }
-  .animate-float-6 { animation: float-6 6.5s ease-in-out infinite; }
+  .service-pill {
+    cursor: default;
+    will-change: transform;
+    transition: box-shadow 0.3s ease;
+  }
+  .service-pill:hover {
+    box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 2px rgba(255,255,255,0.2) !important;
+  }
 `;
+
+const breatheClasses = [
+  "pill-breathe-1","pill-breathe-2","pill-breathe-3",
+  "pill-breathe-4","pill-breathe-5","pill-breathe-6",
+];
 
 export default function ServicesSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // 1. Thoughtful scrub-based word reveal (same feel as About Me section)
+    // ── 1. Word reveal on scroll ──
     gsap.fromTo(
       ".services-reveal-word",
-      { opacity: 0.12 },
+      { opacity: 0.1 },
       {
         opacity: 1,
         stagger: 0.08,
@@ -136,107 +118,90 @@ export default function ServicesSection() {
       }
     );
 
+    // ── 2. Drop-in entrance ──
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top 60%",
         toggleActions: "play none none reverse",
-      }
+      },
     });
 
-    // 2. Drop Pill Badges from Above centered, then landing/spreading in a Bounce Pile
     tl.fromTo(
       ".service-pill",
       {
-        y: -450,
-        x: () => gsap.utils.random(-25, 25), // Falls directly down the center path
+        y: -500,
+        x: () => gsap.utils.random(-40, 40),
         opacity: 0,
-        rotation: () => gsap.utils.random(-80, 80),
+        rotation: () => gsap.utils.random(-90, 90),
+        scale: 0.6,
       },
       {
-        y: (i) => parseFloat(SERVICES_TAGS[i].y), // Lands at pile Y
-        x: (i) => parseFloat(SERVICES_TAGS[i].x), // Spreads out to pile X
+        y: (i: number) => SERVICES_TAGS[i].y,
+        x: (i: number) => SERVICES_TAGS[i].x,
         opacity: 1,
-        rotation: (i) => SERVICES_TAGS[i].rotate,
-        stagger: {
-          each: 0.12,
-          from: "random",
-        },
-        duration: 1.2,
+        rotation: (i: number) => SERVICES_TAGS[i].rotate,
+        scale: 1,
+        stagger: { each: 0.1, from: "random" },
+        duration: 1.3,
         ease: "bounce.out",
-        onComplete: () => {
-          setupInertiaParallax();
-        }
+        onComplete: setupMagneticParallax,
       },
-      "-=0.3"
+      "-=0.2"
     );
 
-    function setupInertiaParallax() {
+    function setupMagneticParallax() {
       const container = containerRef.current;
       if (!container) return;
 
-      // Build per-badge quickTo setters — each badge has its own X/Y velocity tracker.
-      // The lag duration increases per badge so they feel independently weighted.
       const pills = gsap.utils.toArray<HTMLElement>(".service-pill");
-      const quickSetters = pills.map((el, i) => {
-        // Duration increases from 0.10s (snappy) to 0.22s (laggy) across the 6 badges
-        const lag = 0.10 + i * 0.022;
+      const qs = pills.map((el, i) => {
+        const lag = 0.08 + i * 0.025;
         return {
-          x: gsap.quickTo(el, "x", { duration: lag, ease: "power3.out" }),
-          y: gsap.quickTo(el, "y", { duration: lag, ease: "power3.out" }),
-          rot: gsap.quickTo(el, "rotation", { duration: lag * 1.4, ease: "power2.out" }),
+          x:   gsap.quickTo(el, "x",        { duration: lag,       ease: "power3.out" }),
+          y:   gsap.quickTo(el, "y",        { duration: lag,       ease: "power3.out" }),
+          rot: gsap.quickTo(el, "rotation", { duration: lag * 1.5, ease: "power2.out" }),
         };
       });
 
-      const onMouseMove = (e: MouseEvent) => {
+      const onMove = (e: MouseEvent) => {
         const rect = container.getBoundingClientRect();
-        const relX = e.clientX - (rect.left + rect.width / 2);
-        const relY = e.clientY - (rect.top + rect.height / 2);
-        const normX = relX / (rect.width / 2);
-        const normY = relY / (rect.height / 2);
+        const normX = (e.clientX - (rect.left + rect.width  / 2)) / (rect.width  / 2);
+        const normY = (e.clientY - (rect.top  + rect.height / 2)) / (rect.height / 2);
 
-        quickSetters.forEach((qs, i) => {
-          const baseX = parseFloat(SERVICES_TAGS[i].x);
-          const baseY = parseFloat(SERVICES_TAGS[i].y);
-          // Each badge shifts a different amount — spread factor increases with index
-          const spreadX = 40 + i * 8;
-          const spreadY = 30 + i * 5;
-          qs.x(baseX + normX * spreadX);
-          qs.y(baseY + normY * spreadY);
-          qs.rot(SERVICES_TAGS[i].rotate + normX * 10);
+        qs.forEach((q, i) => {
+          const sx = 48 + i * 10;
+          const sy = 32 + i * 7;
+          q.x(SERVICES_TAGS[i].x + normX * sx);
+          q.y(SERVICES_TAGS[i].y + normY * sy);
+          q.rot(SERVICES_TAGS[i].rotate + normX * 12);
         });
       };
 
-      const onMouseLeave = () => {
-        // Elastic spring back to original rest positions
+      const onLeave = () => {
         pills.forEach((el, i) => {
           gsap.to(el, {
-            x: parseFloat(SERVICES_TAGS[i].x),
-            y: parseFloat(SERVICES_TAGS[i].y),
+            x: SERVICES_TAGS[i].x,
+            y: SERVICES_TAGS[i].y,
             rotation: SERVICES_TAGS[i].rotate,
-            duration: 1.8 + i * 0.05,
-            ease: "elastic.out(1.2, 0.5)",
+            duration: 2.0 + i * 0.06,
+            ease: "elastic.out(1.1, 0.45)",
             overwrite: "auto",
           });
         });
       };
 
-      container.addEventListener("mousemove", onMouseMove);
-      container.addEventListener("mouseleave", onMouseLeave);
-
-      (container as any)._inertiaMouseMove = onMouseMove;
-      (container as any)._inertiaMouseLeave = onMouseLeave;
+      container.addEventListener("mousemove", onMove);
+      container.addEventListener("mouseleave", onLeave);
+      (container as any)._mv = onMove;
+      (container as any)._ml = onLeave;
     }
 
     return () => {
-      const container = containerRef.current;
-      if (container) {
-        if ((container as any)._inertiaMouseMove) {
-          container.removeEventListener("mousemove", (container as any)._inertiaMouseMove);
-        }
-        if ((container as any)._inertiaMouseLeave) {
-          container.removeEventListener("mouseleave", (container as any)._inertiaMouseLeave);
-        }
+      const c = containerRef.current;
+      if (c) {
+        if ((c as any)._mv) c.removeEventListener("mousemove", (c as any)._mv);
+        if ((c as any)._ml) c.removeEventListener("mouseleave", (c as any)._ml);
       }
     };
   }, { scope: containerRef });
@@ -244,49 +209,54 @@ export default function ServicesSection() {
   return (
     <section ref={containerRef} className="py-36 relative pointer-events-auto overflow-hidden">
       <style dangerouslySetInnerHTML={{ __html: styles }} />
-      
-      <div className="max-w-[85rem] mx-auto px-6 md:px-12 relative flex flex-col items-center justify-center min-h-[580px]">
-        
-        {/* Header (Same font & layout style as About Me) */}
+
+      <div className="max-w-[85rem] mx-auto px-6 md:px-12 relative flex flex-col items-center justify-center min-h-[620px]">
+
+        {/* Header */}
         <h2 className="text-[24px] font-semibold font-sans text-white mb-6 text-center">
           What I Do
         </h2>
-        
-        {/* Central Content (Same font & size style as About Me text) */}
+
+        {/* Scroll-reveal headline */}
         <h3 className="text-2xl sm:text-[2rem] md:text-[2.2rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em] text-center max-w-4xl mx-auto px-4 z-10 py-6 select-none">
           {WORDS.map((w, idx) => (
-            <span
-              key={idx}
-              className={`services-reveal-word inline-block opacity-[0.12] ${w.className}`}
-            >
-              {w.text}
+            <span key={idx} className="services-reveal-word inline-block opacity-[0.1]">
+              {w}
             </span>
           ))}
         </h3>
 
-        {/* Floating Badges Pile — truly centered on the page */}
-        <div className="relative w-full h-[200px] mt-16 pointer-events-none">
-          {/* Inner anchor sits at exact horizontal center */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.88] xs:scale-[0.99] sm:scale-[1.10] md:scale-[1.23] lg:scale-[1.30] origin-center">
+        {/* ── SOHub-style pill cluster ── */}
+        <div className="relative w-full h-[240px] mt-16 pointer-events-none">
+          {/* Centre anchor */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.70] xs:scale-[0.82] sm:scale-[0.95] md:scale-[1.10] lg:scale-[1.20] origin-center">
             {SERVICES_TAGS.map((tag, i) => (
               <div
                 key={i}
                 className="absolute service-pill pointer-events-auto opacity-0"
-                style={{
-                  left: "0px",
-                  top: "0px",
-                  transformOrigin: "center center",
-                }}
+                style={{ left: 0, top: 0, transformOrigin: "center center" }}
               >
                 {/* Centering wrapper */}
                 <div className="absolute -translate-x-1/2 -translate-y-1/2">
-                  {/* Inner wrapper for independent floating animations without interfering with GSAP drop */}
-                  <div className={tag.animationClass}>
-                    <div className="flex items-center gap-3 bg-[#121214]/90 text-white pl-3 pr-6 py-3 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5),0_4px_12px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform duration-300 border border-white/10 select-none">
-                      <div className={`w-8 h-8 rounded-full ${tag.iconColor} flex items-center justify-center text-white shrink-0 shadow-sm`}>
-                        <Icon icon={tag.icon} className="text-lg" />
+                  {/* Subtle breathe — doesn't fight GSAP because it's on a child */}
+                  <div className={breatheClasses[i]}>
+                    <div
+                      className="flex items-center gap-3 pl-3 pr-7 py-3.5 rounded-full select-none"
+                      style={{
+                        background: tag.bg,
+                        color: tag.textColor,
+                        boxShadow: "0 16px 40px rgba(0,0,0,0.35), 0 4px 12px rgba(0,0,0,0.2)",
+                        border: "1.5px solid rgba(255,255,255,0.18)",
+                      }}
+                    >
+                      {/* Icon bubble — slightly darkened version of pill colour */}
+                      <div
+                        className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+                        style={{ background: "rgba(0,0,0,0.18)" }}
+                      >
+                        <Icon icon={tag.icon} className="text-xl" style={{ color: tag.textColor }} />
                       </div>
-                      <span className="font-bold text-sm text-[#E5E5E7] tracking-tight whitespace-nowrap">
+                      <span className="font-black text-[15px] tracking-tight whitespace-nowrap" style={{ color: tag.textColor }}>
                         {tag.label}
                       </span>
                     </div>
