@@ -27,7 +27,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     desc: "We start with stakeholder interviews, user research and analytics to learn what people actually need — not just what the brief says. No design decision happens blind.",
     subtitle: "Discover & research",
     img: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
-    bg: "bg-[#CFFF5C]",
+    bg: "bg-white",
     textColor: "text-[#111111]"
   },
   {
@@ -47,8 +47,8 @@ const PROCESS_STEPS: ProcessStep[] = [
     desc: "Wireframes evolve into polished, on-brand interfaces — every flow, state and micro-interaction considered down to the pixel.",
     subtitle: "Design & craft",
     img: "https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=1200&q=80",
-    bg: "bg-[#1c1c1e]",
-    textColor: "text-white"
+    bg: "bg-[#FFCA6B]",
+    textColor: "text-[#111111]"
   },
   {
     num: "04",
@@ -103,31 +103,21 @@ export default function ProcessSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="py-20 sm:py-24 md:py-32 relative pointer-events-auto overflow-hidden bg-[#f3f3f1] text-[#111111]">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 relative flex flex-col">
+    <section ref={sectionRef} className="py-32 relative pointer-events-auto overflow-hidden bg-transparent">
+      <div className="max-w-[85rem] mx-auto px-6 md:px-12 relative flex flex-col">
         
-        {/* Header */}
-        <div className="flex items-start justify-between gap-6 mb-10 sm:mb-12">
-          <div className="max-w-[640px] text-left">
-            <p className="text-[11px] tracking-[3px] uppercase font-semibold text-[#7a7f6e] mb-4">
-              Our Process
-            </p>
-            <h2 className="text-[30px] sm:text-[38px] md:text-[44px] leading-[1.05] font-semibold text-[#111111] tracking-tight">
-              Five steps from insight to interface
-            </h2>
-            <p className="mt-4 text-[14px] sm:text-[15px] text-[#5f6670] leading-[1.7] max-w-[540px]">
-              Every product we design moves through the same disciplined path — grounded in research,
-              shaped by iteration, and measured after launch. Explore how each stage builds on the last.
-            </p>
-          </div>
-
+        {/* Section Header — matches other sections */}
+        <div className="flex items-center justify-between mb-20">
+          <h2 className="text-[32px] md:text-[38px] font-bold font-sans text-white text-center tracking-tight flex-1">
+            Process
+          </h2>
           {/* Navigation buttons */}
           <div className="hidden md:flex items-center gap-2 shrink-0">
             <button
               onClick={handlePrev}
               type="button"
               aria-label="Previous step"
-              className="w-10 h-10 rounded-full border border-[#d8d8d3] bg-white text-[#222] flex items-center justify-center hover:bg-[#111] hover:text-white hover:border-[#111] transition-colors cursor-pointer"
+              className="w-10 h-10 rounded-full border border-white/20 text-white flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer"
             >
               <Icon icon="solar:alt-arrow-left-linear" className="text-lg" />
             </button>
@@ -135,7 +125,7 @@ export default function ProcessSection() {
               onClick={handleNext}
               type="button"
               aria-label="Next step"
-              className="w-10 h-10 rounded-full border border-[#d8d8d3] bg-white text-[#222] flex items-center justify-center hover:bg-[#111] hover:text-white hover:border-[#111] transition-colors cursor-pointer"
+              className="w-10 h-10 rounded-full border border-white/20 text-white flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer"
             >
               <Icon icon="solar:alt-arrow-right-linear" className="text-lg" />
             </button>
@@ -202,15 +192,7 @@ export default function ProcessSection() {
                   <p className="mt-3 text-[13px] sm:text-[14px] leading-[1.65] max-w-[400px] opacity-90">
                     {step.desc}
                   </p>
-                  <div>
-                    <button
-                      type="button"
-                      className="mt-4 inline-flex items-center gap-2 text-[11px] tracking-[1.4px] uppercase font-semibold hover:gap-3 transition-all cursor-pointer"
-                    >
-                      See our method
-                      <Icon icon="solar:arrow-right-linear" className="text-sm" />
-                    </button>
-                  </div>
+
 
                   <div className="mt-6 grid grid-cols-1 sm:grid-cols-[1fr_1.1fr] gap-4 flex-1 items-end">
                     <div>
@@ -235,22 +217,8 @@ export default function ProcessSection() {
           })}
         </div>
 
-        {/* Dots Indicator */}
-        <div className="flex items-center justify-center gap-2 mt-7">
-          {PROCESS_STEPS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveIndex(i)}
-              style={{
-                width: activeIndex === i ? "20px" : "10px",
-              }}
-              className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                activeIndex === i ? "bg-[#111111]" : "bg-[#c9c9c2]"
-              }`}
-              aria-label={`Go to step ${i + 1}`}
-            />
-          ))}
-        </div>
+
+
 
       </div>
     </section>

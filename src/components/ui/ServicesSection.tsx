@@ -191,7 +191,7 @@ export default function ServicesSection() {
         </h2>
 
         {/* Scroll-reveal headline */}
-        <h3 className="text-2xl sm:text-[2rem] md:text-[2.2rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em] text-center max-w-4xl mx-auto px-4 z-10 py-6 select-none">
+        <h3 className="text-xl sm:text-[1.6rem] md:text-[1.9rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em] text-center max-w-4xl mx-auto px-4 z-10 py-6 select-none">
           {WORDS.map((w, idx) => (
             <span key={idx} className="srv-word inline-block" style={{ opacity: 0.1 }}>
               {w}
