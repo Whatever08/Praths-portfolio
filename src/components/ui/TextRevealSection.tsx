@@ -8,16 +8,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const textContent = [
-    "I'm", "Prathamesh,", "a", "UX", "designer", "from", "Pune,", 
-    "driven", "by", "curiosity", "about", "how", "technology", "becomes", 
-    "part", "of", "people's", "everyday", "lives.", "I'm", "fascinated", 
-    "by", "how", "a", "simple", "interaction", "can", "save", "time,", 
-    "reduce", "frustration,", "connect", "people,", "and", "shape", "the", 
-    "way", "we", "experience", "the", "world.", "That", "curiosity", "is", 
-    "what", "drew", "me", "to", "UX", "design.", "I", "want", "to", 
-    "understand", "how", "thoughtful", "digital", "experiences", "solve", 
-    "real", "problems", "and", "create", "meaningful", "connections", 
-    "between", "people", "and", "products."
+    "I'M", "PRATHAMESH,", "A", "UX", "DESIGNER", "FROM", "PUNE,", 
+    "DRIVEN", "BY", "CURIOSITY", "ABOUT", "HOW", "TECHNOLOGY", "BECOMES", 
+    "PART", "OF", "PEOPLE'S", "EVERYDAY", "LIVES.", "I'M", "FASCINATED", 
+    "BY", "HOW", "A", "SIMPLE", "INTERACTION", "CAN", "SAVE", "TIME,", 
+    "REDUCE", "FRUSTRATION,", "CONNECT", "PEOPLE,", "AND", "SHAPE", "THE", 
+    "WAY", "WE", "EXPERIENCE", "THE", "WORLD.", "THAT", "CURIOSITY", "IS", 
+    "WHAT", "DREW", "ME", "TO", "UX", "DESIGN.", "I", "WANT", "TO", 
+    "UNDERSTAND", "HOW", "THOUGHTFUL", "DIGITAL", "EXPERIENCES", "SOLVE", 
+    "REAL", "PROBLEMS", "AND", "CREATE", "MEANINGFUL", "CONNECTIONS", 
+    "BETWEEN", "PEOPLE", "AND", "PRODUCTS."
 ];
 
 const highlights: string[] = [];

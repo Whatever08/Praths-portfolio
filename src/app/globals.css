@@ -166,3 +166,17 @@ body {
 .animate-marquee-fast {
   animation: marquee-fast 30s linear infinite;
 }
+
+/* Custom styles for horizontally/vertically expanding Process cards */
+.num-outline {
+  -webkit-text-stroke: 1.5px currentColor;
+  color: transparent;
+}
+
+.step-card-transition {
+  transition: flex-grow 0.65s cubic-bezier(0.19, 1, 0.22, 1), max-height 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.card-face-transition {
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}

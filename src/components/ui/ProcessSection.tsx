@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Icon } from "@iconify/react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -10,186 +10,265 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 interface ProcessStep {
   num: string;
-  pill: string;
+  name: string;
   title: string;
-  bullets: string[];
-  duration: string;
+  desc: string;
+  subtitle: string;
+  img: string;
+  bg: string;
+  textColor: string;
 }
 
 const PROCESS_STEPS: ProcessStep[] = [
   {
     num: "01",
-    pill: "Discovery",
-    title: "Understanding the Problem & Users",
-    bullets: [
-      "Stakeholder Alignment: Understand business goals, project scope, and success metrics.",
-      "User Research: Conduct interviews, surveys, observations, and competitor analysis.",
-      "Pain Point Identification: Uncover user needs, frustrations, and opportunities.",
-      "Define the Challenge: Synthesize findings into clear problem statements and design goals."
-    ],
-    duration: "1–2 Weeks"
+    name: "Discover",
+    title: "Understand the real problem",
+    desc: "We start with stakeholder interviews, user research and analytics to learn what people actually need — not just what the brief says. No design decision happens blind.",
+    subtitle: "Discover & research",
+    img: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
+    bg: "bg-[#CFFF5C]",
+    textColor: "text-[#111111]"
   },
   {
     num: "02",
-    pill: "Define",
-    title: "Transforming Insights into Opportunities",
-    bullets: [
-      "Research Synthesis: Organize findings using affinity mapping and thematic analysis.",
-      "User Personas: Create representative user profiles based on research.",
-      "Journey Mapping: Visualize user experiences, touchpoints, and pain points.",
-      "Prioritize Requirements: Define features and opportunities based on impact and feasibility."
-    ],
-    duration: "3–5 Days"
+    name: "Define",
+    title: "Frame the right challenge",
+    desc: "Insights get distilled into clear problem statements, personas and journey maps that align the whole team around a single, well-defined direction.",
+    subtitle: "Define & frame",
+    img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80",
+    bg: "bg-[#BFE3FF]",
+    textColor: "text-[#111111]"
   },
   {
     num: "03",
-    pill: "Ideate",
-    title: "Exploring Creative Solutions",
-    bullets: [
-      "Brainstorming Workshops: Generate multiple concepts and innovative ideas.",
-      "Information Architecture: Structure content and user flows.",
-      "Wireframing: Sketch low-fidelity screens and interaction patterns.",
-      "Concept Validation: Evaluate ideas against user and business needs."
-    ],
-    duration: "1 Week"
+    name: "Design",
+    title: "Shape the experience",
+    desc: "Wireframes evolve into polished, on-brand interfaces — every flow, state and micro-interaction considered down to the pixel.",
+    subtitle: "Design & craft",
+    img: "https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=1200&q=80",
+    bg: "bg-[#1c1c1e]",
+    textColor: "text-white"
   },
   {
     num: "04",
-    pill: "Design",
-    title: "Crafting Meaningful Experiences",
-    bullets: [
-      "UI Design: Develop visual systems, layouts, typography, and components.",
-      "Interactive Prototyping: Create realistic user flows and interactions.",
-      "Design System Creation: Ensure consistency and scalability across screens.",
-      "Accessibility Review: Design for usability and inclusivity."
-    ],
-    duration: "1–2 Weeks"
+    name: "Prototype",
+    title: "Validate before you build",
+    desc: "Interactive prototypes go in front of real users fast, so friction gets caught and fixed before a single line of production code is written.",
+    subtitle: "Prototype & test",
+    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=1200&q=80",
+    bg: "bg-[#FF9FD1]",
+    textColor: "text-[#111111]"
   },
   {
     num: "05",
-    pill: "Test & Iterate",
-    title: "Validating and Refining the Experience",
-    bullets: [
-      "Usability Testing: Observe users completing tasks and identify issues.",
-      "Feedback Analysis: Gather insights from users and stakeholders.",
-      "Iterative Improvements: Refine designs based on findings.",
-      "Handoff & Documentation: Deliver final assets and implementation guidelines."
-    ],
-    duration: "3–7 Days"
+    name: "Deliver",
+    title: "Launch, measure, refine",
+    desc: "We hand off pixel-perfect specs and dev-ready assets, then track real usage post-launch to keep improving the experience with evidence, not guesswork.",
+    subtitle: "Deliver & iterate",
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    bg: "bg-[#D8CBFF]",
+    textColor: "text-[#111111]"
   }
 ];
 
 export default function ProcessSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + PROCESS_STEPS.length) % PROCESS_STEPS.length);
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % PROCESS_STEPS.length);
+  };
 
   useGSAP(() => {
-    // GSAP ScrollTrigger to reveal each row sequentially on scroll
-    const rows = gsap.utils.toArray(".process-row");
-    rows.forEach((row: any) => {
-      gsap.fromTo(
-        row,
-        {
-          opacity: 0,
-          y: 50,
+    gsap.fromTo(
+      sectionRef.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.0,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
         },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.0,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: row,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    });
-  }, { scope: containerRef });
+      }
+    );
+  }, { scope: sectionRef });
 
   return (
-    <section ref={containerRef} className="py-32 relative pointer-events-auto overflow-hidden bg-transparent">
-      <div className="max-w-[85rem] mx-auto px-6 md:px-12 relative flex flex-col">
+    <section ref={sectionRef} className="py-32 relative pointer-events-auto overflow-hidden bg-transparent">
+      <div className="max-w-[85rem] mx-auto px-6 md:px-12 relative flex flex-col items-center">
         
-        {/* Section Header */}
-        <h2 className="text-[32px] md:text-[38px] font-bold font-sans text-white mb-20 text-center tracking-tight">
-          Process
-        </h2>
-
-        {/* Process List Container */}
-        <div className="flex flex-col border-b border-white/5">
-          {PROCESS_STEPS.map((step, index) => (
-            <div
-              key={step.num}
-              className="process-row grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start py-16 md:py-24 border-t border-white/5 group relative transition-all duration-500 hover:bg-white/[0.015] px-6 md:px-8 -mx-6 md:-mx-8 rounded-xl"
-            >
-              
-              {/* Left Column: Pill Label */}
-              <div className="md:col-span-3 flex items-center md:pt-2">
-                <div className="border border-white/10 px-5 py-2 rounded-full text-xs md:text-sm font-semibold text-white/50 group-hover:text-white/90 group-hover:border-white/30 transition-all duration-300 uppercase tracking-widest select-none bg-black/40">
-                  {step.pill}
-                </div>
-              </div>
-
-              {/* Center Column: Number, Title, Bullets */}
-              <div className="md:col-span-7 flex flex-col gap-8 relative">
-                {/* Number & Title */}
-                <div className="flex items-center gap-4">
-                  <span className="text-2xl md:text-3xl lg:text-[2.2rem] font-bold tracking-tight shrink-0 select-none">
-                    <span className="text-white/40 font-light mr-1">/</span>
-                    <span className="text-white">{step.num}</span>
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-semibold text-white/90 group-hover:text-white transition-colors duration-300 tracking-tight leading-tight">
-                    {step.title}
-                  </h3>
-                </div>
-
-                {/* Bullet Points */}
-                <ul className="flex flex-col gap-4 pl-9 relative">
-                  {step.bullets.map((bullet, bIdx) => {
-                    const colonIndex = bullet.indexOf(":");
-                    const boldText = colonIndex > -1 ? bullet.substring(0, colonIndex) : bullet;
-                    const normalText = colonIndex > -1 ? bullet.substring(colonIndex + 1) : "";
-
-                    return (
-                      <li
-                        key={bIdx}
-                        className="text-white/40 group-hover:text-white/70 text-sm sm:text-base leading-relaxed group/bullet flex items-start gap-3 transition-colors duration-300"
-                      >
-                        <span className="text-white/40 group-hover:text-white text-[11px] select-none shrink-0 mt-1.5 transition-transform duration-500 ease-out group-hover/bullet:rotate-45 group-hover/bullet:scale-125">
-                          ✳
-                        </span>
-                        <span>
-                          {colonIndex > -1 ? (
-                            <>
-                              <strong className="text-white/60 group-hover:text-white/90 font-medium transition-colors duration-300">
-                                {boldText}:
-                              </strong>
-                              {normalText}
-                            </>
-                          ) : (
-                            bullet
-                          )}
-                        </span>
-                      </li>
-                    );
-                  })}
-                  
-                  {/* Decorative glowing white dot on the right edge of bullet area */}
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 ease-out blur-[1px] shadow-[0_0_12px_#ffffff] hidden md:block" />
-                </ul>
-              </div>
-
-              {/* Right Column: Clock & Duration */}
-              <div className="md:col-span-2 flex justify-start md:justify-end items-center text-white/30 group-hover:text-white/60 text-sm md:text-base font-medium transition-colors duration-300 tracking-wider md:pt-2">
-                <div className="flex items-center gap-2.5">
-                  <Icon icon="solar:clock-circle-linear" className="text-lg text-white/40 group-hover:text-white/70" />
-                  <span>/{step.duration}/</span>
-                </div>
-              </div>
-
+        {/* Light section container */}
+        <div className="w-full max-w-[1320px] bg-[#f3f3f1] rounded-[28px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6)] py-10 sm:py-14 md:py-16 px-4 sm:px-8 md:px-10 text-[#111111]">
+          
+          {/* Header */}
+          <div className="flex items-start justify-between gap-6 mb-10 sm:mb-12">
+            <div className="max-w-[640px] text-left">
+              <p className="text-[11px] tracking-[3px] uppercase font-semibold text-[#7a7f6e] mb-4">
+                Our Process
+              </p>
+              <h2 className="text-[30px] sm:text-[38px] md:text-[44px] leading-[1.05] font-semibold text-[#111111] tracking-tight">
+                Five steps from insight to interface
+              </h2>
+              <p className="mt-4 text-[14px] sm:text-[15px] text-[#5f6670] leading-[1.7] max-w-[540px]">
+                Every product we design moves through the same disciplined path — grounded in research,
+                shaped by iteration, and measured after launch. Explore how each stage builds on the last.
+              </p>
             </div>
-          ))}
+
+            {/* Navigation buttons */}
+            <div className="hidden md:flex items-center gap-2 shrink-0">
+              <button
+                onClick={handlePrev}
+                type="button"
+                aria-label="Previous step"
+                className="w-10 h-10 rounded-full border border-[#d8d8d3] bg-white text-[#222] flex items-center justify-center hover:bg-[#111] hover:text-white hover:border-[#111] transition-colors cursor-pointer"
+              >
+                <Icon icon="solar:alt-arrow-left-linear" className="text-lg" />
+              </button>
+              <button
+                onClick={handleNext}
+                type="button"
+                aria-label="Next step"
+                className="w-10 h-10 rounded-full border border-[#d8d8d3] bg-white text-[#222] flex items-center justify-center hover:bg-[#111] hover:text-white hover:border-[#111] transition-colors cursor-pointer"
+              >
+                <Icon icon="solar:alt-arrow-right-linear" className="text-lg" />
+              </button>
+            </div>
+          </div>
+
+          {/* Steps Row */}
+          <div className="flex flex-col md:flex-row items-stretch gap-2.5 h-auto md:h-[540px]">
+            {PROCESS_STEPS.map((step, i) => {
+              const isOpen = activeIndex === i;
+              
+              // Mobile layout toggle: isOpen toggles relative/absolute classes to let the container size naturally
+              const openViewClass = isOpen 
+                ? "relative md:absolute inset-0 opacity-100 pointer-events-auto" 
+                : "absolute inset-0 opacity-0 pointer-events-none";
+
+              const closedViewClass = isOpen
+                ? "absolute inset-0 opacity-0 pointer-events-none"
+                : "relative md:absolute inset-0 opacity-100 pointer-events-auto";
+
+              return (
+                <div
+                  key={step.num}
+                  onClick={() => setActiveIndex(i)}
+                  onMouseEnter={() => {
+                    if (typeof window !== "undefined" && window.matchMedia("(hover: hover) and (min-width: 900px)").matches) {
+                      setActiveIndex(i);
+                    }
+                  }}
+                  style={{
+                    flexGrow: isOpen ? 6.2 : 1,
+                  }}
+                  className={`group relative rounded-lg overflow-hidden border border-black/5 cursor-pointer step-card-transition w-full md:w-auto ${
+                    isOpen ? "max-h-[1200px] h-auto md:h-full" : "max-h-[128px] h-[128px] md:h-full md:max-h-none"
+                  } ${step.bg} ${step.textColor}`}
+                >
+                  {/* Closed View */}
+                  <div
+                    className={`p-5 sm:p-6 flex flex-col justify-between card-face-transition w-full h-[128px] md:h-full ${closedViewClass}`}
+                  >
+                    <p className="text-[11px] tracking-[1.5px] uppercase font-semibold opacity-70">
+                      Step {step.num}
+                    </p>
+                    <div className="text-left">
+                      <p className="num-outline text-[34px] sm:text-[38px] font-bold leading-none select-none">
+                        {step.num}
+                      </p>
+                      <p className="mt-2 text-[11px] tracking-[1.2px] uppercase font-semibold max-w-[130px] whitespace-nowrap">
+                        {step.name}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Open View */}
+                  <div
+                    className={`p-6 sm:p-8 md:p-10 flex flex-col card-face-transition text-left w-full h-auto md:h-full ${openViewClass}`}
+                  >
+                    <p className="text-[11px] tracking-[1.5px] uppercase font-semibold opacity-70">
+                      Step {step.num} — {step.name}
+                    </p>
+                    <h3 className="mt-2 text-[24px] sm:text-[28px] md:text-[32px] leading-[1.08] font-semibold max-w-[420px] tracking-tight">
+                      {step.title}
+                    </h3>
+                    <p className="mt-3 text-[13px] sm:text-[14px] leading-[1.65] max-w-[400px] opacity-90">
+                      {step.desc}
+                    </p>
+                    <div>
+                      <button
+                        type="button"
+                        className="mt-4 inline-flex items-center gap-2 text-[11px] tracking-[1.4px] uppercase font-semibold hover:gap-3 transition-all cursor-pointer"
+                      >
+                        See our method
+                        <Icon icon="solar:arrow-right-linear" className="text-sm" />
+                      </button>
+                    </div>
+
+                    <div className="mt-6 grid grid-cols-1 sm:grid-cols-[1fr_1.1fr] gap-4 flex-1 items-end">
+                      <div>
+                        <p className="text-[54px] sm:text-[64px] md:text-[76px] font-bold leading-none select-none">
+                          {step.num}
+                        </p>
+                        <p className="mt-2 text-[11px] tracking-[1.2px] uppercase font-semibold">
+                          {step.subtitle}
+                        </p>
+                      </div>
+                      <div className="relative w-full h-[170px] sm:h-[200px] md:h-[240px] rounded-md overflow-hidden border border-black/10">
+                        <img
+                          src={step.img}
+                          alt={step.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="flex items-center justify-center gap-2 mt-7">
+            {PROCESS_STEPS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  width: activeIndex === i ? "20px" : "10px",
+                }}
+                className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  activeIndex === i ? "bg-[#111111]" : "bg-[#c9c9c2]"
+                }`}
+                aria-label={`Go to step ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Bottom CTA Bar */}
+          <div className="mt-6 bg-[#111111] text-white rounded-full px-5 sm:px-8 py-4 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
+            <p className="text-[13px] sm:text-[14px] leading-[1.4]">
+              Curious how this process fits your product? Let's map it out together.
+            </p>
+            <a
+              href="mailto:tprathamesh8@gmail.com"
+              className="shrink-0 inline-flex items-center gap-2 bg-[#CFFF5C] text-[#111] text-[11px] tracking-[1.2px] uppercase font-semibold px-4 py-2 rounded-full hover:bg-white transition-colors cursor-pointer"
+            >
+              Book a call
+              <Icon icon="solar:arrow-right-linear" className="text-sm font-bold" />
+            </a>
+          </div>
+
         </div>
 
       </div>
