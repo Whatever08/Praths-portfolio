@@ -27,10 +27,29 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Prathamesh's Portfolio",
+  title: "Prathamesh Tipnis — Product Designer",
   description: "A seamless fusion of fluid dynamics and immersive spatial depth.",
   icons: {
     icon: "/logo.png",
+  },
+  openGraph: {
+    title: "Prathamesh Tipnis — Product Designer",
+    description: "A seamless fusion of fluid dynamics and immersive spatial depth.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Prathamesh Tipnis — Product Designer • UX/UI",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Prathamesh Tipnis — Product Designer",
+    description: "A seamless fusion of fluid dynamics and immersive spatial depth.",
+    images: ["/og-image.png"],
   },
 };
 
