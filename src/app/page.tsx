@@ -297,9 +297,9 @@ export default function Home() {
               {/* Edit: top-[62%] = mobile position | md:bottom-[calc(10rem+0vh)] = desktop position */}
               <div className="absolute top-[62%] md:top-auto md:bottom-[calc(10rem+0vh)] lg:bottom-[calc(11rem+0vh)] left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 w-full max-w-[90%] md:max-w-none text-center md:text-left z-20 pointer-events-auto px-6 md:px-0">
                 <h2 className="text-sm md:text-xl lg:text-3xl font-medium text-white tracking-tight leading-snug scale-[1.13] md:origin-left origin-center w-full md:whitespace-nowrap">
-                  I'm a Designer who approaches design<br />
-                  with curiosity and always experimenting.<br />
-                  Exploring the chemistry between people and products.
+                  I'm a Designer who approaches design with curiosity<br />
+                  and always experimenting and Exploring the<br />
+                  chemistry between people and products.
                 </h2>
               </div>
 
