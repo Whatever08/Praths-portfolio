@@ -229,11 +229,11 @@ export const Navbar = ({
             <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-2">Navigation</div>
 
             <Link
-              href="/#recent-works"
+              href="/#projects"
               onClick={() => setIsMenuOpen(false)}
               className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
             >
-              Recent Works
+              Projects
             </Link>
 
             <Link

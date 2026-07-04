@@ -1,271 +1,198 @@
 "use client";
 
-import { useRef } from "react";
-import gsap from "gsap";
+import React, { useRef } from "react";
+import { Icon } from "@iconify/react";
+import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const processSteps = [
-    { num: '01', title: 'DISCOVERY', desc: 'Uncovering the core values to tell a story that resonates.', image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800' },
-    { num: '02', title: 'DEFINE', desc: 'Defining the roadmap. We analyze the landscape to position your brand effectively.', image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800' },
-    { num: '03', title: 'CRAFT', desc: 'Pixel-perfect design merged with fluid animations.', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800' },
-    { num: '04', title: 'TEST', desc: 'Rigorous testing to ensure absolute robustness before going live.', image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop' },
-    { num: '05', title: 'DEVELOP', desc: 'Translating design into robust code. Modern frameworks for silky smooth performance.', image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800' }
+interface ProcessStep {
+  num: string;
+  pill: string;
+  title: string;
+  bullets: string[];
+  duration: string;
+}
+
+const PROCESS_STEPS: ProcessStep[] = [
+  {
+    num: "01",
+    pill: "Discovery",
+    title: "Understanding the Problem & Users",
+    bullets: [
+      "Stakeholder Alignment: Understand business goals, project scope, and success metrics.",
+      "User Research: Conduct interviews, surveys, observations, and competitor analysis.",
+      "Pain Point Identification: Uncover user needs, frustrations, and opportunities.",
+      "Define the Challenge: Synthesize findings into clear problem statements and design goals."
+    ],
+    duration: "1–2 Weeks"
+  },
+  {
+    num: "02",
+    pill: "Define",
+    title: "Transforming Insights into Opportunities",
+    bullets: [
+      "Research Synthesis: Organize findings using affinity mapping and thematic analysis.",
+      "User Personas: Create representative user profiles based on research.",
+      "Journey Mapping: Visualize user experiences, touchpoints, and pain points.",
+      "Prioritize Requirements: Define features and opportunities based on impact and feasibility."
+    ],
+    duration: "3–5 Days"
+  },
+  {
+    num: "03",
+    pill: "Ideate",
+    title: "Exploring Creative Solutions",
+    bullets: [
+      "Brainstorming Workshops: Generate multiple concepts and innovative ideas.",
+      "Information Architecture: Structure content and user flows.",
+      "Wireframing: Sketch low-fidelity screens and interaction patterns.",
+      "Concept Validation: Evaluate ideas against user and business needs."
+    ],
+    duration: "1 Week"
+  },
+  {
+    num: "04",
+    pill: "Design",
+    title: "Crafting Meaningful Experiences",
+    bullets: [
+      "UI Design: Develop visual systems, layouts, typography, and components.",
+      "Interactive Prototyping: Create realistic user flows and interactions.",
+      "Design System Creation: Ensure consistency and scalability across screens.",
+      "Accessibility Review: Design for usability and inclusivity."
+    ],
+    duration: "1–2 Weeks"
+  },
+  {
+    num: "05",
+    pill: "Test & Iterate",
+    title: "Validating and Refining the Experience",
+    bullets: [
+      "Usability Testing: Observe users completing tasks and identify issues.",
+      "Feedback Analysis: Gather insights from users and stakeholders.",
+      "Iterative Improvements: Refine designs based on findings.",
+      "Handoff & Documentation: Deliver final assets and implementation guidelines."
+    ],
+    duration: "3–7 Days"
+  }
 ];
 
-export function ProcessSection() {
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const trackRef = useRef<HTMLDivElement>(null);
-    const progressFillRef = useRef<HTMLDivElement>(null);
-    const dotsRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const innerDotsRefs = useRef<(HTMLDivElement | null)[]>([]);
+export default function ProcessSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    useGSAP(() => {
-        const track = trackRef.current;
-        const section = sectionRef.current;
-        if (!track || !section) return;
+  useGSAP(() => {
+    // GSAP ScrollTrigger to reveal each row sequentially on scroll
+    const rows = gsap.utils.toArray(".process-row");
+    rows.forEach((row: any) => {
+      gsap.fromTo(
+        row,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.0,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: row,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    });
+  }, { scope: containerRef });
 
-        const mm = gsap.matchMedia();
+  return (
+    <section ref={containerRef} className="py-32 relative pointer-events-auto overflow-hidden bg-transparent">
+      <div className="max-w-[85rem] mx-auto px-6 md:px-12 relative flex flex-col">
+        
+        {/* Section Header */}
+        <h2 className="text-[32px] md:text-[38px] font-bold font-sans text-white mb-20 text-center tracking-tight">
+          Process
+        </h2>
 
-        mm.add({
-            isMobile: "(max-width: 767px)",
-            isDesktop: "(min-width: 768px)"
-        }, (context) => {
-            const { isMobile } = context.conditions as any;
-
-            // Precise distance calculations
-            const totalHorizontalScroll = track.scrollWidth;
-            const totalWidth = track.scrollWidth - window.innerWidth;
-            const fadeHold = window.innerHeight * 0.8;
-
-            // Slower scroll for mobile as requested
-            // Much longer scroll for mobile to ensure 5th card finishes
-            const scrollEnd = isMobile ? `+=${totalHorizontalScroll * 4 + fadeHold}` : `+=${totalHorizontalScroll + fadeHold}`;
-
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: section,
-                    start: "top top",
-                    end: () => scrollEnd,
-                    pin: true,
-                    scrub: isMobile ? 1 : 0.5,
-                    anticipatePin: 1,
-                    onUpdate: (self) => {
-                        const cardProgress = Math.min(1, (self.scroll() - self.start) / (isMobile ? totalHorizontalScroll * 4 : totalHorizontalScroll));
-                        if (progressFillRef.current) {
-                            progressFillRef.current.style.width = `${Math.min(100, cardProgress * 100)}%`;
-                        }
-
-                        const velocity = self.getVelocity() / 300;
-                        const skew = gsap.utils.clamp(-12, 12, velocity);
-
-                        const total = processSteps.length;
-                        dotsRefs.current.forEach((outer, i) => {
-                            const inner = innerDotsRefs.current[i];
-                            if (!outer || !inner) return;
-                            const threshold = i / (total - 1);
-                            const active = cardProgress >= threshold - 0.02; // Tightened threshold
-
-                            inner.style.backgroundColor = active ? "#ff3b30" : "transparent";
-                            inner.style.borderColor = active ? "#ff3b30" : "rgba(255,255,255,0.25)";
-                            outer.style.transform = active ? "scale(1.2)" : "scale(1)";
-                            outer.style.borderColor = active ? "rgba(255,59,48,0.3)" : "rgba(255,255,255,0.08)";
-                        });
-
-                        // Dynamic skew only for desktop
-                        if (!isMobile) {
-                            const innerCards = track.querySelectorAll(".process-card-inner");
-                            innerCards.forEach((card) => {
-                                gsap.to(card, { skewX: skew, duration: 0.3, ease: "power2.out", overwrite: "auto" });
-                            });
-                        }
-                    }
-                }
-            });
-
-            tl.to(track, {
-                x: -totalWidth,
-                ease: "none",
-                duration: 1
-            });
-
-            tl.to(section, {
-                opacity: 0,
-                scale: 0.95,
-                y: -50,
-                duration: 0.2,
-                ease: "power2.inOut"
-            });
-
-            const cards = track.querySelectorAll(".process-card-inner");
-            cards.forEach((el) => {
-                if (isMobile) {
-                    // FLAT MOBILE ANIMATION
-                    gsap.set(el, { rotateY: 0, z: 0, skewX: 0 });
-                    gsap.fromTo(el,
-                        { opacity: 1, x: 100 },
-                        {
-                            opacity: 1, x: 0,
-                            ease: "power2.out",
-                            scrollTrigger: {
-                                trigger: el,
-                                containerAnimation: tl,
-                                start: "left 100%",
-                                end: "left 10%",
-                                scrub: true,
-                            }
-                        }
-                    );
-
-                    // EXIT for mobile
-                    gsap.to(el, {
-                        opacity: 1, x: -100,
-                        ease: "power2.in",
-                        scrollTrigger: {
-                            trigger: el,
-                            containerAnimation: tl,
-                            start: "right 90%",
-                            end: "right 0%",
-                            scrub: true,
-                        }
-                    });
-                } else {
-                    // 3D DESKTOP ANIMATION
-                    gsap.set(el, { transformPerspective: 2000 });
-                    gsap.fromTo(el,
-                        { rotateY: 30, z: -250, opacity: 0, scale: 0.85, x: 100 },
-                        {
-                            rotateY: 0, z: 0, opacity: 1, scale: 1, x: 0,
-                            ease: "none",
-                            scrollTrigger: {
-                                trigger: el,
-                                containerAnimation: tl,
-                                start: "left 100%",
-                                end: "left 20%",
-                                scrub: true,
-                            }
-                        }
-                    );
-
-                    gsap.to(el, {
-                        rotateY: -30, z: -250, opacity: 0, scale: 0.85, x: -100,
-                        ease: "none",
-                        immediateRender: false,
-                        scrollTrigger: {
-                            trigger: el,
-                            containerAnimation: tl,
-                            start: "right 80%",
-                            end: "right -20%",
-                            scrub: true,
-                        }
-                    });
-                }
-            });
-        });
-
-        return () => mm.revert();
-    }, { scope: sectionRef });
-
-    return (
-        <section ref={sectionRef} className="relative bg-black/90 z-30 pointer-events-auto overflow-hidden">
-
-            {/* ── Top: label + horizontal progress tracker ── */}
-            <div className="absolute top-0 left-0 right-0 z-30 pt-[calc(5rem+5vh)] pb-0 flex flex-col items-center">
-                <p className="text-[30px] font-semibold font-sans text-white mb-8 text-center">
-                    The Process
-                </p>
-
-                {/* Progress row — width constrained and centered */}
-                <div className="relative w-[70vw] max-w-[700px]" style={{ height: '52px' }}>
-
-                    {/* line at center of 22px dot: 14px label + 4px gap + 11px = 29px */}
-                    <div className="absolute left-0 right-0 bg-white/[0.07]" style={{ top: '29px', height: '1px' }} />
-                    <div
-                        ref={progressFillRef}
-                        className="absolute left-0 bg-[#ff3b30] origin-left"
-                        style={{ top: '29px', height: '1px', width: '0%' }}
-                    />
-
-                    {/* Dots + labels */}
-                    {processSteps.map((step, i) => (
-                        <div
-                            key={i}
-                            className="absolute flex flex-col items-center -translate-x-1/2"
-                            style={{ left: `${(i / (processSteps.length - 1)) * 100}%`, top: 0 }}
-                        >
-                            {/* Step label */}
-                            <span className="text-[9px] uppercase tracking-[0.15em] text-white/30 font-semibold" style={{ lineHeight: '14px', marginBottom: '4px' }}>
-                                {step.num}
-                            </span>
-
-                            {/* Outer ring 22px */}
-                            <div
-                                ref={el => { dotsRefs.current[i] = el; }}
-                                className="w-[22px] h-[22px] rounded-full border border-white/[0.15] bg-[#080808] flex items-center justify-center transition-all duration-300"
-                            >
-                                {/* Inner dot 8px */}
-                                <div
-                                    ref={el => { innerDotsRefs.current[i] = el; }}
-                                    className="w-2 h-2 rounded-full border border-white/25 bg-transparent transition-all duration-300"
-                                />
-                            </div>
-                        </div>
-                    ))}
+        {/* Process List Container */}
+        <div className="flex flex-col border-b border-white/5">
+          {PROCESS_STEPS.map((step, index) => (
+            <div
+              key={step.num}
+              className="process-row grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start py-16 md:py-24 border-t border-white/5 group relative transition-all duration-500 hover:bg-white/[0.015] px-6 md:px-8 -mx-6 md:-mx-8 rounded-xl"
+            >
+              
+              {/* Left Column: Pill Label */}
+              <div className="md:col-span-3 flex items-center md:pt-2">
+                <div className="border border-white/10 px-5 py-2 rounded-full text-xs md:text-sm font-semibold text-white/50 group-hover:text-white/90 group-hover:border-white/30 transition-all duration-300 uppercase tracking-widest select-none bg-black/40">
+                  {step.pill}
                 </div>
-            </div>
+              </div>
 
-            {/* ── Horizontally scrolling cards ── */}
-            <div className="h-screen overflow-hidden flex">
-                <div
-                    ref={trackRef}
-                    className="flex h-full will-change-transform"
-                    style={{ width: "max-content" }}
-                >
-                    {processSteps.map((step) => (
-                        <div
-                            key={step.num}
-                            className="relative w-screen h-screen shrink-0 flex items-center justify-center"
-                        >
-                            <div
-                                className="process-card-inner w-full transform translate-y-[13vh] flex flex-col lg:flex-row items-center lg:items-end gap-12 lg:gap-24"
-                                style={{
-                                    paddingLeft: 'clamp(10vw, 50% - 350px, 50% - 350px)',
-                                    paddingRight: '10vw'
-                                }}
-                            >
-                                <div className="flex-1">
-                                    {/* Ghost number */}
-                                    <span className="block text-[10rem] md:text-[14rem] lg:text-[17rem] leading-none font-black text-white select-none -mb-8 md:-mb-14">
-                                        {step.num}
-                                    </span>
-                                    {/* Red accent */}
-                                    <div className="w-12 h-[2px] bg-[#ff3b30] mb-7" />
-                                    <h3 className="text-[2.8rem] md:text-[4.5rem] lg:text-[5.5rem] font-medium tracking-tight text-white uppercase leading-[0.95] mb-5">
-                                        {step.title}
-                                    </h3>
-                                    <p className="text-white text-base md:text-lg leading-relaxed max-w-[28rem]">
-                                        {step.desc}
-                                    </p>
-                                </div>
-
-                                {/* Square Image Placeholder */}
-                                <div className="relative shrink-0 group">
-                                    <div className="absolute inset-0 bg-red-500/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                                    <div className="w-64 h-64 md:w-80 md:h-80 lg:w-[400px] lg:h-[400px] bg-white/10 border border-white/20 rounded-2xl overflow-hidden backdrop-blur-sm relative z-10 transition-transform duration-700 group-hover:scale-[1.02]">
-                                        <img
-                                            src={step.image}
-                                            alt={step.title}
-                                            className="w-full h-full object-cover opacity-100 transition-opacity duration-700"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+              {/* Center Column: Number, Title, Bullets */}
+              <div className="md:col-span-7 flex flex-col gap-8 relative">
+                {/* Number & Title */}
+                <div className="flex items-center gap-4">
+                  <span className="text-2xl md:text-3xl lg:text-[2.2rem] font-bold tracking-tight shrink-0 select-none">
+                    <span className="text-white/40 font-light mr-1">/</span>
+                    <span className="text-white">{step.num}</span>
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-semibold text-white/90 group-hover:text-white transition-colors duration-300 tracking-tight leading-tight">
+                    {step.title}
+                  </h3>
                 </div>
+
+                {/* Bullet Points */}
+                <ul className="flex flex-col gap-4 pl-9 relative">
+                  {step.bullets.map((bullet, bIdx) => {
+                    const colonIndex = bullet.indexOf(":");
+                    const boldText = colonIndex > -1 ? bullet.substring(0, colonIndex) : bullet;
+                    const normalText = colonIndex > -1 ? bullet.substring(colonIndex + 1) : "";
+
+                    return (
+                      <li
+                        key={bIdx}
+                        className="text-white/40 group-hover:text-white/70 text-sm sm:text-base leading-relaxed group/bullet flex items-start gap-3 transition-colors duration-300"
+                      >
+                        <span className="text-white/40 group-hover:text-white text-[11px] select-none shrink-0 mt-1.5 transition-transform duration-500 ease-out group-hover/bullet:rotate-45 group-hover/bullet:scale-125">
+                          ✳
+                        </span>
+                        <span>
+                          {colonIndex > -1 ? (
+                            <>
+                              <strong className="text-white/60 group-hover:text-white/90 font-medium transition-colors duration-300">
+                                {boldText}:
+                              </strong>
+                              {normalText}
+                            </>
+                          ) : (
+                            bullet
+                          )}
+                        </span>
+                      </li>
+                    );
+                  })}
+                  
+                  {/* Decorative glowing white dot on the right edge of bullet area */}
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 ease-out blur-[1px] shadow-[0_0_12px_#ffffff] hidden md:block" />
+                </ul>
+              </div>
+
+              {/* Right Column: Clock & Duration */}
+              <div className="md:col-span-2 flex justify-start md:justify-end items-center text-white/30 group-hover:text-white/60 text-sm md:text-base font-medium transition-colors duration-300 tracking-wider md:pt-2">
+                <div className="flex items-center gap-2.5">
+                  <Icon icon="solar:clock-circle-linear" className="text-lg text-white/40 group-hover:text-white/70" />
+                  <span>/{step.duration}/</span>
+                </div>
+              </div>
+
             </div>
-        </section>
-    );
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
 }

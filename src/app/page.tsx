@@ -6,6 +6,7 @@ import { TextRevealSection } from "@/components/ui/TextRevealSection";
 import StackSection from "@/components/ui/StackSection";
 import { CaseStudiesSection } from "@/components/ui/CaseStudiesSection";
 import ServicesSection from "@/components/ui/ServicesSection";
+import ProcessSection from "@/components/ui/ProcessSection";
 import { ReactLenis } from "lenis/react";
 import { Icon } from "@iconify/react";
 import { useEffect, useRef } from "react";
@@ -68,8 +69,8 @@ export default function Home() {
     if (element) {
       let targetElement = element;
 
-      // If we are centering the recent works, center the gallery container specifically
-      if (targetId === "recent-works") {
+      // If we are centering the projects section, center the gallery container specifically
+      if (targetId === "projects") {
         const galleryContainer = document.getElementById("gallery-container");
         if (galleryContainer) {
           targetElement = galleryContainer;
@@ -320,14 +321,14 @@ export default function Home() {
             <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-2">Navigation</div>
 
             <a
-              href="#recent-works"
+              href="#projects"
               onClick={(e) => {
                 setIsMobileMenuOpen(false);
-                handleNavClick(e, "recent-works");
+                handleNavClick(e, "projects");
               }}
               className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
             >
-              Recent Works
+              Projects
             </a>
 
             <button
@@ -363,6 +364,17 @@ export default function Home() {
               className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
             >
               What I do
+            </a>
+
+            <a
+              href="#process"
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleNavClick(e, "process");
+              }}
+              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
+            >
+              Process
             </a>
 
             <a
@@ -430,7 +442,7 @@ export default function Home() {
             {/* Center: Links & Logo (Desktop) — FULLY RESTORED */}
             <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-white pointer-events-auto w-2/4">
               <div className="flex-1 flex justify-end items-center nav-left-items">
-                <a onClick={(e) => handleNavClick(e, "recent-works")} href="/#recent-works" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Recent Works</a>
+                <a onClick={(e) => handleNavClick(e, "projects")} href="/#projects" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Projects</a>
                 <a onClick={(e) => handleNavClick(e, "about")} href="/#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
                 <a onClick={(e) => handleNavClick(e, "services")} href="/#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">What I do</a>
               </div>
@@ -445,6 +457,7 @@ export default function Home() {
               </Link>
 
               <div className="flex-1 flex justify-start items-center nav-right-items">
+                <a onClick={(e) => handleNavClick(e, "process")} href="/#process" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Process</a>
                 <a onClick={(e) => handleNavClick(e, "case-studies")} href="/#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
                 <a onClick={(e) => handleNavClick(e, "contact")} href="/#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Contact</a>
               </div>
@@ -472,7 +485,7 @@ export default function Home() {
               {/* Edit: top-[30%] = mobile vertical position | md:top-40 = desktop position (+8% down) */}
               <div className="absolute top-[30%] md:top-40 lg:top-48 left-0 right-0 flex justify-center md:justify-end px-6 md:px-12 z-20 pointer-events-auto scale-[1.10] origin-top md:origin-top-right">
                 <div className="text-center md:text-right lg:pr-10">
-                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide">Designer. Vibe Coder.</p>
+                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide">Designer. Problem Solver. Vibe coder</p>
                   <p className="text-base md:text-2xl text-white/80 italic font-serif mt-1">Creative Thinker</p>
                 </div>
               </div>
@@ -499,14 +512,14 @@ export default function Home() {
               {/* Edit: top-[62%] = mobile position | md:bottom-[calc(10rem+0vh)] = desktop position */}
               <div className="absolute top-[62%] md:top-auto md:bottom-[calc(10rem+0vh)] lg:bottom-[calc(11rem+0vh)] left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 w-full max-w-[90%] md:max-w-md lg:max-w-xl text-center md:text-left z-20 pointer-events-auto px-6 md:px-0">
                 <h2 className="text-sm md:text-xl lg:text-3xl font-medium text-white tracking-tight leading-snug scale-[1.13] md:origin-left origin-center w-full">
-                  cookin&apos; up fresh interactions while still on the hunt for that creative spark.
+                  UX/UI Designer crafting intuitive digital experiences through research, strategy, and thoughtful interaction design.
                 </h2>
               </div>
 
               {/* ── SCROLL TO EXPLORE INDICATOR ── */}
               {/* Edit: top-[72%] = mobile position | md:bottom-[calc(3rem+2vh)] = desktop position */}
               <div
-                onClick={(e) => handleNavClick(e, "recent-works")}
+                onClick={(e) => handleNavClick(e, "projects")}
                 className="absolute top-[72%] md:top-auto md:bottom-[calc(3rem+2vh)] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center gap-2.5 z-20 pointer-events-auto scale-[1.08] origin-center cursor-pointer group transition-all duration-300"
               >
                 <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/50 group-hover:text-white transition-colors duration-300">
@@ -542,9 +555,9 @@ export default function Home() {
           </section>
 
           {/* Circular Gallery Section */}
-          <section id="recent-works" ref={gallerySectionRef} className="relative min-h-screen py-24 bg-transparent overflow-hidden z-20 pointer-events-auto flex flex-col items-center justify-center">
+          <section id="projects" ref={gallerySectionRef} className="relative min-h-screen py-24 bg-transparent overflow-hidden z-20 pointer-events-auto flex flex-col items-center justify-center">
             <div className="max-w-[85rem] mx-auto px-6 mb-4 flex flex-col items-center justify-center text-center drop-shadow-lg">
-              <h2 className="text-[30px] font-semibold tracking-tight text-white">Recent Works</h2>
+              <h2 className="text-[30px] font-semibold tracking-tight text-white">Projects</h2>
             </div>
 
             <div className="w-full relative px-6 md:px-0 flex justify-center">
@@ -582,10 +595,11 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Text Reveal About Section + Services Section — unified background */}
+          {/* Text Reveal About Section + Services Section + Process Section — unified background */}
           <div className="bg-black/90 relative z-30">
             <div id="about"><TextRevealSection /></div>
             <div id="services"><ServicesSection /></div>
+            <div id="process"><ProcessSection /></div>
           </div>
 
           {/* Case Studies Section */}
@@ -596,6 +610,8 @@ export default function Home() {
 
           {/* Contact / Footer Section */}
           <div id="contact"><DynamicFooter /></div>
+
+
 
         </LiquidBackground>
       </main>

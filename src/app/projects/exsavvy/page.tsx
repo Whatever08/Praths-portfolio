@@ -152,10 +152,10 @@ export default function ExsavvyPage() {
                             <main ref={mainContentRef}>
                                 <div data-theme="dark">
                                     <HeroScrollVideo
-                                        title={<>Exsavvy: Intelligent Data<br />Visualization for Modern<br />Enterprises</>}
+                                        title={<>Exsavvy: Personal Finance<br />Simplified for Young Adults</>}
                                         titleClassName="text-[26px] md:text-[45px] lg:text-[58px] font-medium leading-[1.0] tracking-[-0.02em] text-white text-left w-full max-w-[840px] mx-auto"
-                                        description="Exsavvy is a data analytics platform that helps businesses turn complex raw data into actionable insights through beautifully crafted, interactive dashboards."
-                                        scopeOfWork={["Dashboard Design", "Data Viz", "SaaS Strategy", "Enterprise UX"]}
+                                        description="A platform to simplify personal finance for young adults with the help of planning, budgeting, and money management while promoting financial literacy."
+                                        scopeOfWork={["Product Design", "Mobile App UX", "Fintech Strategy", "Financial Literacy"]}
                                         media={projectImages[0]}
                                         mediaType="image"
                                         scrollHeightVh={140}
@@ -163,10 +163,10 @@ export default function ExsavvyPage() {
                                         targetSize="fullscreen"
                                         overlay={{
                                             caption: "/01 BRIEF",
-                                            heading: "Seeing the Unseen",
+                                            heading: "Building Financial Confidence",
                                             paragraphs: [
-                                                "Modern companies are drowning in data but starving for insights. Exsavvy's mission was to simplify the complex and make data exploration an effortless experience.",
-                                                "We designed a system that prioritizes clarity over clutter, using intelligent filtering and predictive charting to guide users to what matters most."
+                                                "Many young adults enter the real world without a basic understanding of budgeting, saving, or investing. They are faced with complex financial tools that feel intimidating and out of touch.",
+                                                "Exsavvy was designed to collapse that barrier. It provides young adults with intuitive planning, budgeting, and financial literacy tools, transforming their relationship with money from confusion to control."
                                             ]
                                         }}
                                     />
@@ -180,7 +180,7 @@ export default function ExsavvyPage() {
                                         <div className="flex flex-col md:flex-row justify-between w-full mb-16 md:mb-24">
                                             <div className="w-full md:w-[65%] mb-8 md:mb-0">
                                                 <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-3 font-medium">Role</h3>
-                                                <p className="text-sm md:text-base font-medium text-white">Full-Stack Designer</p>
+                                                <p className="text-sm md:text-base font-medium text-white">Product Designer</p>
                                             </div>
                                             <div className="w-full md:w-[30%]">
                                                 <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-3 font-medium">Timeline</h3>
@@ -195,27 +195,27 @@ export default function ExsavvyPage() {
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Overview</h3>
                                                     <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl">
-                                                        A robust enterprise platform designed to handle multi-layered datasets while maintaining a minimalist, high-performance interface.
+                                                        Exsavvy is a mobile personal finance platform designed specifically for young adults. It simplifies budgeting, expense tracking, and long-term financial planning through gamified money management and accessible educational resources, helping users build lifelong financial habits.
                                                     </p>
                                                 </div>
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Goal</h3>
                                                     <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl">
-                                                        Enable executive teams to make data-driven decisions through real-time visualization and collaborative reporting tools.
+                                                        Design a friendly, highly intuitive mobile experience that demystifies money management for young adults, making budgeting feel achievable and promoting active financial literacy.
                                                     </p>
                                                 </div>
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Challenges</h3>
                                                     <ul className="list-disc pl-5 text-sm md:text-base text-white/80 leading-relaxed max-w-2xl space-y-2">
-                                                        <li>Displaying large-scale data without overwhelming the user</li>
-                                                        <li>Ensuring high performance with real-time SVG rendering</li>
-                                                        <li>Designing flexible widgets for varied data types</li>
+                                                        <li>Overcoming the psychological anxiety and boredom young adults associate with budgeting and spreadsheet tracking.</li>
+                                                        <li>Translating dry financial jargon (interest rates, credit scores, debt payoff) into simple, visual micro-learning modules.</li>
+                                                        <li>Creating an engaging, gamified interface that encourages daily expense logging without creating friction.</li>
                                                     </ul>
                                                 </div>
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Outcome</h3>
                                                     <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl mb-4">
-                                                        Delivered a comprehensive design system that reduced reporting time by 60% for enterprise clients.
+                                                        A vibrant, consumer-centric mobile application design that successfully integrates budgeting tools and micro-learning, leading to higher engagement and improved financial literacy for young adults.
                                                     </p>
                                                 </div>
                                             </div>
@@ -225,19 +225,19 @@ export default function ExsavvyPage() {
                                                 <div>
                                                     <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-6 font-medium">Understanding the Process</h3>
                                                     <ul className="flex flex-col gap-1.5 text-sm md:text-base text-white/90">
-                                                        <li>User Flow Mapping</li>
-                                                        <li>Data Architecture Audit</li>
-                                                        <li>High-Fidelity Prototyping</li>
-                                                        <li>System Testing</li>
+                                                        <li>User Research &amp; Surveys</li>
+                                                        <li>Persona Development</li>
+                                                        <li>Interface Design</li>
+                                                        <li>Gamification Design</li>
                                                     </ul>
                                                 </div>
                                                 <div>
-                                                    <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-6 font-medium">Tools & Technologies</h3>
+                                                    <h3 className="text-xl md:text-2xl font-serif italic text-white/50 mb-6 font-medium">Tools &amp; Technologies</h3>
                                                     <ul className="flex flex-col gap-1.5 text-sm md:text-base text-white/90">
                                                         <li>Figma</li>
-                                                        <li>D3.js</li>
-                                                        <li>React</li>
-                                                        <li>Tailwind CSS</li>
+                                                        <li>FigJam</li>
+                                                        <li>Miro</li>
+                                                        <li>Notion</li>
                                                     </ul>
                                                 </div>
                                                 <div>

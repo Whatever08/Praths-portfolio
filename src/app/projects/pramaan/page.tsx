@@ -36,7 +36,7 @@ const INSIGHTS = [
     { num: "02", stat: "7 hrs", title: "Speed is everything",            body: "The average delay between fraud and FIR ensures criminals escape. Real-time detection and instant account freezing are the only meaningful interventions." },
     { num: "03", stat: "3",     title: "Fragmentation enables crime",    body: "Banks, police, and telecom operate in complete silos. Criminals exploit coordination gaps to move money through mule account networks before anyone can act." },
     { num: "04", stat: "₹0",   title: "Invisible theft pattern",        body: "No OTPs, no notifications, phone never leaves hand. Session hijacking defeats traditional security measures entirely. ₹28,500 stolen with zero alerts." },
-    { num: "05", stat: "Diwali", title: "Peak exploitation times",      body: "Festivals, Sundays, 3 PM when banks close. Victims are distracted and institutions unavailable precisely when help is needed most." },
+    { num: "05", stat: "3 PM", title: "Peak exploitation times",      body: "Festivals, Sundays, 3 PM when banks close. Victims are distracted and institutions unavailable precisely when help is needed most." },
     { num: "06", stat: "₹40K",  title: "Trust is the weapon",           body: "Scammers who know personal details bypass all critical thinking. Official sounding language with personal data creates false legitimacy that overrides rational judgment." },
 ];
 
@@ -1266,28 +1266,28 @@ export default function PramaanPage() {
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Overview</h3>
                                                     <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl font-sans">
-                                                        Pramaan unifies cybersecurity evidence logging, immutable chain-of-custody verification, and forensic training within a unified workspace. It helps institutions share security intel while preparing teams through simulated incidents.
+                                                        PRAMAAN (meaning &lsquo;evidence&rsquo; in Hindi) is a digital evidence and learning platform that helps people report cyber scams, collect court-ready proof, and build everyday scam-detection skills through interactive learning. It combines secure reporting, AI-assisted evidence scanning, and gamified education so users feel protected instead of helpless.
                                                     </p>
                                                 </div>
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Goal</h3>
                                                     <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl font-sans">
-                                                        Build an intuitive digital tracking dashboard and interactive learning environment to resolve log formatting fragmentation and speed up collaborative response audits.
+                                                        Design an intuitive mobile application that simplifies the high-stress process of cyber fraud reporting and evidence gathering, reducing a confusing 6-hour scramble into a 10-minute guided flow.
                                                     </p>
                                                 </div>
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Challenges</h3>
                                                     <ul className="list-disc pl-5 text-sm md:text-base text-white/80 leading-relaxed max-w-2xl space-y-2 font-sans">
-                                                        <li>Ensuring cryptographic tamper-proof validation of log evidence</li>
-                                                        <li>Developing standard reporting interfaces for bank-investigator handoffs</li>
-                                                        <li>Mitigating dashboard alert fatigue with smart node visualizations</li>
-                                                        <li>Crafting a scenario simulator simulating complex cyber attack tracks</li>
+                                                        <li>Helping high-stress, panicked victims collect valid digital evidence (like screenshots and APKs) in the immediate aftermath of a scam.</li>
+                                                        <li>Designing a clear, step-by-step reporting flow that navigates siloed authorities (police cyber cell, banks, and UPI platforms).</li>
+                                                        <li>Addressing the emotional paralysis (panic, shame, and confusion) that prevents victims from reporting scams quickly.</li>
+                                                        <li>Ensuring the collected evidence meets legal/forensic standards (timestamped, chain-of-custody, secure storage) to help speed up cyber cell investigations.</li>
                                                     </ul>
                                                 </div>
                                                 <div>
                                                     <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 tracking-tight">Outcome</h3>
                                                     <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl mb-4 font-sans">
-                                                        A cohesive product design that enforces evidence compliance, maps complex cyber fraud paths, and streamlines team readiness by replacing static manuals with scenario training.
+                                                        A cohesive, user-friendly product design that collapses a complex reporting process into a guided mobile journey, raising victim confidence, standardizing evidence collection, and improving forensic outcomes for law enforcement.
                                                     </p>
                                                 </div>
                                             </div>
