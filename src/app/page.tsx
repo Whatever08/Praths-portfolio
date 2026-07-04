@@ -269,11 +269,9 @@ export default function Home() {
               {/* ── SUBTITLE (top center on mobile / top-right on desktop) ── */}
               {/* Edit: top-[30%] = mobile vertical position | md:top-40 = desktop position (+8% down) */}
               <div className="absolute top-[30%] md:top-40 lg:top-48 left-0 right-0 flex justify-center md:justify-end px-6 md:px-12 z-20 pointer-events-auto scale-[1.10] origin-top md:origin-top-right">
-                <div className="text-center md:text-right lg:pr-10 flex flex-col gap-1">
-                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide leading-none">Designer.</p>
-                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide leading-none">Problem Solver.</p>
-                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide leading-none">Vibe Coder.</p>
-                  <p className="text-base md:text-2xl text-white/80 italic font-serif mt-2">Creative Thinker</p>
+                <div className="text-center md:text-right lg:pr-10">
+                  <p className="text-lg md:text-3xl font-bold text-white tracking-wide">Designer. Problem Solver. Vibe coder</p>
+                  <p className="text-base md:text-2xl text-white/80 italic font-serif mt-1">Creative Thinker</p>
                 </div>
               </div>
 
@@ -299,7 +297,9 @@ export default function Home() {
               {/* Edit: top-[62%] = mobile position | md:bottom-[calc(10rem+0vh)] = desktop position */}
               <div className="absolute top-[62%] md:top-auto md:bottom-[calc(10rem+0vh)] lg:bottom-[calc(11rem+0vh)] left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 w-full max-w-[90%] md:max-w-md lg:max-w-xl text-center md:text-left z-20 pointer-events-auto px-6 md:px-0">
                 <h2 className="text-sm md:text-xl lg:text-3xl font-medium text-white tracking-tight leading-snug scale-[1.13] md:origin-left origin-center w-full">
-                  I'm Prathamesh, a UX Designer who approaches design with curiosity and always experimenting. Exploring the chemistry between people and products.
+                  I'm a Designer who approaches design<br />
+                  with curiosity and always experimenting.<br />
+                  Exploring the chemistry between people and products.
                 </h2>
               </div>
 
