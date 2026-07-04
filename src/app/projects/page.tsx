@@ -270,31 +270,7 @@ export default function ProjectsPage() {
           aria-hidden="true"
         />
 
-        <Navbar
-          leftContent={
-            <button
-              onClick={() => {
-                setShowRevealIn(true);
-                setTimeout(() => { window.location.href = "/"; }, 1000);
-              }}
-              className="flex items-center gap-2 text-inherit hover:opacity-60 transition-opacity uppercase tracking-widest text-[10px] group"
-            >
-              <Icon icon="solar:arrow-left-linear" className="text-sm group-hover:-translate-x-1 transition-transform" />
-              <span className="hidden sm:inline">Back to Home</span>
-              <span className="sm:hidden">Back</span>
-            </button>
-          }
-          rightContent={
-            <div className="flex items-center gap-6">
-              <span className="uppercase tracking-widest text-[10px] text-inherit/45 hidden sm:block">
-                Selected Work
-              </span>
-              <span ref={navIdxRef} className="uppercase tracking-widest text-[10px] font-bold min-w-[40px] text-right text-inherit">
-                01 / {PROJECTS.length}
-              </span>
-            </div>
-          }
-        />
+
 
         <div ref={containerRef} className="relative text-white cursor-none selection:bg-white/20">
           <ReactLenis root options={{ duration: 1.4, lerp: 0.08, smoothWheel: true }}>
@@ -335,10 +311,21 @@ export default function ProjectsPage() {
                 </h1>
               </div>
 
+              {/* WIP Badge */}
+              <div className="relative z-10 mt-6">
+                <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-400" />
+                  </span>
+                  <span className="text-white/50 text-xs uppercase tracking-[0.2em] font-medium">Always a work in progress</span>
+                </div>
+              </div>
+
+
+
 
             </section>
-
-
 
             {/* ── PROJECTS ── */}
             <div>

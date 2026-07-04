@@ -200,79 +200,7 @@ export default function Home() {
     });
 
     // ── NAVIGATION SMART REVEAL & LOGO SWALLOWING ──
-    const smartNavTl = gsap.timeline({ paused: true });
-
-    // Left items move right into logo
-    smartNavTl.to(".nav-left-items", {
-      x: 60,
-      opacity: 0,
-      scale: 0.8,
-      filter: "blur(10px)",
-      duration: 0.5,
-      ease: "power3.inOut"
-    }, 0);
-
-    // Right items move left into logo
-    smartNavTl.to(".nav-right-items", {
-      x: -60,
-      opacity: 0,
-      scale: 0.8,
-      filter: "blur(10px)",
-      duration: 0.5,
-      ease: "power3.inOut"
-    }, 0);
-
-    // Global ScrollTrigger for Directional Reveal
-    ScrollTrigger.create({
-      start: "top top",
-      end: "max",
-      onUpdate: (self) => {
-        // ALWAYS show links when at the very top (first 100px)
-        if (self.scroll() < 100) {
-          smartNavTl.reverse();
-          gsap.to("nav", {
-            backgroundColor: "transparent",
-            backdropFilter: "blur(0px)",
-            borderBottom: "1px solid rgba(255,255,255,0)",
-            duration: 0.4
-          });
-          return;
-        }
-
-        // Suppress scrolling animation if user clicked an anchor link
-        if (isNavigating.current) {
-          smartNavTl.reverse();
-          gsap.to("nav", {
-            backgroundColor: "transparent",
-            backdropFilter: "blur(15px)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            duration: 0.4
-          });
-          return;
-        }
-
-        // SCROLL DOWN: Swallow links
-        if (self.direction === 1) {
-          smartNavTl.play();
-          gsap.to("nav", {
-            backgroundColor: "transparent",
-            backdropFilter: "blur(15px)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            duration: 0.4
-          });
-        }
-        // SCROLL UP: Reveal links
-        else {
-          smartNavTl.reverse();
-          gsap.to("nav", {
-            backgroundColor: "transparent",
-            backdropFilter: "blur(15px)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            duration: 0.4
-          });
-        }
-      }
-    });
+    // Animations removed for minimal layout
   }, { scope: mainRef });
 
   // Removed hero hover handlers as cursor is now global
@@ -294,123 +222,7 @@ export default function Home() {
           />
         )}
 
-        {/* Mobile Menu Overlay */}
-        <div
-          className={`fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl transition-all duration-500 ease-in-out flex flex-col justify-between p-8 ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
-            }`}
-        >
-          {/* Header inside overlay */}
-          <div className="flex justify-between items-center w-full">
-            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="relative h-7 flex items-center">
-              <img
-                src="/logo.png"
-                alt="TP Logo"
-                className="h-full w-auto object-contain"
-              />
-            </Link>
-            <button
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-white p-2 hover:rotate-90 transition-transform duration-300"
-            >
-              <Icon icon="solar:close-circle-linear" className="text-4xl" />
-            </button>
-          </div>
 
-          {/* Main Links */}
-          <div className="flex flex-col items-start justify-center gap-6 my-auto pl-4">
-            <div className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-2">Navigation</div>
-
-            <a
-              href="#projects"
-              onClick={(e) => {
-                setIsMobileMenuOpen(false);
-                handleNavClick(e, "projects");
-              }}
-              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
-            >
-              Projects
-            </a>
-
-            <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                setShowRevealIn(true);
-                setTimeout(() => {
-                  window.location.href = "/projects";
-                }, 1000);
-              }}
-              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase text-left cursor-pointer"
-            >
-              View All Projects
-            </button>
-
-            <a
-              href="#about"
-              onClick={(e) => {
-                setIsMobileMenuOpen(false);
-                handleNavClick(e, "about");
-              }}
-              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
-            >
-              About
-            </a>
-
-            <a
-              href="#services"
-              onClick={(e) => {
-                setIsMobileMenuOpen(false);
-                handleNavClick(e, "services");
-              }}
-              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
-            >
-              What I do
-            </a>
-
-            <a
-              href="#process"
-              onClick={(e) => {
-                setIsMobileMenuOpen(false);
-                handleNavClick(e, "process");
-              }}
-              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
-            >
-              Process
-            </a>
-
-            <a
-              href="#case-studies"
-              onClick={(e) => {
-                setIsMobileMenuOpen(false);
-                handleNavClick(e, "case-studies");
-              }}
-              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
-            >
-              Case Studies
-            </a>
-
-            <a
-              href="#contact"
-              onClick={(e) => {
-                setIsMobileMenuOpen(false);
-                handleNavClick(e, "contact");
-              }}
-              className="text-4xl font-black tracking-tighter text-white hover:text-white/60 transition-colors uppercase"
-            >
-              Contact
-            </a>
-
-
-          </div>
-
-          {/* Footer inside overlay */}
-          <div className="flex justify-between items-center w-full pt-6 border-t border-white/10 pl-4">
-            <div className="flex gap-6">
-              <a href="https://www.linkedin.com/in/prathamesh-tipnis-653b00142/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white text-xs uppercase tracking-widest font-bold">LinkedIn</a>
-              <a href="https://www.behance.net/tprathameshUXD1" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white text-xs uppercase tracking-widest font-bold">Behance</a>
-            </div>
-            <span className="text-white/20 text-xs font-mono">© 2026</span>
-          </div>
-        </div>
 
         {/* Background with wrapper */}
         <LiquidBackground>
@@ -426,53 +238,26 @@ export default function Home() {
             style={{ willChange: "transform" }}
           />
 
-          {/* Navigation */}
-          <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-6 bg-transparent pointer-events-auto">
-            {/* Left: Logo on Mobile / Spacer on Desktop */}
-            <div className="w-1/2 md:w-1/4 flex justify-start md:block">
-              <Link href="/" className="md:hidden relative h-7 flex items-center opacity-100 drop-shadow-md cursor-pointer">
-                <img
-                  src="/logo.png"
-                  alt="TP Logo"
-                  className="h-full w-auto object-contain opacity-100 brightness-100 drop-shadow-lg"
-                />
-              </Link>
+          {/* ── MINIMAL TOP BAR ── */}
+          <div className="absolute top-0 left-0 right-0 px-6 py-8 md:px-12 md:py-12 flex justify-between items-start text-[10px] md:text-xs font-medium uppercase tracking-widest pointer-events-auto z-30">
+            <div className="flex flex-col gap-1">
+              <span className="font-bold text-white">Based in</span>
+              <span className="text-white/60">India / Global</span>
             </div>
-
-            {/* Center: Links & Logo (Desktop) — FULLY RESTORED */}
-            <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-white pointer-events-auto w-2/4">
-              <div className="flex-1 flex justify-end items-center nav-left-items">
-                <a onClick={(e) => handleNavClick(e, "projects")} href="/#projects" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Projects</a>
-                <a onClick={(e) => handleNavClick(e, "about")} href="/#about" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">About</a>
-                <a onClick={(e) => handleNavClick(e, "services")} href="/#services" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] ml-4 lg:ml-8">What I do</a>
-              </div>
-
-              {/* Logo */}
-              <Link href="/" className="nav-logo relative h-8 mx-4 lg:mx-8 flex items-center opacity-100 cursor-pointer z-10">
-                <img
-                  src="/logo.png"
-                  alt="TP Logo"
-                  className="h-full w-auto object-contain opacity-100 brightness-100"
-                />
-              </Link>
-
-              <div className="flex-1 flex justify-start items-center nav-right-items">
-                <a onClick={(e) => handleNavClick(e, "process")} href="/#process" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Process</a>
-                <a onClick={(e) => handleNavClick(e, "case-studies")} href="/#case-studies" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px] mr-4 lg:mr-8">Case Studies</a>
-                <a onClick={(e) => handleNavClick(e, "contact")} href="/#contact" className="hover:text-white/60 transition-colors duration-300 cursor-pointer whitespace-nowrap uppercase tracking-widest text-[10px]">Contact</a>
-              </div>
+            <div className="hidden md:flex flex-col gap-1">
+              <span className="font-bold text-white">Currently at</span>
+              <span className="text-white/60">Independent</span>
             </div>
-
-            {/* Right: Menu Icon for Mobile — Functional */}
-            <div className="w-1/2 md:w-1/4 flex justify-end">
-              <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden text-white drop-shadow-md p-2"
-              >
-                <Icon icon="solar:hamburger-menu-linear" className="text-2xl" />
-              </button>
+            <div className="hidden md:flex flex-col gap-1">
+              <span className="font-bold text-white">Freelance</span>
+              <span className="text-white/60">Available Now</span>
             </div>
-          </nav>
+            <div>
+              <a href="mailto:tprathamesh8@gmail.com" className="bg-white text-black px-5 py-2.5 rounded-full font-bold hover:bg-white/90 transition-colors tracking-widest text-[10px]">
+                Get in touch
+              </a>
+            </div>
+          </div>
 
           {/* ── HERO SECTION ── */}
           <section
@@ -516,19 +301,7 @@ export default function Home() {
                 </h2>
               </div>
 
-              {/* ── SCROLL TO EXPLORE INDICATOR ── */}
-              {/* Edit: top-[72%] = mobile position | md:bottom-[calc(3rem+2vh)] = desktop position */}
-              <div
-                onClick={(e) => handleNavClick(e, "projects")}
-                className="absolute top-[72%] md:top-auto md:bottom-[calc(3rem+2vh)] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center gap-2.5 z-20 pointer-events-auto scale-[1.08] origin-center cursor-pointer group transition-all duration-300"
-              >
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/50 group-hover:text-white transition-colors duration-300">
-                  Scroll to begin experience
-                </span>
-                <div className="w-[20px] h-[34px] rounded-full border border-white/30 group-hover:border-white/60 flex justify-center py-1.5 transition-colors duration-300">
-                  <div className="w-[3px] h-[6px] rounded-full bg-white/70 animate-scroll-wheel" />
-                </div>
-              </div>
+              {/* ── SCROLL TO EXPLORE INDICATOR REMOVED ── */}
 
               {/* ── SOCIAL ICONS — MOBILE ONLY (hidden on desktop) ── */}
               <div className="md:hidden absolute bottom-8 left-0 right-0 flex justify-center items-center gap-10 z-20 pointer-events-auto scale-[1.08] origin-center">
@@ -542,17 +315,9 @@ export default function Home() {
                   <Icon icon="line-md:email-opened" className="text-2xl" />
                 </a>
               </div>
-
-              {/* ── SOCIAL TEXT LINKS — DESKTOP ONLY (hidden on mobile) ── */}
-              {/* Edit: md:bottom-[calc(3rem+2vh)] = desktop position */}
-              <div className="hidden md:flex absolute md:bottom-[calc(3rem+2vh)] right-12 items-center gap-8 z-20 pointer-events-auto scale-[1.08] origin-right">
-                <a href="https://www.linkedin.com/in/prathamesh-tipnis-653b00142/" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">LinkedIn ↗</a>
-                <a href="https://www.behance.net/tprathameshUXD1" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">Behance ↗</a>
-                <a href="mailto:tprathamesh8@gmail.com" className="text-white/80 hover:text-white uppercase text-xs font-bold tracking-widest border-b border-white/30 hover:border-white pb-1 transition-colors">tprathamesh8@gmail.com ↗</a>
-              </div>
-
             </div>
           </section>
+
 
           {/* Circular Gallery Section */}
           <section id="projects" ref={gallerySectionRef} className="relative min-h-screen py-24 bg-transparent overflow-hidden z-20 pointer-events-auto flex flex-col items-center justify-center">

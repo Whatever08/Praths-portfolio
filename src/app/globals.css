@@ -157,3 +157,12 @@ body {
 .animate-scroll-wheel {
   animation: scrollWheel 1.8s cubic-bezier(0.15, 0.41, 0.69, 0.94) infinite;
 }
+
+@keyframes marquee-fast {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-fast {
+  animation: marquee-fast 30s linear infinite;
+}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Sans, Syne, DM_Sans, Inter } from "next/font/google";
 import "./globals.css";
+import FloatingMenu from "@/components/ui/FloatingMenu";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({
         className={`${instrumentSans.variable} ${syne.variable} ${dmSans.variable} ${inter.variable} font-sans text-slate-100 min-h-screen antialiased selection:bg-white/20 tracking-[-0.05em]`}
       >
         {children}
+        <FloatingMenu />
       </body>
     </html>
   );

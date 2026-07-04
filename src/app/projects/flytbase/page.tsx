@@ -109,28 +109,7 @@ export default function FlytbasePage() {
                         <SvgSteppedReveal variant="cover" direction="right" />
                     )}
                     <div ref={containerRef} className="relative z-10 w-full text-white selection:bg-white/20">
-                        <Navbar
-                            leftContent={
-                                <button
-                                    onClick={() => {
-                                        setShowRevealIn(true);
-                                        setTimeout(() => {
-                                            window.location.href = "/";
-                                        }, 1000);
-                                    }}
-                                    className="text-[10px] md:text-xs font-bold tracking-widest uppercase hover:opacity-60 transition-opacity flex items-center gap-2 font-sans cursor-pointer text-inherit"
-                                >
-                                    <Icon icon="solar:arrow-left-linear" className="text-sm" />
-                                    <span className="hidden xs:inline">Back</span>
-                                </button>
-                            }
-                            rightContent={
-                                <div className="hidden md:flex items-center justify-center gap-4 lg:gap-8 text-[13px] font-medium text-inherit pointer-events-auto">
-                                    <button className="hover:opacity-60 transition-colors duration-300 drop-shadow-sm cursor-pointer whitespace-nowrap text-[10px] uppercase tracking-widest">Process</button>
-                                    <button className="hover:opacity-60 transition-colors duration-300 drop-shadow-sm cursor-pointer whitespace-nowrap text-[10px] uppercase tracking-widest">Contact</button>
-                                </div>
-                            }
-                        />
+
 
                         <ReactLenis root ref={lenisRef} options={{
                             autoRaf: false,
