@@ -4,10 +4,7 @@ import Link from "next/link";
 
 const PROJECTS = [
   {
-    num: "01",
-    total: "01",
     title: "Envision VFX",
-    category: "Creative · VFX · Cinematic",
     description:
       "Redesigned the website for a VFX studio built to showcase their projects and services for better brand visibility.",
     image: "/hero image.png",
@@ -17,9 +14,7 @@ const PROJECTS = [
       { img: "/OUR STORY.png", label: "Brand Identity" },
       { img: "/Our Work.png", label: "Brand Identity" },
       { img: "/OUR TEAM 2.png", label: "Brand Identity" },
-
     ],
-    tags: ["Brand Identity", "Web Design", "Motion"],
     link: "https://envisionvfx.in",
     isExternal: true,
   },
@@ -146,7 +141,7 @@ export function ShippedWorkSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           <div className="col-span-1 lg:col-span-12 flex flex-col gap-24 md:gap-32">
             {PROJECTS.map((project) => (
-              <ProjectItem key={project.num} project={project} />
+              <ProjectItem key={project.title} project={project} />
             ))}
           </div>
         </div>

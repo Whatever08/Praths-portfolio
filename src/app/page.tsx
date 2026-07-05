@@ -16,7 +16,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
-import { Navbar } from "@/components/ui/Navbar";
 import { useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
