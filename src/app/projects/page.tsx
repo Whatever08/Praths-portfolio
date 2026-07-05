@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
+import { BackToProjects } from "@/components/ui/BackToProjects";
 import { useGSAP } from "@gsap/react";
 import { ProjectLiquidBackground } from "@/components/ui/ProjectLiquidBackground";
 import { ReactLenis } from "lenis/react";
@@ -47,7 +48,7 @@ const PROJECTS: Project[] = [
   {
     title: "Xtep",
     year: "2023",
-    role: "E-commerce · Web Design",
+    role: "App Design · B2C",
     desc: "A premium digital retail experience for a global sportswear brand. Performance-first UX with bold visual storytelling and seamless checkout.",
     img: "/Xtep.png",
     link: "/projects/xtep",
@@ -273,6 +274,7 @@ export default function ProjectsPage() {
 
 
         <div ref={containerRef} className="relative text-white cursor-none selection:bg-white/20">
+          <BackToProjects href="/" label="Back to Home" />
           <ReactLenis root options={{ duration: 1.4, lerp: 0.08, smoothWheel: true }}>
 
             {/* ── HERO ── */}

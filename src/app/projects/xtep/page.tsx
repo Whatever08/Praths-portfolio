@@ -11,6 +11,7 @@ import { ReactLenis } from "lenis/react";
 import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
+import { BackToProjects } from "@/components/ui/BackToProjects";
 import Link from "next/link";
 import "./../nebula/nebula.css";
 
@@ -420,6 +421,7 @@ export default function XtepPage() {
                         />
                     )}
                     <div ref={containerRef} className="relative z-10 w-full text-white selection:bg-white/20">
+                        <BackToProjects />
 
 
                         <ReactLenis root ref={lenisRef} options={{

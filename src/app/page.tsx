@@ -4,7 +4,7 @@ import { CircularGallery } from "@/components/ui/CircularGallery";
 import { LiquidBackground } from "@/components/ui/LiquidBackground";
 import { TextRevealSection } from "@/components/ui/TextRevealSection";
 import StackSection from "@/components/ui/StackSection";
-import { CaseStudiesSection } from "@/components/ui/CaseStudiesSection";
+import { ShippedWorkSection } from "@/components/ui/ShippedWorkSection";
 import ServicesSection from "@/components/ui/ServicesSection";
 import ProcessSection from "@/components/ui/ProcessSection";
 import { ReactLenis } from "lenis/react";
@@ -369,8 +369,8 @@ export default function Home() {
             <div id="process"><ProcessSection /></div>
           </div>
 
-          {/* Case Studies Section */}
-          <div id="case-studies"><CaseStudiesSection /></div>
+          {/* Shipped Work Section */}
+          <div id="case-studies"><ShippedWorkSection /></div>
 
           {/* Playground / Stack Section */}
           <div id="playground"><StackSection /></div>

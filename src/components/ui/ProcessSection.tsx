@@ -158,9 +158,13 @@ export default function ProcessSection() {
                 style={{
                   flexGrow: isOpen ? 6.2 : 1,
                 }}
-                className={`group relative rounded-lg overflow-hidden border border-black/5 cursor-pointer step-card-transition w-full md:w-auto ${
+                className={`group relative rounded-xl overflow-hidden border cursor-pointer step-card-transition transition-all duration-500 w-full md:w-auto ${
                   isOpen ? "max-h-[1200px] h-auto md:h-full" : "max-h-[128px] h-[128px] md:h-full md:max-h-none"
-                } ${step.bg} ${step.textColor}`}
+                } ${
+                  isOpen 
+                    ? "bg-white text-zinc-950 border-transparent shadow-xl" 
+                    : "bg-zinc-900/90 text-zinc-400 border-zinc-800 hover:bg-zinc-800/90 hover:text-zinc-200"
+                }`}
               >
                 {/* Closed View */}
                 <div
@@ -203,7 +207,7 @@ export default function ProcessSection() {
                         {step.subtitle}
                       </p>
                     </div>
-                    <div className="relative w-full h-[170px] sm:h-[200px] md:h-[240px] rounded-md overflow-hidden border border-black/10">
+                    <div className="relative w-full h-[170px] sm:h-[200px] md:h-[240px] rounded-xl overflow-hidden border border-black/10">
                       <img
                         src={step.img}
                         alt={step.title}
