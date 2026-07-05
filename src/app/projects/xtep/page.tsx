@@ -1246,57 +1246,7 @@ export default function XtepPage() {
                                                 </div>
                                             </section>
 
-                                            {/* ── 09 LIVE WEBSITE AUDIT ── */}
-                                            <section className="dv-section bg-white border-b border-[#E4DFD7] py-32 md:py-40" id="audit">
-                                                <div className="dv-container">
-                                                    <div className="text-center mb-16">
-                                                        <span className="text-[10px] tracking-[0.2em] font-mono text-[#6B6762] uppercase block mb-4 font-semibold">09 LIVE WEBSITE AUDIT: XTEPINDIA.COM</span>
-                                                        <h2 className="dv-mixed-heading">
-                                                            <span className="dv-heading-bold">Why the Website</span> <em className="dv-heading-italic">Isn't Working</em>
-                                                        </h2>
-                                                        <p className="dv-subheading">
-                                                            The website exists: a live Shopify store. But it's operated as a product catalogue when it needs to function as a brand-building and trust-building ecosystem. Sourced directly from the live site.
-                                                        </p>
-                                                    </div>
 
-                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 text-left">
-                                                        {[
-                                                            { title: "Generic Shopify Theme", text: "No custom development, with zero brand differentiation at the infrastructure level." },
-                                                            { title: "Pricing: Permanent Discounts", text: "Every product is always discounted. MRP becomes fiction, destroying profit margin and brand equity." },
-                                                            { title: "Catalogue, Not Ecosystem", text: "The site lists products without brand-building, customer education, or community integration." }
-                                                        ].map((verdict, idx) => (
-                                                            <div key={idx} className="bg-white hover:bg-[#0C0C0C] border border-[#E4DFD7] hover:border-[#0C0C0C] rounded-2xl p-8 flex flex-col gap-4 text-left transition-colors duration-300 group shadow-sm">
-                                                                <div className="font-bold font-sans text-[#0C0C0C] group-hover:text-white text-left transition-colors duration-300" style={{ fontSize: '1.25rem' }}>{verdict.title}</div>
-                                                                <p className="text-sm text-[#6B6762] group-hover:text-white/70 leading-relaxed font-sans text-left transition-colors duration-300">{verdict.text}</p>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 text-left">
-                                                        {[
-                                                            { title: "Zero Product Education", text: "Technology explainers exist only on the homepage, disappearing on product detail pages." },
-                                                            { title: "Permanent Discounts", text: "When everything is always on sale, margins collapse and the brand is perceived as cheap." },
-                                                            { title: "Incoherent Naming", text: "Product names have no consistent logic, making it impossible to understand the range." },
-                                                            { title: "XRC Community Omitted", text: "Xtep's global strategy centers on XRC, but the community is entirely absent from the India site." },
-                                                            { title: "Non-Local Athlete Proof", text: "Featured elite runners are all global, offering no relevance to Indian running culture." },
-                                                            { title: "Missing Social Proof", text: "The homepage lacks customer reviews, runner stories, user-generated content, or rating feeds." },
-                                                            { title: "Dead-End Tech Page", text: "The technology page lists terms without mapping them to specific products or benefits." },
-                                                            { title: "What the App Solves", text: "Education at point of purchase, XRC connected to commerce, peer reviews as trust signals, and personalised onboarding." }
-                                                        ].map((item, idx) => (
-                                                            <div key={idx} className="bg-white hover:bg-[#0C0C0C] border border-[#E4DFD7] hover:border-[#0C0C0C] rounded-2xl p-8 flex flex-col gap-3 text-left transition-colors duration-300 group shadow-sm">
-                                                                <div className="font-bold font-sans text-[#0C0C0C] group-hover:text-white text-left transition-colors duration-300" style={{ fontSize: '1.15rem' }}>{item.title}</div>
-                                                                <p className="text-sm text-[#6B6762] group-hover:text-white/70 leading-relaxed font-sans text-left transition-colors duration-300">{item.text}</p>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-
-                                                    <div className="bg-white border border-[#E4DFD7] rounded-2xl p-8 max-w-4xl mx-auto shadow-sm">
-                                                        <p className="text-xs md:text-sm text-[#6B6762] leading-relaxed font-sans">
-                                                            The website has good bones: the technology sections exist, the product range is solid, the Shopify infrastructure works. But it is being operated as a <em>product catalogue when it needs to function as a brand-building ecosystem.</em> The gap between what Xtep says it is and what the website actually does is where every conversion goes to die. The app is the right answer, but only if the underlying brand strategy changes alongside it.
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
 
                                         </div>
 
