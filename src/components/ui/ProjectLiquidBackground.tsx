@@ -239,9 +239,9 @@ class LiquidApp {
     constructor(container: HTMLElement) {
         this.container = container;
 
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: "high-performance" });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.2));
         container.appendChild(this.renderer.domElement);
 
         this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -291,10 +291,17 @@ class LiquidApp {
     }
 
     tick() {
-        const delta = Math.min(this.clock.getDelta(), 0.1);
-        this.touchTexture.update();
-        this.gradientBackground.update(delta);
-        this.renderer.render(this.scene, this.camera);
+        // Pause rendering when scrolled past the hero section (saves GPU while reading content)
+        const scrolled = window.scrollY > window.innerHeight * 1.2;
+        if (!scrolled) {
+            const delta = Math.min(this.clock.getDelta(), 0.1);
+            this.touchTexture.update();
+            this.gradientBackground.update(delta);
+            this.renderer.render(this.scene, this.camera);
+        } else {
+            // Keep clock ticking so delta doesn't spike on resume
+            this.clock.getDelta();
+        }
         this.animationId = requestAnimationFrame(() => this.tick());
     }
 

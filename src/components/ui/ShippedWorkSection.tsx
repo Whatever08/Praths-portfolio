@@ -134,7 +134,7 @@ export function ShippedWorkSection() {
       <div className="w-full max-w-[90rem] mx-auto px-6 md:px-10">
 
         {/* Section Heading */}
-        <h2 className="text-[24px] font-semibold font-sans text-black mb-16 text-center">
+        <h2 className="text-[30px] font-semibold tracking-tight text-black mb-16 text-center">
           Shipped Work
         </h2>
 

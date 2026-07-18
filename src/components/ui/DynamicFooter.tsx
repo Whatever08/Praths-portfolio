@@ -39,7 +39,8 @@ export const DynamicFooter = () => {
         <footer
             ref={footerRef}
             data-theme="dark"
-            className="relative w-full bg-black/90 backdrop-blur-xl border-t border-white/5 pt-32 pb-12 overflow-hidden z-[30]"
+            className="relative w-full border-t border-white/5 pt-32 pb-12 overflow-hidden z-[30]"
+            style={{ backgroundColor: "#0A0A09" }}
         >
             <div className="max-w-[100rem] mx-auto px-6 md:px-12">
                 {/* Heading + Contact — same line */}
@@ -71,11 +72,7 @@ export const DynamicFooter = () => {
                         <p className="opacity-80">© 2024 Prathamesh Tipnis. All rights reserved.</p>
                         <span className="hidden md:inline text-white/10">|</span>
                         <div className="flex flex-wrap justify-center items-center gap-4 tracking-[0.1em] uppercase">
-                            <p>Forged in <span className="text-white">Antigravity</span></p>
-                            <span className="text-white/20">•</span>
                             <p>Crafted by Prathamesh Tipnis <span className="inline-block scale-110">❤️</span></p>
-                            <span className="text-white/20">•</span>
-                            <p>Powered by <span className="text-white">Vercel</span></p>
                         </div>
                     </div>
                     

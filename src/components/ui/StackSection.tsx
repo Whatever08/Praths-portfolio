@@ -75,7 +75,7 @@ export default function StackSection() {
     );
 
     return (
-        <section ref={sectionRef} className="py-24 bg-black/90 relative z-30 pointer-events-auto overflow-hidden">
+        <section ref={sectionRef} className="py-24 relative z-30 pointer-events-auto overflow-hidden" style={{ backgroundColor: "#0A0A09" }}>
             <div className="max-w-[100rem] mx-auto px-6 md:px-12 mb-8 flex flex-col items-center">
                 <h2 className="text-[30px] font-semibold font-sans text-white text-center">
                     Stack

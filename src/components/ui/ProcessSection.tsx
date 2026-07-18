@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -108,7 +109,7 @@ export default function ProcessSection() {
         
         {/* Section Header — matches other sections */}
         <div className="flex items-center justify-between mb-20">
-          <h2 className="text-[32px] md:text-[38px] font-bold font-sans text-white text-center tracking-tight flex-1">
+          <h2 className="text-[30px] font-semibold tracking-tight text-white text-center flex-1">
             Process
           </h2>
           {/* Navigation buttons */}
@@ -147,8 +148,9 @@ export default function ProcessSection() {
               : "relative md:absolute inset-0 opacity-100 pointer-events-auto";
 
             return (
-              <div
+              <motion.div
                 key={step.num}
+                layout
                 onClick={() => setActiveIndex(i)}
                 onMouseEnter={() => {
                   if (typeof window !== "undefined" && window.matchMedia("(hover: hover) and (min-width: 900px)").matches) {
@@ -158,16 +160,23 @@ export default function ProcessSection() {
                 style={{
                   flexGrow: isOpen ? 6.2 : 1,
                 }}
-                className={`group relative rounded-xl overflow-hidden border cursor-pointer step-card-transition transition-all duration-500 w-full md:w-auto ${
+                transition={{
+                  type: "spring",
+                  stiffness: 220,
+                  damping: 24,
+                  mass: 0.8
+                }}
+                className={`group relative rounded-xl overflow-hidden border cursor-pointer w-full md:w-auto transition-colors duration-500 ${
                   isOpen ? "max-h-[1200px] h-auto md:h-full" : "max-h-[128px] h-[128px] md:h-full md:max-h-none"
                 } ${
                   isOpen 
-                    ? "bg-white text-zinc-950 border-transparent shadow-xl" 
+                    ? "bg-zinc-200 text-zinc-950 border-transparent shadow-xl" 
                     : "bg-zinc-900/90 text-zinc-400 border-zinc-800 hover:bg-zinc-800/90 hover:text-zinc-200"
                 }`}
               >
                 {/* Closed View */}
-                <div
+                <motion.div
+                  layout="position"
                   className={`p-5 sm:p-6 flex flex-col justify-between card-face-transition w-full h-[128px] md:h-full ${closedViewClass}`}
                 >
                   <p className="text-[11px] tracking-[1.5px] uppercase font-semibold opacity-70">
@@ -181,10 +190,11 @@ export default function ProcessSection() {
                       {step.name}
                     </p>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Open View */}
-                <div
+                <motion.div
+                  layout="position"
                   className={`p-6 sm:p-8 md:p-10 flex flex-col card-face-transition text-left w-full h-auto md:h-full ${openViewClass}`}
                 >
                   <p className="text-[11px] tracking-[1.5px] uppercase font-semibold opacity-70">
@@ -212,11 +222,12 @@ export default function ProcessSection() {
                         src={step.img}
                         alt={step.title}
                         className="w-full h-full object-cover"
+                        loading="eager"
                       />
                     </div>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             );
           })}
         </div>

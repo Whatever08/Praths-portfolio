@@ -17,6 +17,10 @@ const SERVICES = [
     image: "/WebDesign.png"
   },
   {
+    title: "Application Design",
+    image: "/mobileappdesign.png"
+  },
+  {
     title: "Website Strategy",
     image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80"
   },
@@ -55,15 +59,15 @@ export default function ServicesSection() {
     <section
       ref={sectionRef}
       className="relative pointer-events-auto w-full"
-      style={{ paddingTop: "5rem", paddingBottom: "5rem" }}
+      style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
     >
       <div className="max-w-[85rem] mx-auto px-6 md:px-12 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center w-full">
 
           {/* Left Column — heading matching site-wide style */}
-          <div className="lg:col-span-3 flex items-center">
-            <h2 className="text-[24px] font-semibold font-sans text-white">
-              heres how can i help you
+          <div className="lg:col-span-3 flex items-start pt-2">
+            <h2 className="text-[30px] font-semibold tracking-tight text-white leading-tight">
+              Here&apos;s how can<br />i help you with<br />your projects
             </h2>
           </div>
 
@@ -79,7 +83,7 @@ export default function ServicesSection() {
                   className="group cursor-pointer select-none py-1"
                 >
                   <h3
-                    className={`text-[32px] sm:text-[42px] md:text-[52px] lg:text-[56px] font-bold tracking-tight font-sans transition-all duration-300 ${
+                    className={`text-[32px] sm:text-[42px] md:text-[52px] lg:text-[56px] font-bold tracking-tight font-sans transition-[color,transform] duration-300 ${
                       isHovered
                         ? "text-white translate-x-1"
                         : "text-[#333333] group-hover:text-white/50"
@@ -98,7 +102,7 @@ export default function ServicesSection() {
               {SERVICES.map((srv, i) => (
                 <div
                   key={i}
-                  className={`absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                     hoveredIndex === i
                       ? "opacity-100 scale-100 rotate-0"
                       : "opacity-0 scale-95 rotate-[-2deg] pointer-events-none"
@@ -108,7 +112,7 @@ export default function ServicesSection() {
                     src={srv.image}
                     alt={srv.title}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
               ))}

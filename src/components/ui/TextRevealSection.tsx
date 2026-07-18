@@ -8,16 +8,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const textContent = [
-    "I'M", "PRATHAMESH,", "A", "UX", "DESIGNER", "FROM", "PUNE,", 
-    "DRIVEN", "BY", "CURIOSITY", "ABOUT", "HOW", "TECHNOLOGY", "BECOMES", 
-    "PART", "OF", "PEOPLE'S", "EVERYDAY", "LIVES.", "I'M", "FASCINATED", 
-    "BY", "HOW", "A", "SIMPLE", "INTERACTION", "CAN", "SAVE", "TIME,", 
-    "REDUCE", "FRUSTRATION,", "CONNECT", "PEOPLE,", "AND", "SHAPE", "THE", 
-    "WAY", "WE", "EXPERIENCE", "THE", "WORLD.", "THAT", "CURIOSITY", "IS", 
-    "WHAT", "DREW", "ME", "TO", "UX", "DESIGN.", "I", "WANT", "TO", 
-    "UNDERSTAND", "HOW", "THOUGHTFUL", "DIGITAL", "EXPERIENCES", "SOLVE", 
-    "REAL", "PROBLEMS", "AND", "CREATE", "MEANINGFUL", "CONNECTIONS", 
-    "BETWEEN", "PEOPLE", "AND", "PRODUCTS."
+    "I'M", "PRATHAMESH,", "A", "PRODUCT", "DESIGNER", "INSPIRED", "BY",
+    "PEOPLE,", "STORIES,", "PLACES,", "AND", "FOOD.", "I'M", "CURIOUS",
+    "ABOUT", "WHAT", "MAKES", "PEOPLE", "CONNECT", "WITH", "THE", "THINGS",
+    "THEY", "USE.", "WHETHER", "I'M", "CRAFTING", "A", "NEW", "DISH,",
+    "EXPLORING", "A", "NEW", "CITY,", "OR", "OBSERVING", "EVERYDAY",
+    "INTERACTIONS,", "I'M", "ALWAYS", "COLLECTING", "IDEAS", "THAT",
+    "SHAPE", "THE", "EXPERIENCES", "I", "DESIGN.", "I", "BELIEVE", "THE",
+    "BEST", "PRODUCTS", "CREATE", "MEANINGFUL", "CONNECTIONS", "BETWEEN",
+    "PEOPLE", "AND", "TECHNOLOGY."
 ];
 
 const highlights: string[] = [];
@@ -49,11 +48,11 @@ export function TextRevealSection() {
     return (
         <section ref={containerRef} className="py-40 px-6 flex items-center justify-center min-h-[100vh] relative pointer-events-auto">
             <div className="max-w-[75rem] mx-auto text-center flex flex-col items-center">
-                <h2 className="text-[24px] font-semibold font-sans text-white mb-16 text-center">
+                <h2 className="text-[30px] font-semibold tracking-tight text-white mb-16 text-center">
                     About Me
                 </h2>
 
-                <h3 ref={textRef} className="text-xl sm:text-[1.6rem] md:text-[1.9rem] lg:text-[2.6rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em]">
+                <h3 ref={textRef} className="text-[1.15rem] sm:text-[1.45rem] md:text-[1.75rem] lg:text-[2.35rem] leading-[1.15] font-medium text-white uppercase flex flex-wrap justify-center gap-x-[0.3em] gap-y-[0.1em]">
                     {textContent.map((word, i) => {
                         const isHighlight = highlights.includes(word);
                         return (

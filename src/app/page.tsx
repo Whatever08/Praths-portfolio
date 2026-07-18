@@ -266,8 +266,8 @@ export default function Home() {
             <div ref={heroContentRef} className="relative z-10 w-full h-full pointer-events-none">
 
               {/* ── SUBTITLE (top center on mobile / top-right on desktop) ── */}
-              {/* Edit: top-[30%] = mobile vertical position | md:top-40 = desktop position (+8% down) */}
-              <div className="absolute top-[30%] md:top-40 lg:top-48 left-0 right-0 flex justify-center md:justify-end px-6 md:px-12 z-20 pointer-events-auto scale-[1.10] origin-top md:origin-top-right">
+              {/* Edit: top-[32%] = mobile vertical position | md:top-46 = desktop position (slightly away from marquee) */}
+              <div className="absolute top-[32%] md:top-46 lg:top-54 left-0 right-0 flex justify-center md:justify-end px-6 md:px-12 z-20 pointer-events-auto scale-[1.10] origin-top md:origin-top-right">
                 <div className="text-center md:text-right lg:pr-10">
                   <p className="text-base md:text-[27px] font-bold text-white tracking-wide">Designer. Problem Solver. Vibe coder</p>
                   <p className="text-sm md:text-[22px] text-white/80 italic font-serif mt-1">Creative Thinker</p>
@@ -293,12 +293,12 @@ export default function Home() {
               </div>
 
               {/* ── DESCRIPTION TEXT ── */}
-              {/* Edit: top-[62%] = mobile position | md:bottom-[calc(10rem+0vh)] = desktop position */}
-              <div className="absolute top-[62%] md:top-auto md:bottom-[calc(10rem+0vh)] lg:bottom-[calc(11rem+0vh)] left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 w-full max-w-[90%] md:max-w-none text-center md:text-left z-20 pointer-events-auto px-6 md:px-0">
-                <h2 className="text-sm md:text-xl lg:text-3xl font-medium text-white tracking-tight leading-snug scale-[1.02] md:origin-left origin-center w-full md:whitespace-nowrap">
-                  I'm a Designer who approaches design with curiosity<br />
-                  and always experimenting and Exploring the<br />
-                  chemistry between people and products.
+              {/* Edit: top-[60%] = mobile position | md:bottom-[calc(11.5rem+0vh)] = desktop position */}
+              <div className="absolute top-[60%] md:top-auto md:bottom-[calc(11.5rem+0vh)] lg:bottom-[calc(12.5rem+0vh)] left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 w-full max-w-[90%] md:max-w-[70vw] text-center md:text-left z-20 pointer-events-auto px-6 md:px-0">
+                <h2 className="text-sm md:text-xl lg:text-3xl font-medium text-white tracking-tight leading-snug scale-[1.02] md:origin-left origin-center w-full">
+                  I'm someone who approaches design with curiosity.<br />
+                  I love experimenting, whether it's creating a new dish or<br />
+                  designing a product, because both are about understanding people
                 </h2>
               </div>
 
@@ -362,7 +362,7 @@ export default function Home() {
           </section>
 
           {/* Text Reveal About Section + Services Section + Process Section — unified background */}
-          <div className="bg-black/90 relative z-30">
+          <div className="relative z-30" style={{ backgroundColor: "#0A0A09" }}>
             <div id="about"><TextRevealSection /></div>
             <div id="services"><ServicesSection /></div>
             <div id="process"><ProcessSection /></div>
