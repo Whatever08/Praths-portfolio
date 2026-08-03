@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LiquidBackground } from "@/components/ui/LiquidBackground";
 import { HeroScrollVideo } from "@/components/ui/scroll-animated-video";
 import { Icon } from "@iconify/react";
-import { ReactLenis } from "lenis/react";
 import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { DynamicFooter } from "@/components/ui/DynamicFooter";
 import { Navbar } from "@/components/ui/Navbar";
@@ -158,18 +157,7 @@ export default function NebulaPage() {
             <BackToProjects />
 
 
-            <ReactLenis
-              root
-              ref={lenisRef}
-              options={{
-                autoRaf: false,
-                duration: 1.4,
-                lerp: 0.05,
-                wheelMultiplier: 1.1,
-                gestureOrientation: "vertical",
-                smoothWheel: true,
-              }}
-            >
+            <>
               <main ref={mainContentRef}>
 
                 {/* ── HERO SCROLL VIDEO ─────────────────────────────── */}
@@ -793,7 +781,7 @@ export default function NebulaPage() {
                 </div>
 
               </main>
-            </ReactLenis>
+            </>
           </div>
         </>
       </LiquidBackground>

@@ -53,6 +53,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -66,8 +68,10 @@ export default function RootLayout({
       <body
         className={`${instrumentSans.variable} ${syne.variable} ${dmSans.variable} ${inter.variable} font-sans text-slate-100 min-h-screen antialiased selection:bg-white/20 tracking-[-0.05em]`}
       >
-        {children}
-        <FloatingMenu />
+        <SmoothScroll>
+          {children}
+          <FloatingMenu />
+        </SmoothScroll>
       </body>
     </html>
   );

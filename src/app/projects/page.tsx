@@ -9,7 +9,6 @@ import { Navbar } from "@/components/ui/Navbar";
 import { BackToProjects } from "@/components/ui/BackToProjects";
 import { useGSAP } from "@gsap/react";
 import { ProjectLiquidBackground } from "@/components/ui/ProjectLiquidBackground";
-import { ReactLenis } from "lenis/react";
 import SvgSteppedReveal from "@/components/ui/SvgSteppedReveal";
 import { Icon } from "@iconify/react";
 import { type } from "@/lib/typography";
@@ -275,7 +274,7 @@ export default function ProjectsPage() {
 
         <div ref={containerRef} className="relative text-white cursor-none selection:bg-white/20">
           <BackToProjects href="/" label="Back to Home" />
-          <ReactLenis root options={{ duration: 1.4, lerp: 0.08, smoothWheel: true }}>
+          <>
 
             {/* ── HERO ── */}
             <section
@@ -470,7 +469,7 @@ export default function ProjectsPage() {
             </div>
 
             <DynamicFooter />
-          </ReactLenis>
+          </>
         </div>
       </ProjectLiquidBackground>
 

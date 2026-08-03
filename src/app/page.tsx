@@ -7,7 +7,6 @@ import StackSection from "@/components/ui/StackSection";
 import { ShippedWorkSection } from "@/components/ui/ShippedWorkSection";
 import ServicesSection from "@/components/ui/ServicesSection";
 import ProcessSection from "@/components/ui/ProcessSection";
-import { ReactLenis } from "lenis/react";
 import { Icon } from "@iconify/react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
@@ -205,7 +204,7 @@ export default function Home() {
   // Removed hero hover handlers as cursor is now global
 
   return (
-    <ReactLenis root>
+    <>
       <main ref={mainRef} className="min-h-screen relative overflow-clip bg-transparent cursor-none">
         {showReveal && (
           <SvgSteppedReveal
@@ -381,6 +380,6 @@ export default function Home() {
 
         </LiquidBackground>
       </main>
-    </ReactLenis >
+    </>
   );
 }
