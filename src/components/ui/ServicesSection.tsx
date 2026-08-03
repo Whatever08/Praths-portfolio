@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -31,12 +31,50 @@ const SERVICES = [
 ];
 
 export default function ServicesSection() {
-  const [hoveredIndex, setHoveredIndex] = useState<number>(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  // Refs for each image layer — direct DOM mutations, no React re-renders
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Refs for each service title text
+  const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
+  const activeIndex = useRef<number>(0);
+
+  // Apply active state directly via DOM to skip React render cycle entirely
+  const setActive = (i: number) => {
+    if (activeIndex.current === i) return;
+    const prev = activeIndex.current;
+    activeIndex.current = i;
+
+    // Swap image layers
+    const prevImg = imageRefs.current[prev];
+    const nextImg = imageRefs.current[i];
+    if (prevImg) {
+      prevImg.style.opacity = "0";
+      prevImg.style.transform = "scale(0.96)";
+    }
+    if (nextImg) {
+      nextImg.style.opacity = "1";
+      nextImg.style.transform = "scale(1)";
+    }
+
+    // Swap title colours
+    const prevTitle = titleRefs.current[prev];
+    const nextTitle = titleRefs.current[i];
+    if (prevTitle) prevTitle.style.color = "#333333";
+    if (nextTitle) nextTitle.style.color = "#ffffff";
+  };
 
   useEffect(() => {
-    if (typeof window === "undefined" || !sectionRef.current) return;
+    // Set initial active state (index 0)
+    const firstImg = imageRefs.current[0];
+    if (firstImg) {
+      firstImg.style.opacity = "1";
+      firstImg.style.transform = "scale(1)";
+    }
+    const firstTitle = titleRefs.current[0];
+    if (firstTitle) firstTitle.style.color = "#ffffff";
 
+    // Section entrance animation
+    if (!sectionRef.current) return;
     const el = sectionRef.current;
     gsap.fromTo(
       el,
@@ -61,10 +99,15 @@ export default function ServicesSection() {
       className="relative pointer-events-auto w-full"
       style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
     >
+      {/* Preload local images so there's no fetch-on-hover jank */}
+      <link rel="preload" as="image" href="/RahejaNova.png" />
+      <link rel="preload" as="image" href="/WebDesign.png" />
+      <link rel="preload" as="image" href="/mobileappdesign.png" />
+
       <div className="max-w-[85rem] mx-auto px-6 md:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center w-full">
 
-          {/* Left Column — heading matching site-wide style */}
+          {/* Left Column */}
           <div className="lg:col-span-3 flex items-start pt-2">
             <h2 className="text-[30px] font-semibold tracking-tight text-white leading-tight">
               Here&apos;s how can<br />i help you with<br />your projects
@@ -73,46 +116,51 @@ export default function ServicesSection() {
 
           {/* Center Column — Services List */}
           <div className="lg:col-span-6 flex flex-col gap-0.5 z-10 w-full">
-            {SERVICES.map((srv, i) => {
-              const isHovered = hoveredIndex === i;
-              return (
-                <div
-                  key={i}
-                  onMouseEnter={() => setHoveredIndex(i)}
-                  onClick={() => setHoveredIndex(i)}
-                  className="group cursor-pointer select-none py-1"
+            {SERVICES.map((srv, i) => (
+              <div
+                key={i}
+                onMouseEnter={() => setActive(i)}
+                onClick={() => setActive(i)}
+                className="group cursor-pointer select-none py-1"
+              >
+                <h3
+                  ref={el => { titleRefs.current[i] = el; }}
+                  className="text-[32px] sm:text-[42px] md:text-[52px] lg:text-[56px] font-bold tracking-tight font-sans"
+                  style={{
+                    color: i === 0 ? "#ffffff" : "#333333",
+                    transition: "color 0.25s ease",
+                  }}
                 >
-                  <h3
-                    className={`text-[32px] sm:text-[42px] md:text-[52px] lg:text-[56px] font-bold tracking-tight font-sans transition-[color,transform] duration-300 ${
-                      isHovered
-                        ? "text-white translate-x-1"
-                        : "text-[#333333] group-hover:text-white/50"
-                    }`}
-                  >
-                    {srv.title}
-                  </h3>
-                </div>
-              );
-            })}
+                  {srv.title}
+                </h3>
+              </div>
+            ))}
           </div>
 
-          {/* Right Column — Image preview */}
+          {/* Right Column — Image Preview */}
           <div className="lg:col-span-3 flex justify-center lg:justify-end z-10">
             <div className="relative w-full max-w-[280px] sm:max-w-[320px] aspect-[4/5] rounded-xl overflow-hidden bg-zinc-900/50 border border-white/10 shadow-2xl">
               {SERVICES.map((srv, i) => (
                 <div
                   key={i}
-                  className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    hoveredIndex === i
-                      ? "opacity-100 scale-100 rotate-0"
-                      : "opacity-0 scale-95 rotate-[-2deg] pointer-events-none"
-                  }`}
+                  ref={el => { imageRefs.current[i] = el; }}
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    opacity: 0,
+                    transform: "scale(0.96)",
+                    // Only GPU-composited props: opacity + transform (no rotate, no layout triggers)
+                    transition: "opacity 0.35s ease, transform 0.35s ease",
+                    willChange: "opacity, transform",
+                    pointerEvents: "none",
+                  }}
                 >
                   <img
                     src={srv.image}
                     alt={srv.title}
                     className="w-full h-full object-cover"
                     loading="eager"
+                    decoding="async"
                   />
                 </div>
               ))}
